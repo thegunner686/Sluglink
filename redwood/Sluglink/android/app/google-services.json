@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "587108766204",
+    "project_id": "sluglink-2804d",
+    "storage_bucket": "sluglink-2804d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:587108766204:android:8c20e91e59e1374a3ce279",
+        "android_client_info": {
+          "package_name": "edu.ucsc.sluglink"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "587108766204-f1jego1su2ph8d7mrsmingm7v1eh68e1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.ucsc.sluglink",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "587108766204-2a7pvud5br8ru1thoau5up7nvcnr7ji4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCboV0m-1bvaStdPVCwE3R-iKui6KZ0SwM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "587108766204-2a7pvud5br8ru1thoau5up7nvcnr7ji4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "587108766204-31g8fr0ocfr9u39lk6olkcii2hmg5ofh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "edu.ucsc.sluglink"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

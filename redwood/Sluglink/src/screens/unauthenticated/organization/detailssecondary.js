@@ -1,0 +1,115 @@
+import React, { useState, useCallback, useEffect } from 'react';
+
+import {
+    Text,
+    StyleSheet
+} from 'react-native';
+import {
+    Input
+} from 'react-native-elements';
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Picker } from '@react-native-picker/picker';
+
+import { Colors, Fonts, width, height, sizes } from "../../../styles";
+import { NextButton } from './nextbutton';
+import { useSignUp } from './signupstore';
+
+export const OrganizationSignUpDetailsSecondaryScreen = ({ route, navigation }) => {
+    const [organization, setOrganization] = useSignUp(state => [state.organization, state.setOrganization]);
+    const [category, setCategory] = useState(organization.category || 'sports');
+    const [otherCategory, setOtherCategory] = useState(organization.otherCategory || '');
+
+    useEffect(() => {
+        const goToNextScreen = () => {
+            setOrganization({ category, otherCategory });
+            navigation.navigate('OrganizationSignUpDetailsTertiary');
+        };
+
+        if(category == 'other') {
+            if(otherCategory != '') {
+                navigation.setOptions({
+                    headerRight: () => <NextButton onPress={goToNextScreen} />
+                });
+            } else {
+                navigation.setOptions({
+                    headerRight: null
+                });
+            }
+        } else {
+            navigation.setOptions({
+                headerRight: () => <NextButton onPress={goToNextScreen} />
+            });
+        }
+    }, [category, otherCategory]);
+
+    useEffect(() => {
+        navigation.setOptions({
+            headerTitle: organization.name
+        });
+    }, [organization.name]);
+
+    return (
+        <SafeAreaView style={styles.container}>
+            {/* Candidate for Remote Config */}
+            <Text style={Fonts.Paragraph3}>Pick a category that best represents your organization.</Text>
+            <Picker
+                selectedValue={category}
+                onValueChange={(val, i) => setCategory(val)}
+                mode='dropdown'
+                style={styles.picker}
+                itemStyle={styles.pickerItem}
+            >
+                <Picker.Item label='Sports' value='sports' />
+                <Picker.Item label='Social' value='social' />
+                <Picker.Item label='Resource' value='resource' />
+                <Picker.Item label='Academic' value='academic' />
+                <Picker.Item label='Other' value='other' />
+            </Picker>
+            {category == "other" &&
+                <Input 
+                    autoFocus
+                    placeholder="Other category name"
+                    inputStyle={styles.inputStyle}
+                    inputContainerStyle={styles.inputContainerStyle}
+                    leftIconContainerStyle={styles.leftIconContainerStyle}
+                    value={otherCategory}
+                    onChangeText={setOtherCategory}
+                    returnKeyType='done'
+                    clearButtonMode='always'
+                    autoCorrect={false}
+                />
+            }
+        </SafeAreaView>
+    )
+};
+
+let styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: Colors.White.rgb,
+        display: 'flex', 
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+    },
+    picker: {
+        width: width / 10 * 8,
+        height: 'auto'
+    },
+    pickerItem: {
+        ...Fonts.Paragraph4
+    },
+    inputStyle: {
+        ...Fonts.Paragraph4,
+        textAlign: 'left'
+    },
+    inputContainerStyle: {
+        backgroundColor: Colors.White.rgb,
+        borderColor: Colors.Grey5.rgb,
+        borderBottomWidth: 0.5,
+        borderWidth: 0.5,
+        borderRadius: 5,
+        padding: 5
+    }
+});
+
