@@ -13,7 +13,7 @@ export const useProfile = () => {
     const [profile, setProfile] = useState(null);
 
     useEffect(() => {
-        if(user == null);
+        if(user == null) return;
         
         return firestore().collection('Users').doc(user.uid).onSnapshot((doc) => {
             if(doc != null && doc.exists) {
