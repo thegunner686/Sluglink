@@ -11,6 +11,14 @@ import {
 import {
     Divider
 } from 'react-native-elements';
+import Animated, { 
+    AnimatedLayout,
+    SlideInUp,
+    SlideInLeft,
+    SlideOutDown,
+    Layout,
+    SlideOutLeft
+} from "react-native-reanimated";
 
 import { usePosts, useOrganization } from '../../../../hooks';
 import { PostHeader } from '../postheader';
@@ -18,6 +26,7 @@ import { AnnouncementFooter } from './announcementfooter';
 import { Fonts, Colors } from '../../../../styles';
 
 export const Announcement = ({
+    index,
     post,
 }) => {
     const [getPost] = usePosts(state => [state.getPost]);
@@ -33,7 +42,12 @@ export const Announcement = ({
     }, [post.id]);
 
     return (
-        <View style={styles.container}>
+        <Animated.View 
+            entering={SlideInLeft.delay(index*200)}
+            exiting={SlideOutLeft}
+            layout={Layout.springify()}
+            style={styles.container}
+        >
             <PostHeader post={announcement} organization={organization} type={post?.type} />
             <View style={styles.content}>
                 <Text style={[Fonts.Graph4, {
@@ -42,7 +56,7 @@ export const Announcement = ({
             </View>
             <AnnouncementFooter announcement={announcement} />
             <Divider width={1} color={Colors.Grey6.rgb}/>
-        </View>
+        </Animated.View>
     );
 };
 

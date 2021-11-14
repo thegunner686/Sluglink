@@ -1,13 +1,9 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import {
-    KeyboardAvoidingView,
-    Platform,
     StyleSheet,
     FlatList,
-    View,
     RefreshControl,
-    Text
 } from "react-native";
 
 import { Colors, height, rgba, Shadow } from '../../../../styles';
@@ -29,10 +25,9 @@ export const StretchFlatList = ({
     headerSize,
     posts,
     isFetching,
+    fetchMore,
     refresh,
-    footer,
 }) => {
-
     let offsetY = useSharedValue(0);
     
     let headerScale = useDerivedValue(() => {
@@ -69,19 +64,13 @@ export const StretchFlatList = ({
         }
     });
 
-    const renderPost = useCallback(({ item }) => {
+    const renderPost = useCallback(({ item, index }) => {
         if(item.type === 'Announcement') {
             return (
-                <Announcement post={item} />
+                <Announcement post={item} index={index} />
             );
         }
     }, []);
-
-    const Footer = (
-        <View style={styles.footer}>
-            {footer}
-        </View>
-    );
 
     const Header = (
         <Animated.View style={[animatedHeaderStyle, {
@@ -107,16 +96,16 @@ export const StretchFlatList = ({
                 onScroll={scrollHandler}
                 scrollEventThrottle={16}
                 showsVerticalScrollIndicator={false}
-                keyboardShouldPersistTaps='handled'
                 ListHeaderComponent={Header}
                 data={posts}
                 renderItem={renderPost}
                 keyExtractor={keyExtractor}
                 refreshControl={Refresher}
-                ListFooterComponent={Footer}
                 contentContainerStyle={styles.body}
                 maxToRenderPerBatch={3}
                 initialNumToRender={3}
+                onEndReachedThreshold={0.01}
+                onEndReached={fetchMore}
             />
         </SafeAreaView>
     )

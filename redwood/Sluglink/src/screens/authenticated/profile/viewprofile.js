@@ -10,8 +10,6 @@ import {
     Text,
     ImageBackground,
     Alert,
-    FlatList,
-    VirtualizedList
 } from 'react-native';
 import {
     Button
@@ -23,11 +21,11 @@ import { Colors, Fonts, width, height, rgba } from '../../../styles';
 import { StretchFlatList, BackButton } from './components';
 import { useFollowing, useOrganizationWithPosts } from '../../../hooks';
 import { capitalize } from '../../../utils';
-import { FetchMoreButton } from '../components';
 
 const Header = ({ profile, uid }) => {
     const [isFollowing, follow, unfollow] = useFollowing(uid);
     const [loading, setLoading] = useState(false);
+    const navigation = useNavigation();
 
     const onFollowClick = useCallback(async () => {
         setLoading(true);
@@ -51,14 +49,20 @@ const Header = ({ profile, uid }) => {
         setLoading(false);
     }, [profile, isFollowing, follow, unfollow]);
 
+    const onPress = useCallback(() => {
+        navigation.goBack();
+        setTimeout(() => navigation.reset({
+            index: 0,
+            routes: [{name: 'Home'}]
+        }), 0);
+    }, [navigation]);
 
-    const navigation = useNavigation();
     return (
         <ImageBackground
             source={{ uri: profile?.picture }}
             style={styles.header}
         >
-            <BackButton onPress={navigation.goBack} />
+            <BackButton onPress={onPress} />
             <View style={styles.info}>
                 <Text style={Fonts.SubHeader1}>{profile?.name}</Text>
                 <Text style={Fonts.Paragraph3}>{profile?.description}</Text>
@@ -80,16 +84,9 @@ const Header = ({ profile, uid }) => {
     );
 };
 
-const Footer = ({ hasPosts, fetchMore }) => {
-    return hasPosts ? 
-        <FetchMoreButton fetchMore={fetchMore} isFetching={false} />
-        :
-        <Text style={Fonts.Paragraph3}>This organization hasn't posted yet.</Text>
-};
-
 export const ViewProfileScreen = ({ navigation, route }) => {
     const [profile, posts, isFetchingPosts, refreshPosts, fetchMorePosts] = useOrganizationWithPosts(route.params.uid);
-
+    const focused = useIsFocused();
     useEffect(() => {
         if(profile != null) refreshPosts();
     }, [profile]);
@@ -99,19 +96,16 @@ export const ViewProfileScreen = ({ navigation, route }) => {
             style={styles.container}
             edges={['left', 'right']}
         >
+            {focused && 
             <StretchFlatList
                 headerSize={40}
                 header={profile?.uid != null && <Header profile={profile} uid={route.params.uid}/>}
-                footer={
-                    <Footer
-                        fetchMore={fetchMorePosts}
-                        hasPosts={posts != null && posts.length > 0}
-                    />
-                }
                 posts={posts}
                 isFetching={isFetchingPosts}
                 refresh={refreshPosts}
+                fetchMore={fetchMorePosts}
             />
+            }
         </SafeAreaView>
     );
 };

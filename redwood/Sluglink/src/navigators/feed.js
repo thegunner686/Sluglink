@@ -9,8 +9,24 @@ import FastImage from 'react-native-fast-image';
 import { FeedScreen } from '../screens';
 import { NewPostStack } from './newpost';
 import { Colors, Fonts, width } from '../styles';
+import { ViewProfileScreen } from '../screens';
 
 const Stack = createStackNavigator();
+
+const SubStack = createStackNavigator();
+
+const ViewProfileStack = () => {
+    return (
+        <SubStack.Navigator
+            initialRouteName='ViewProfileScreen'
+        >
+            <Stack.Screen
+                name='ViewProfileScreen'
+                component={ViewProfileScreen}
+            />
+        </SubStack.Navigator>
+    )
+};
 
 export const FeedStack = () => {
 

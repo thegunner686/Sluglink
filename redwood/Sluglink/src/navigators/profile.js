@@ -9,6 +9,8 @@ import { ProfileScreen } from '../screens';
 import { Fonts, Colors } from '../styles';
 import { ProfileFollowingScreen, EditProfileScreen } from '../screens';
 import { BackButton } from './components';
+import { ViewProfileScreen } from '../screens';
+
 
 const Stack = createStackNavigator();
 

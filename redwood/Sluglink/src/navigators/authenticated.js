@@ -16,7 +16,6 @@ export const AuthenticatedStack = (props) => {
         <Stack.Navigator
             screenOptions={{
                 headerShown: false,
-                presentation: "modal",
             }}
             initialRouteName='Home'
         >
@@ -40,7 +39,7 @@ export const AuthenticatedStack = (props) => {
                 component={ViewProfileScreen}
                 options={{
                     presentation: 'modal',
-                    headerShown: false,
+                    headerShown: false
                 }}
             />
         </Stack.Navigator>

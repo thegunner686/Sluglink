@@ -40,6 +40,7 @@ export const BottomTabs = () => {
                                 color={color}
                             />;
                 },
+                unmountOnBlur: true
             })}
         >
             <Tabs.Screen

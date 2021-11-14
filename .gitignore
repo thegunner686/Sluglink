@@ -64,3 +64,4 @@ buck-out/
 # Secrets
 .env
 .local.env
+keys.json

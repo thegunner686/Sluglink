@@ -2,11 +2,11 @@ export const FadeInTransition = {
     transitionSpec: {
         open: {
             animation: "timing",
-            config: { duration: 200 }
+            config: { duration: 500 }
         },
         close: {
             animation: "timing",
-            config: { duration: 200 }
+            config: { duration: 500 }
         }
     },
     cardStyleInterpolator: ({ current: { progress }}) => {

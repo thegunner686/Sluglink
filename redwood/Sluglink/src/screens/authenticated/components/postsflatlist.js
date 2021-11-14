@@ -4,25 +4,18 @@ import {
     StyleSheet,
     FlatList,
     RefreshControl,
-    View
 } from 'react-native';
 
 import { Announcement } from './announcement';
 
-export const PostsFlatList = ({ posts, isFetching, refresh, footer }) => {    
-    const renderPost = ({ item }) => {
+export const PostsFlatList = ({ posts, isFetching, fetchMore, refresh }) => {    
+    const renderPost = ({ item, index }) => {
         if(item.type === 'Announcement') {
             return (
-                <Announcement post={item} />
+                <Announcement post={item} index={index}/>
             )
         }
     };
-
-    const Footer = (
-        <View style={styles.footer}>
-            {footer}
-        </View>
-    );
 
     const keyExtractor = (item) => item.id;
 
@@ -41,7 +34,8 @@ export const PostsFlatList = ({ posts, isFetching, refresh, footer }) => {
             keyExtractor={keyExtractor}
             refreshControl={Refresher}
             maxToRenderPerBatch={3}
-            ListFooterComponent={Footer}
+            onEndReachedThreshold={0.01}
+            onEndReached={fetchMore}
         />
     );
 };

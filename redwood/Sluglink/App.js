@@ -6,15 +6,16 @@ import {
   createStackNavigator
 } from "@react-navigation/stack";
 import { Provider as PaperProvider } from 'react-native-paper';
+import { enableScreens } from 'react-native-screens';
 
-import functions from '@react-native-firebase/functions';
-import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
 // import remoteConfig from '@react-native-firebase/remote-config';
 
 // import default_config from "./default_firebase_remote_config";
 import { AuthenticatedStack, UnauthenticatedStack } from './src/navigators';
 import { useAuth } from "./src/hooks";
+
+enableScreens(false);
+
 const Stack = createStackNavigator()
 
 function App() {

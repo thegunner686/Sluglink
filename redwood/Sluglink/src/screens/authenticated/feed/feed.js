@@ -8,16 +8,9 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { NewPostButton } from './components';
-import { FetchMoreButton, FindOrganizationsButton, PostsFlatList } from '../components';
+import { PostsFlatList } from '../components';
 import { useAuth, useFeed } from '../../../hooks';
 import { Colors, width } from '../../../styles';
-
-/**
- * 
- * @param {allow write: if false;
-      allow read: if request.auth != null && request.auth.uid == userId;} param0 
- * @returns 
- */
 
 export const FeedScreen = ({ navigation }) => {
     const [user, customClaims] = useAuth(state => [state.user, state.customClaims]);
@@ -35,12 +28,6 @@ export const FeedScreen = ({ navigation }) => {
         refreshFeed();
     }, [user]);
 
-    const Footer = (
-        feed != null && feed.length > 0 ?
-            <FetchMoreButton fetchMore={fetchMoreFeed} isFetching={isFetchingFeed} /> :
-            <FindOrganizationsButton />
-    );
-
     return (
         <SafeAreaView 
             edges={['left', 'right']}
@@ -50,7 +37,7 @@ export const FeedScreen = ({ navigation }) => {
                 posts={feed}
                 refresh={refreshFeed}
                 isFetching={isFetchingFeed}
-                footer={Footer}
+                fetchMore={fetchMoreFeed}
             />
         </SafeAreaView>
     );

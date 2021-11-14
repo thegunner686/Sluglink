@@ -1,6 +1,7 @@
 import React, {
     useState,
-    useEffect
+    useEffect,
+    useCallback
 } from 'react';
 
 import firestore from '@react-native-firebase/firestore';
@@ -38,22 +39,20 @@ export const useOrganizationWithPosts = (uid) => {
         },
     });
 
+    const fetch = useCallback(() => {
+        refresh();
+    }, [refresh]);
+
     useEffect(() => {
         if(uid != null) refresh();
     }, [uid]);
 
     useEffect(() => {
-        function fetch() {
-            refresh();
-        }
         PostEvents.on('post-create', fetch);
         return () => PostEvents.removeListener('post-create', fetch);
     }, []);
 
     useEffect(() => {
-        function fetch() {
-            refresh();
-        }
         PostEvents.on('post-delete', fetch)
         return () => PostEvents.removeListener('post-delete', fetch);
     }, []);

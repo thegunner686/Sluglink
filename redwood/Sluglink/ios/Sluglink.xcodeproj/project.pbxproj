@@ -230,6 +230,7 @@
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
 				6D4DF6517C3B6F4E1E182D48 /* [CP] Copy Pods Resources */,
+				6925D8AC5A8E68E7B54B054F /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -253,6 +254,7 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				546855D7ABA77DF185EF38A7 /* [CP] Copy Pods Resources */,
 				8C0C2B4E155A8406FA9A6BB8 /* [CP-User] [RNFB] Core Configuration */,
+				6770FABD6C5874ABE34DB4E5 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -388,6 +390,40 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Sluglink/Pods-Sluglink-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6770FABD6C5874ABE34DB4E5 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Sluglink/Pods-Sluglink-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Sluglink/Pods-Sluglink-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Sluglink/Pods-Sluglink-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6925D8AC5A8E68E7B54B054F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Sluglink-SluglinkTests/Pods-Sluglink-SluglinkTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Sluglink-SluglinkTests/Pods-Sluglink-SluglinkTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Sluglink-SluglinkTests/Pods-Sluglink-SluglinkTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		6D4DF6517C3B6F4E1E182D48 /* [CP] Copy Pods Resources */ = {
