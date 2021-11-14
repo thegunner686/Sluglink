@@ -30,8 +30,10 @@ export const useOrganization = (uid) => {
 
 export const useOrganizationWithPosts = (uid) => {
     const [organization] = useOrganization(uid);
-    const [docs, fetching, refresh, fetchMore] = usePagination(uid, {
-        collection: 'Posts',
+    const [docs, fetching, refresh, fetchMore] = usePagination({
+        collection: 'Users',
+        doc: uid,
+        subCollection: 'Posts',
         limit: 3,
         orderBy: {
             name: 'datetime',

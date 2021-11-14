@@ -1,9 +1,19 @@
 const config = {
-    resources: [
+    categories: [
         {
-            title: "Facebook",
-            description: "Subpar social media site",
-            link: "https://www.facebook.com"
+            name: 'Social'
+        },
+        {
+            name: 'Resource'
+        },
+        {
+            name: 'Academic'
+        },
+        {
+            name: 'Sports'
+        },
+        {
+            name: 'Other'
         }
     ]
 };

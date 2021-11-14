@@ -16,14 +16,22 @@ import firestore from '@react-native-firebase/firestore';
  * }
  */
 
-export const usePagination = (uid, options={ collection: 'Feed', limit: 10 }) => {
+export const usePagination = ({
+    collection,
+    doc,
+    subCollection,
+    subDoc,
+    limit,
+    orderBy,
+    queries
+}) => {
     const [docs, setDocs] = useState([]);
     const [fetching, setFetching] = useState(false);
     const [lastDoc, setLastDoc] = useState(null);
 
-    const orderByTransform = (ref, options) => {
-        if(options.orderBy && options.orderBy.name && options.orderBy.order) {
-            ref = ref.orderBy(options.orderBy.name, options.orderBy.order);
+    const orderByTransform = (ref) => {
+        if(orderBy && orderBy.name && orderBy.order) {
+            ref = ref.orderBy(orderBy.name, orderBy.order);
         } else {
             ref = ref.orderBy('datetime', 'desc');
         }
@@ -31,17 +39,28 @@ export const usePagination = (uid, options={ collection: 'Feed', limit: 10 }) =>
     };
 
     const refresh = useCallback(async () => {
-        if(uid == null || fetching) return;
-        setFetching(true);
-        let ref = firestore().collection('Users').doc(uid).collection(options.collection);
-        ref = orderByTransform(ref, options);
-        ref = ref.limit(options.limit);
+        if(fetching) return;
+        // setFetching(true);
+        let ref = firestore().collection(collection);
+        if(doc) {
+            ref = ref.doc(doc);
+            if(subCollection) {
+                ref = ref.collection(subCollection);
+            }
+        }
+        if(queries && queries.length > 0) {
+            for(const query of queries) {
+                ref = query(ref);
+            }
+        }
+        ref = orderByTransform(ref);
+        ref = ref.limit(limit);
 
         const snapshot = await ref.get();
 
         if(snapshot.docs == null || snapshot.docs.length == 0) {
             setDocs([]);
-            setFetching(false);
+            // setFetching(false);
             return;
         }
 
@@ -59,21 +78,32 @@ export const usePagination = (uid, options={ collection: 'Feed', limit: 10 }) =>
             return p1.datetime.toDate() < p2.datetime.toDate()
         }));
 
-        setFetching(false);
-    }, [docs, lastDoc, fetching, uid, options, setDocs, setLastDoc]);
+        // setFetching(false);
+    }, [docs, lastDoc, fetching, queries, setDocs, setLastDoc]);
 
     const fetchMore = useCallback(async () => {
-        if(uid == null || fetching) return;
-        setFetching(true);
-        let ref = firestore().collection('Users').doc(uid).collection(options.collection);
-        ref = orderByTransform(ref, options);
-        ref = ref.limit(options.limit);
+        if(fetching) return;
+        // setFetching(true);
+        let ref = firestore().collection(collection);
+        if(doc) {
+            ref = ref.doc(doc);
+            if(subCollection) {
+                ref = ref.collection(subCollection);
+            }
+        }
+        if(queries && queries.length > 0) {
+            for(const query of queries) {
+                ref = query(ref);
+            }
+        }
+        ref = orderByTransform(ref);
+        ref = ref.limit(limit);
         ref = ref.startAfter(lastDoc);
 
         const snapshot = await ref.get();
 
         if(snapshot.docs == null || snapshot.docs.length == 0) {
-            setFetching(false);
+            // setFetching(false);
             return;
         }
 
@@ -93,8 +123,8 @@ export const usePagination = (uid, options={ collection: 'Feed', limit: 10 }) =>
             });
         });
 
-        setFetching(false);
-    }, [docs, lastDoc, fetching, uid, options, setDocs, setLastDoc]);
+        // setFetching(false);
+    }, [docs, lastDoc, fetching, queries, setDocs, setLastDoc]);
 
     return [docs, fetching, refresh, fetchMore];
 };

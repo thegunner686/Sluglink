@@ -21,7 +21,7 @@ import { useAuth } from '../../../hooks';
 import { Fonts, Colors, sizes } from '../../../styles';
 import { capitalize } from '../../../utils';
 import { PostActions } from './postactions';
-import { useNavigation } from '@react-navigation/core';
+import { useNavigation, useRoute } from '@react-navigation/core';
 
 export const PostHeader = ({
     post,
@@ -30,9 +30,12 @@ export const PostHeader = ({
     const [user] = useAuth(state => [state.user]);
     const [actionsVisible, setActionsVisible] = useState(false);
     const navigation = useNavigation();
+    const route = useRoute();
 
     const viewProfile = useCallback(() => {
-        navigation.navigate('ViewProfile', { uid: post.organizationId });
+        navigation.navigate('ViewProfile', {
+            uid: post.organizationId
+        });
     }, [navigation, post]);
 
     const toggleActions = useCallback(() => {
@@ -53,7 +56,12 @@ export const PostHeader = ({
                 <View style={styles.content}>
                     <View>
                         <Text style={Fonts.Paragraph1}>{organization?.name}</Text>
-                        <Text style={Fonts.Label4}>{capitalize(organization?.category)}</Text>
+                        <Text style={Fonts.Label4}>
+                            {organization?.category == 'Other' ? 
+                                `(Other Category) ${organization?.otherCategory} ` :
+                                organization?.category
+                            }
+                        </Text>
                     </View>
                 </View>
             </TouchableOpacity>

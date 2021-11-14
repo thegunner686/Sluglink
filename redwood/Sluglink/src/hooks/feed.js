@@ -10,8 +10,10 @@ import PostEvents from '../emitters/postevents';
 
 export const useFeed = (limit) => {
     const [user] = useAuth(state => [state.user]);
-    const [docs, fetching, refresh, fetchMore] = usePagination(user?.uid, {
-        collection: 'Feed',
+    const [docs, fetching, refresh, fetchMore] = usePagination({
+        collection: 'Users',
+        doc: user.uid,
+        subCollection: 'Feed',
         limit,
         orderBy: {
             name: 'datetime',

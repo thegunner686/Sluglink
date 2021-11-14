@@ -17,9 +17,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors, Fonts } from '../../../../styles';
 import { StyledInput } from '../../../components';
 import { CappedInput, UploadButton } from './components';
-import { usePosts } from '../../../../hooks';
+import { usePosts, useProfile } from '../../../../hooks';
 
 export const NewAnnouncementScreen = ({ navigation }) => {
+    const [profile] = useProfile();
     const [createPost] = usePosts(state => [state.createPost]);
     const [link, setLink] = useState('');
     const [content, setContent] = useState('');
@@ -45,6 +46,8 @@ export const NewAnnouncementScreen = ({ navigation }) => {
                 link,
                 content,
                 type: 'Announcement',
+                category: profile.category,
+                otherCategory: profile.otherCategory || undefined
             };
     
             try {
@@ -56,7 +59,7 @@ export const NewAnnouncementScreen = ({ navigation }) => {
             setLoading(false);
         };
         return () => <UploadButton onPress={upload} loading={loading} />
-    }, [loading, content, link]);
+    }, [loading, content, link, profile]);
 
     useEffect(() => {
         if(content.length > 0) {

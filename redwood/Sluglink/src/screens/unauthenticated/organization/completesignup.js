@@ -87,7 +87,7 @@ export const OrganizationCompleteSignUpScreen = ({ route, navigation }) => {
             <Text style={[Fonts.Paragraph4]}>{organization.email}</Text>
             <Divider orientation='horizontal' width={1} style={{ width: width / 10 * 8, marginVertical: 5 }} />
             <Text style={Fonts.Label1}>Category</Text>
-            <Text style={Fonts.Paragraph3}>{organization.category == 'other' ? `Other (${organization.otherCategory})` : organization.category.toUpperCase()}</Text>
+            <Text style={Fonts.Paragraph3}>{organization.category == 'Other' ? `Other (${organization.otherCategory})` : organization.category}</Text>
             <Text style={[Fonts.Label1, { marginTop: 10 }]}>Point of Contact</Text>
             <Text style={Fonts.Paragraph3}>{`${organization.contactName}, ${organization.contactRole}`}</Text>
             <Text style={Fonts.Paragraph3}>{organization.contactEmail}</Text>

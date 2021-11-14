@@ -2,21 +2,54 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import {
     Text,
-    View,
-    StyleSheet
+    StyleSheet,
+    ImageBackground
 } from 'react-native';
 import {
     Button,
-    Image
 } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/core';
+import Animated, {
+    FadeInLeft
+}from 'react-native-reanimated';
 
-import { SettingsButton } from './components';
-import { useProfile } from '../../../hooks';
-import { Colors, Fonts } from '../../../styles';
+import { SettingsButton, StretchFlatList } from './components';
+import { useProfileWithPosts } from '../../../hooks';
+import { Colors, Fonts, width, height, rgba } from '../../../styles';
+
+const Header = ({ profile }) => {
+    const navigation = useNavigation();
+
+    return (
+        <ImageBackground
+            source={{ uri: profile?.picture }}
+            style={styles.header}
+        >
+            <Animated.View
+                style={styles.info}
+                entering={FadeInLeft.delay(500)}
+            >
+                <Text style={Fonts.SubHeader1}>{profile?.name}</Text>
+                <Text style={[Fonts.Label1, {
+                    color: Colors.Grey3.rgb
+                }]}>{profile?.category == 'Other' ? `(Other Category) ${profile?.otherCategory}` : profile?.category}</Text>
+                <Text style={Fonts.Paragraph3}>{profile?.description}</Text>
+                <Button 
+                    type='outline'
+                    title='Edit Profile'
+                    titleStyle={Fonts.Paragraph2}
+                    buttonStyle={styles.editButton}
+                    containerStyle={{ marginTop: 10}}
+                    onPress={() => navigation.navigate('EditProfileScreen')}
+                />
+            </Animated.View>
+        </ImageBackground>
+    );
+};
 
 export const ProfileScreen = ({ navigation }) => {
-    const [profile] = useProfile();
+    const [profile, update, posts, isFetchingPosts, refreshPosts, fetchMorePosts] = useProfileWithPosts();
 
     const toggleDrawer = useCallback(() => {
         navigation.toggleDrawer();
@@ -28,35 +61,23 @@ export const ProfileScreen = ({ navigation }) => {
         });
     }, []);
 
+    useEffect(() => {
+        if(profile != null) refreshPosts();
+    }, [profile]);
+
     return (
         <SafeAreaView 
             style={styles.container}
             edges={['left', 'bottom', 'right']}
         >
-            <View style={styles.box}>
-                <Image
-                    source={{ uri: profile?.picture }}
-                    placeholderStyle={styles.picturePlaceholder}
-                    style={styles.picture}
-                />
-                <View style={styles.toprightbottom}>
-                    <Button 
-                        title='Edit Profile'
-                        type='outline'
-                        titleStyle={styles.editProfileTitle}
-                        containerStyle={styles.editProfileButtonContainer}
-                        onPress={() => navigation.navigate('EditProfileScreen')}
-                    />
-                </View>
-            </View>
-            <View style={styles.boxcol}>
-                <View>
-                    <Text style={Fonts.Graph2}>{profile?.name}</Text>
-                </View>
-                <View>
-                    <Text style={Fonts.Paragraph3}>{profile?.description}</Text>
-                </View>
-            </View>
+            {profile != null && <StretchFlatList
+                headerSize={40}
+                header={<Header profile={profile} />}
+                posts={posts}
+                isFetching={isFetchingPosts}
+                refresh={refreshPosts}
+                fetchMore={fetchMorePosts}
+            />}
         </SafeAreaView>
     );
 };
@@ -65,55 +86,26 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.White.rgb
-    },  
-    box: {
-        padding: 10,
-        display: 'flex',
-        flexDirection: 'row'
     },
-    boxcol: {
-        paddingTop: 0,
-        paddingHorizontal: 10,
-        display: 'flex',
-        flexDirection: 'column'
-    },
-    topright: {
+    header: {
         flex: 1,
         display: 'flex',
-        flexDirection: 'column',
-    },
-    toprighttop: {
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'row',
-    },
-    toprightbottom: {
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'flex-end',
     },
-    toprightcell: {
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    picture: {
-        width: 100,
-        height: 100,
+    info: {
+        width: width / 10 * 9,
+        minHeight: height / 20 * 3,
+        backgroundColor: rgba(Colors.White)(0.9),
+        marginBottom: height / 20,
         borderRadius: 10,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: 10,
     },
-    picturePlaceholder: {
-        backgroundColor: Colors.Brown6.rgb,
-    },
-    editProfileTitle: {
-        color: Colors.Blue5.rgb,
-        ...Fonts.Paragraph4
-    },
-    editProfileButtonContainer: {
-        width: '90%',
+    editButton: {
+        width: width / 10 * 8,
+        borderColor: Colors.SteelBlue.rgb,
     },
 });

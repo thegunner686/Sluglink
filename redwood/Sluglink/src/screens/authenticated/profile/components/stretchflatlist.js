@@ -104,7 +104,7 @@ export const StretchFlatList = ({
                 contentContainerStyle={styles.body}
                 maxToRenderPerBatch={3}
                 initialNumToRender={3}
-                onEndReachedThreshold={0.01}
+                onEndReachedThreshold={0.1}
                 onEndReached={fetchMore}
             />
         </SafeAreaView>

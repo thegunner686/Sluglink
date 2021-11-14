@@ -15,7 +15,12 @@ import {
     Button
 } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useIsFocused, useNavigation } from '@react-navigation/core';
+import { useIsFocused, useNavigation, useRoute } from '@react-navigation/core';
+import Animated, {
+    SlideInLeft,
+    SlideOutLeft,
+    FadeInLeft
+} from 'react-native-reanimated';
 
 import { Colors, Fonts, width, height, rgba } from '../../../styles';
 import { StretchFlatList, BackButton } from './components';
@@ -26,6 +31,7 @@ const Header = ({ profile, uid }) => {
     const [isFollowing, follow, unfollow] = useFollowing(uid);
     const [loading, setLoading] = useState(false);
     const navigation = useNavigation();
+    const route = useRoute();
 
     const onFollowClick = useCallback(async () => {
         setLoading(true);
@@ -49,26 +55,21 @@ const Header = ({ profile, uid }) => {
         setLoading(false);
     }, [profile, isFollowing, follow, unfollow]);
 
-    const onPress = useCallback(() => {
-        navigation.goBack();
-        setTimeout(() => navigation.reset({
-            index: 0,
-            routes: [{name: 'Home'}]
-        }), 0);
-    }, [navigation]);
-
     return (
         <ImageBackground
             source={{ uri: profile?.picture }}
             style={styles.header}
         >
-            <BackButton onPress={onPress} />
-            <View style={styles.info}>
+            <BackButton onPress={navigation.goBack} />
+            <Animated.View
+                style={styles.info}
+                entering={FadeInLeft.delay(500)}
+            >
                 <Text style={Fonts.SubHeader1}>{profile?.name}</Text>
-                <Text style={Fonts.Paragraph3}>{profile?.description}</Text>
                 <Text style={[Fonts.Label1, {
                     color: Colors.Grey3.rgb
-                }]}>{profile?.category == 'Other' ? `Other ${profile?.otherCategory}` : capitalize(profile?.category)}</Text>
+                }]}>{profile?.category == 'Other' ? `(Other Category) ${profile?.otherCategory}` : capitalize(profile?.category)}</Text>
+                <Text style={Fonts.Paragraph3}>{profile?.description}</Text>
                 <Button 
                     type={isFollowing ? 'solid' : 'outline'}
                     title={isFollowing ? 'Following' : 'Follow'}
@@ -76,10 +77,11 @@ const Header = ({ profile, uid }) => {
                     titleStyle={[Fonts.Paragraph2, {
                         color: isFollowing ? Colors.White.rgb : Colors.SteelBlue.rgb
                     }]}
+                    containerStyle={{ marginTop: 10}}
                     onPress={onFollowClick}
                     loading={loading}
                 />
-            </View>
+            </Animated.View>
         </ImageBackground>
     );
 };
@@ -123,7 +125,7 @@ const styles = StyleSheet.create({
     },
     info: {
         width: width / 10 * 9,
-        height: height / 20 * 3,
+        minHeight: height / 20 * 3,
         backgroundColor: rgba(Colors.White)(0.9),
         marginBottom: height / 20,
         borderRadius: 10,
@@ -134,6 +136,6 @@ const styles = StyleSheet.create({
     },
     followButton: {
         width: width / 10 * 8,
-        borderColor: Colors.SteelBlue.rgb
+        borderColor: Colors.SteelBlue.rgb,
     },
 });

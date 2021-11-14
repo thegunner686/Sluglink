@@ -1,16 +1,18 @@
 import React from 'react';
 
-import { createStackNavigator } from '@react-navigation/stack';
+import { Text } from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { ExploreScreen } from '../screens';
+import { Fonts, Colors } from '../styles';
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 export const ExploreStack = () => {
     return (
         <Stack.Navigator
             screenOptions={({ route }) => ({
-                title: 'Explore'
+                headerTitle: () => <Text style={Fonts.Paragraph3}>Discover Organizations</Text>,
             })}
         >
             <Stack.Screen

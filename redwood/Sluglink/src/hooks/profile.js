@@ -7,6 +7,7 @@ import React, {
 import firestore from '@react-native-firebase/firestore';
 
 import { useAuth } from './auth';
+import { usePagination } from './pagination';
 
 export const useProfile = () => {
     const [user] = useAuth(state => [state.user]);
@@ -31,3 +32,23 @@ export const useProfile = () => {
 
     return [profile, update];
 };
+
+export const useProfileWithPosts = () => {
+    const [profile, update] = useProfile();
+    const [posts, fetching, refresh, fetchMore] = usePagination({
+        collection: 'Users',
+        doc: profile?.uid,
+        subCollection: 'Posts',
+        limit: 3,
+        orderBy: {
+            name: 'datetime',
+            order: 'desc'
+        }
+    });
+
+    useEffect(() => {
+        if(profile?.uid) refresh();
+    }, [profile]);
+
+    return [profile, update, posts, fetching, refresh, fetchMore];
+}

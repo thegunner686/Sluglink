@@ -1,8 +1,8 @@
 import React from "react";
 
 import {
-    createStackNavigator
-} from "@react-navigation/stack";
+    createNativeStackNavigator
+} from "@react-navigation/native-stack";
 import { StyleSheet } from 'react-native';
 import { 
     Icon
@@ -22,7 +22,7 @@ import {
 } from '../screens';
 import { Colors, Fonts } from "../styles";
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 export const OrganizationSignUpStack = () => {
     return (

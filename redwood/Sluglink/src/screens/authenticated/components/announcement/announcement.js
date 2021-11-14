@@ -17,7 +17,9 @@ import Animated, {
     SlideInLeft,
     SlideOutDown,
     Layout,
-    SlideOutLeft
+    SlideOutLeft,
+    FadeInDown,
+    FadeOutUp,
 } from "react-native-reanimated";
 
 import { usePosts, useOrganization } from '../../../../hooks';
@@ -43,9 +45,8 @@ export const Announcement = ({
 
     return (
         <Animated.View 
-            entering={SlideInLeft.delay(index*200)}
-            exiting={SlideOutLeft}
-            layout={Layout.springify()}
+            entering={FadeInDown.delay(index*100)}
+            exiting={FadeOutUp}
             style={styles.container}
         >
             <PostHeader post={announcement} organization={organization} type={post?.type} />

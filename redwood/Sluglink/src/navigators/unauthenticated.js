@@ -1,14 +1,14 @@
 import React from "react";
 
 import {
-    createStackNavigator
-} from "@react-navigation/stack";
+    createNativeStackNavigator
+} from "@react-navigation/native-stack";
 
 import { FadeInTransition } from "./transitions";
 import { SignInScreen } from '../screens';
 import { OrganizationSignUpStack } from "./orgsignup";
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 export const UnauthenticatedStack = () => {
     return (

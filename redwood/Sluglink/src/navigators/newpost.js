@@ -3,13 +3,13 @@ import React from 'react';
 import {
     Text
 } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { NewPostScreen, NewEventScreen, NewAnnouncementScreen } from '../screens';
 import { Fonts } from '../styles';
 import { BackButton } from '.';
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 export const NewPostStack = () => {
     return (

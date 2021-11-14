@@ -1,15 +1,15 @@
 import React from "react";
 
 import {
-    createStackNavigator
-} from "@react-navigation/stack";
+    createNativeStackNavigator
+} from "@react-navigation/native-stack";
 
 import { FadeInTransition } from "./transitions";
 import { BottomTabs } from './bottomtabs';
 import { NewPostStack } from './newpost';
 import { ViewProfileScreen } from '../screens';
 
-const Stack = createStackNavigator()
+const Stack = createNativeStackNavigator()
 
 export const AuthenticatedStack = (props) => {
     return (

@@ -9,6 +9,7 @@ import {
 } from 'react-native-elements';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Picker } from '@react-native-picker/picker';
+import remoteConfig from '@react-native-firebase/remote-config';
 
 import { Colors, Fonts, width, height, sizes } from "../../../styles";
 import { NextButton } from './nextbutton';
@@ -16,7 +17,8 @@ import { useSignUp } from './signupstore';
 
 export const OrganizationSignUpDetailsSecondaryScreen = ({ route, navigation }) => {
     const [organization, setOrganization] = useSignUp(state => [state.organization, state.setOrganization]);
-    const [category, setCategory] = useState(organization.category || 'sports');
+    const [categories, setCategories] = useState([]);
+    const [category, setCategory] = useState(organization.category || 'Sports');
     const [otherCategory, setOtherCategory] = useState(organization.otherCategory || '');
 
     useEffect(() => {
@@ -25,7 +27,7 @@ export const OrganizationSignUpDetailsSecondaryScreen = ({ route, navigation }) 
             navigation.navigate('OrganizationSignUpDetailsTertiary');
         };
 
-        if(category == 'other') {
+        if(category == 'Other') {
             if(otherCategory != '') {
                 navigation.setOptions({
                     headerRight: () => <NextButton onPress={goToNextScreen} />
@@ -48,6 +50,11 @@ export const OrganizationSignUpDetailsSecondaryScreen = ({ route, navigation }) 
         });
     }, [organization.name]);
 
+    useEffect(() => {
+        const json = remoteConfig().getValue('categories').asString();
+        setCategories(JSON.parse(json));
+    }, []);
+
     return (
         <SafeAreaView style={styles.container}>
             {/* Candidate for Remote Config */}
@@ -59,13 +66,11 @@ export const OrganizationSignUpDetailsSecondaryScreen = ({ route, navigation }) 
                 style={styles.picker}
                 itemStyle={styles.pickerItem}
             >
-                <Picker.Item label='Sports' value='sports' />
-                <Picker.Item label='Social' value='social' />
-                <Picker.Item label='Resource' value='resource' />
-                <Picker.Item label='Academic' value='academic' />
-                <Picker.Item label='Other' value='other' />
+                {categories.map((cat) => (
+                    <Picker.Item key={cat.name} label={cat.name} value={cat.name} />
+                ))}
             </Picker>
-            {category == "other" &&
+            {category == "Other" &&
                 <Input 
                     autoFocus
                     placeholder="Other category name"

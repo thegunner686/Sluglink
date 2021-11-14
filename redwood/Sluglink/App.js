@@ -3,23 +3,23 @@ import React, { useEffect } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import {
-  createStackNavigator
-} from "@react-navigation/stack";
+  createNativeStackNavigator
+} from "@react-navigation/native-stack";
 import { Provider as PaperProvider } from 'react-native-paper';
 import { enableScreens } from 'react-native-screens';
 
-// import remoteConfig from '@react-native-firebase/remote-config';
+import remoteConfig from '@react-native-firebase/remote-config';
 
-// import default_config from "./default_firebase_remote_config";
+import default_config from './src/remote_config/default';
 import { AuthenticatedStack, UnauthenticatedStack } from './src/navigators';
 import { useAuth } from "./src/hooks";
 
-enableScreens(false);
+enableScreens(true);
 
-const Stack = createStackNavigator()
+const Stack = createNativeStackNavigator()
 
 function App() {
-  let [user, isSignedIn] = useAuth(state => [state.user, state.isSignedIn]);
+  let [user] = useAuth(state => [state.user, state.isSignedIn]);
   let [onAuthStateChanged] = useAuth(state => [state.onAuthStateChanged]);
 
   useEffect(() => {
@@ -27,6 +27,18 @@ function App() {
     return () => {
       listener();
     };
+  }, []);
+
+  useEffect(() => {
+    remoteConfig().setDefaults(default_config)
+      .then(() => remoteConfig().fetchAndActivate())
+      .then((fetched) => {
+        if(fetched) {
+          console.log('Remote config initialized');
+        } else {
+          console.log('Remote config failed to initialize.');
+        }
+      });
   }, []);
 
   return (

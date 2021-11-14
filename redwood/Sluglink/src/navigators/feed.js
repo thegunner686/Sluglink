@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import {
     StyleSheet
 } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import FastImage from 'react-native-fast-image';
 
 import { FeedScreen } from '../screens';
@@ -11,9 +11,9 @@ import { NewPostStack } from './newpost';
 import { Colors, Fonts, width } from '../styles';
 import { ViewProfileScreen } from '../screens';
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
-const SubStack = createStackNavigator();
+const SubStack = createNativeStackNavigator();
 
 const ViewProfileStack = () => {
     return (
