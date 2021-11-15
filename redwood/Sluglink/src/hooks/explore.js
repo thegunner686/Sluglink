@@ -7,7 +7,6 @@ import { usePagination } from './pagination';
 import PostEvents from '../emitters/postevents';
 
 export const useExplorePosts = (category) => {
-  console.log(category)
   const [docs, fetching, refresh, fetchMore] = usePagination({
       collection: 'Posts',
       queries: category == null ? null : [

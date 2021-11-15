@@ -3,13 +3,19 @@ import React, { useMemo } from 'react';
 import {
     StyleSheet
 } from 'react-native';
+import {
+    Image
+} from 'react-native-elements';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import FastImage from 'react-native-fast-image';
 
 import { FeedScreen } from '../screens';
 import { NewPostStack } from './newpost';
 import { Colors, Fonts, width } from '../styles';
 import { ViewProfileScreen } from '../screens';
+import Animated, {
+    FadeInUp,
+    FadeOutUp
+} from 'react-native-reanimated';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,19 +36,25 @@ const ViewProfileStack = () => {
 
 export const FeedStack = () => {
 
-    const Logo = useMemo(() => {
-        return <FastImage
+    const Logo = () => (
+        <Animated.View
+            style={{ flexShrink: 1 }}
+            entering={FadeInUp.delay(500)}
+            exiting={FadeOutUp}
+        >
+            <Image
                 style={styles.logo}
                 placeholderStyle={styles.logoPlaceholder}
                 source={require('../../assets/sluglink_logo.png')}
                 resizeMode='contain'
-            />;
-    }, []);
+            />
+        </Animated.View>
+    )
 
     return (
         <Stack.Navigator
             screenOptions={({ route }) => ({
-                headerTitle: () => Logo,
+                headerTitle: () => <Logo />,
             })}
         >
             <Stack.Screen

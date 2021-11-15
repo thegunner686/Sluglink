@@ -5,7 +5,15 @@ import {
 } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { NewPostScreen, NewEventScreen, NewAnnouncementScreen } from '../screens';
+import {
+    NewPostScreen,
+    NewEventScreen,
+    NewAnnouncementScreen,
+    NewEventScreen2,
+    NewEventScreen3,
+    NewEventScreen4,
+    EditPhysicalEventScreen
+} from '../screens';
 import { Fonts } from '../styles';
 import { BackButton } from '.';
 
@@ -29,6 +37,37 @@ export const NewPostStack = () => {
                 options={({ navigation, route }) => ({
                     headerLeft: () => <BackButton goBack={navigation.goBack} />,
                     headerTitle: () => <Text style={Fonts.Paragraph3}>Create Event</Text>,
+                })}
+            />
+            <Stack.Screen
+                name='NewEventScreen2'
+                component={NewEventScreen2}
+                options={({ navigation, route }) => ({
+                    headerLeft: () => <BackButton goBack={navigation.goBack} />,
+                    headerTitle: () => <Text style={Fonts.Paragraph3}>When does the event take place?</Text>,
+                })}
+            />
+            <Stack.Screen
+                name='NewEventScreen3'
+                component={NewEventScreen3}
+                options={({ navigation, route }) => ({
+                    headerLeft: () => <BackButton goBack={navigation.goBack} />,
+                    headerTitle: () => <Text style={Fonts.Paragraph3}>Virtual Setup</Text>,
+                })}
+            />
+            <Stack.Screen
+                name='NewEventScreen4'
+                component={NewEventScreen4}
+                options={({ navigation, route }) => ({
+                    headerLeft: () => <BackButton goBack={navigation.goBack} />,
+                    headerTitle: () => <Text style={Fonts.Paragraph3}>In-Person Setup</Text>,
+                })}
+            />
+            <Stack.Screen
+                name='EditPhysicalEventScreen'
+                component={EditPhysicalEventScreen}
+                options={({ navigation, route }) => ({
+                    headerShown: false
                 })}
             />
             <Stack.Screen

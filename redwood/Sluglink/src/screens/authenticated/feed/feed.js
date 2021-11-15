@@ -4,13 +4,21 @@ import React, {
 
 import {
     StyleSheet,
+    View,
 } from 'react-native';
+import {
+    Button
+} from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { NewPostButton } from './components';
 import { PostsFlatList } from '../components';
 import { useAuth, useFeed } from '../../../hooks';
-import { Colors, width } from '../../../styles';
+import { Colors, Fonts, width, height } from '../../../styles';
+
+import Animated, {
+    FadeInUp
+} from 'react-native-reanimated';
 
 export const FeedScreen = ({ navigation }) => {
     const [user, customClaims] = useAuth(state => [state.user, state.customClaims]);
@@ -28,6 +36,27 @@ export const FeedScreen = ({ navigation }) => {
         refreshFeed();
     }, [user]);
 
+    const FindOrganizationsButton = (
+        <View style={{ paddingTop: height / 3 }}>
+            <Animated.View 
+                entering={FadeInUp}
+                style={{
+                    alignSelf: 'center',
+                }}
+            >
+                <Button
+                    onPress={() => navigation.navigate('Explore')}
+                    title='Find organizations to follow'
+                    type='outline'
+                    buttonStyle={styles.find}
+                    titleStyle={[Fonts.Paragraph2, {
+                        color: Colors.SteelBlue.rgb
+                    }]}
+                />
+            </Animated.View>
+        </View>
+    );
+
     return (
         <SafeAreaView 
             edges={['left', 'right']}
@@ -38,6 +67,7 @@ export const FeedScreen = ({ navigation }) => {
                 refresh={refreshFeed}
                 isFetching={isFetchingFeed}
                 fetchMore={fetchMoreFeed}
+                emptyComponent={FindOrganizationsButton}
             />
         </SafeAreaView>
     );
@@ -47,6 +77,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: Colors.White.rgb,
         flex: 1,
+        justifyContent: 'center'
     },
     footer: {
         flex: 1,
@@ -55,7 +86,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingTop: 10,
     },
-    seeMore: {
+    find: {
         width: width / 10 * 8,
         borderColor: Colors.SteelBlue.rgb
     }

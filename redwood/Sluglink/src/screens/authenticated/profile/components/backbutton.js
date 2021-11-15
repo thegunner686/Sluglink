@@ -10,7 +10,7 @@ import {
 
 import { Colors, rgba, sizes } from '../../../../styles';
 
-export const BackButton = ({ onPress }) => {
+export const BackButton = ({ onPress, icon }) => {
     return (
         <TouchableOpacity
             style={styles.container}
@@ -23,7 +23,7 @@ export const BackButton = ({ onPress }) => {
             }}
         >
             <Icon 
-                name='close'
+                name={icon || 'close'}
                 color={Colors.White.rgb}
                 size={sizes.Icon5}
             />

@@ -49,7 +49,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Users can take pictures and upload them as profile pictures or event listings.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Sluglink uses your location to sort events near you and display it on a map.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Users can upload profile pictures and photos for event listings.</string>
 	<key>UIAppFonts</key>

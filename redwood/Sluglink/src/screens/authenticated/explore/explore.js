@@ -17,18 +17,28 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useExplorePosts } from '../../../hooks';
 import remoteConfig from '@react-native-firebase/remote-config';
 
+import Animated, {
+    FadeInLeft
+} from 'react-native-reanimated';
+
 import { PostsFlatList } from '../components';
 import { Colors, Fonts, width, height } from '../../../styles';
 
-const FilterChip = ({ title, onPress, selected }) => {
+const FilterChip = ({ index, title, onPress, selected }) => {
     return (
-        <Chip
-            titleStyle={Fonts.Paragraph3}
-            onPress={onPress}
-            containerStyle={{ margin: 5 }}
-            title={title}
-            type={selected ? 'solid': 'outline'}
-        />
+        <Animated.View
+            style={{ flexShrink: 1}}
+            entering={FadeInLeft.delay(index * 50)}
+        >
+            <Chip
+                titleStyle={Fonts.Paragraph3}
+                onPress={onPress}
+                containerStyle={{ margin: 5 }}
+                title={title}
+                type={selected ? 'solid': 'outline'}
+            />
+        </Animated.View>
+
     )
 };
 
@@ -44,6 +54,7 @@ export const ExploreScreen = () => {
 
     const renderCategory = ({ item, index }) => (
         <FilterChip
+            index={index+1}
             title={item.name}
             selected={selectedCategory === item.name}
             onPress={() => setSelectedCategory(item.name)}
@@ -54,6 +65,7 @@ export const ExploreScreen = () => {
     
     const Header = (
         <FilterChip
+            index={0}
             title='All Categories'
             selected={selectedCategory === null}
             onPress={() => setSelectedCategory(null)}

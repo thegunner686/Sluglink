@@ -22,7 +22,9 @@ export const SignInScreen = ({ navigation }) => {
 
     useEffect(() => {
         if(user != null && isSignedIn()) {
-            navigation.navigate('Authenticated');
+            setTimeout(() => {
+                navigation.navigate('Authenticated');
+            }, 0);
         } else {
             navigation.navigate('Unauthenticated');
         }

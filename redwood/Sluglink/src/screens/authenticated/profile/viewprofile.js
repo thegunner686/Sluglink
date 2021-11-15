@@ -17,9 +17,8 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useIsFocused, useNavigation, useRoute } from '@react-navigation/core';
 import Animated, {
-    SlideInLeft,
-    SlideOutLeft,
-    FadeInLeft
+    FadeInDown,
+    FadeInRight
 } from 'react-native-reanimated';
 
 import { Colors, Fonts, width, height, rgba } from '../../../styles';
@@ -63,7 +62,7 @@ const Header = ({ profile, uid }) => {
             <BackButton onPress={navigation.goBack} />
             <Animated.View
                 style={styles.info}
-                entering={FadeInLeft.delay(500)}
+                entering={FadeInRight.delay(250)}
             >
                 <Text style={Fonts.SubHeader1}>{profile?.name}</Text>
                 <Text style={[Fonts.Label1, {
@@ -100,7 +99,7 @@ export const ViewProfileScreen = ({ navigation, route }) => {
         >
             {focused && 
             <StretchFlatList
-                headerSize={40}
+                headerSize={70}
                 header={profile?.uid != null && <Header profile={profile} uid={route.params.uid}/>}
                 posts={posts}
                 isFetching={isFetchingPosts}
@@ -124,14 +123,14 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
     },
     info: {
-        width: width / 10 * 9,
-        minHeight: height / 20 * 3,
-        backgroundColor: rgba(Colors.White)(0.9),
-        marginBottom: height / 20,
-        borderRadius: 10,
+        width: width,
+        maxHeight: height / 10 * 2,
+        backgroundColor: rgba(Colors.White)(0.95),
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
         padding: 10,
     },
     followButton: {

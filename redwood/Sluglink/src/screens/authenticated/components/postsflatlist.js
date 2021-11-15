@@ -8,7 +8,13 @@ import {
 
 import { Announcement } from './announcement';
 
-export const PostsFlatList = ({ posts, isFetching, fetchMore, refresh }) => {    
+export const PostsFlatList = ({
+    posts,
+    isFetching,
+    fetchMore,
+    refresh,
+    emptyComponent,
+}) => {    
     const renderPost = ({ item, index }) => {
         if(item.type === 'Announcement') {
             return (
@@ -26,7 +32,7 @@ export const PostsFlatList = ({ posts, isFetching, fetchMore, refresh }) => {
         />
     );
     
-    return ( posts == null || posts.length == 0 ? null :
+    return (
         <FlatList
             data={posts}
             refreshing={isFetching}
@@ -36,6 +42,7 @@ export const PostsFlatList = ({ posts, isFetching, fetchMore, refresh }) => {
             maxToRenderPerBatch={3}
             onEndReachedThreshold={0.01}
             onEndReached={fetchMore}
+            ListEmptyComponent={emptyComponent || null}
         />
     );
 };

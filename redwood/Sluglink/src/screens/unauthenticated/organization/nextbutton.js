@@ -8,18 +8,26 @@ import {
 import {
     Icon
 } from 'react-native-elements';
+import Animated, {
+    FadeInLeft,
+    FadeOutRight
+} from 'react-native-reanimated';
 import { Fonts } from '../../../styles';
 
+const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
+
 export const NextButton = ({ onPress }) => (
-    <TouchableOpacity 
+    <AnimatedTouchableOpacity 
         onPress={onPress}
         style={styles.container}
+        entering={FadeInLeft}
+        exiting={FadeOutRight}
     >
         <Text style={Fonts.Paragraph3}>Next</Text>
         <Icon
             name="chevron-right"
         />
-    </TouchableOpacity>
+    </AnimatedTouchableOpacity>
 );
 
 const styles = StyleSheet.create({
