@@ -29,7 +29,7 @@ export const OrganizationSignUpNextStepsScreen = ({ route, navigation }) => {
                 color={Colors.Brown1.rgb}
             />
             <View style={styles.textContainer}>
-                <Text style={[Fonts.SubHeader3, { textAlign: 'center', marginVertical: 10 }]}>Thank you for signing up with Slugline!</Text>
+                <Text style={[Fonts.SubHeader3, { textAlign: 'center', marginVertical: 10 }]}>Thank you for signing up with Sluglink!</Text>
                 <Text style={[Fonts.Paragraph4, { textAlign: 'center', marginVertical: 10 }]}>We are going to review your organization and send you an email to notify you once you've been verified. From there, you'll be able to sign in with {organization.email} and connect with your audience!</Text>
             </View> 
             <Button

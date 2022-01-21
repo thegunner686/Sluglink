@@ -49,7 +49,6 @@ export const LocationSearch = ({ onChange, location }) => {
   const [selectedResult, setSelectedResult] = useState(default_result);
 
   useEffect(() => {
-    console.log(location)
     if(location != null && selectedResult != null) {
       setSelectedResult(location);
     }

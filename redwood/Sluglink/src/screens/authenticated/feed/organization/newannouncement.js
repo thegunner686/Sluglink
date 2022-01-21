@@ -24,20 +24,16 @@ export const NewAnnouncementScreen = ({ navigation }) => {
     const [createPost] = usePosts(state => [state.createPost]);
     const [link, setLink] = useState('');
     const [content, setContent] = useState('');
-    const [loading, setLoading] = useState(false);
     const contentInputRef = useRef(null);
     const linkInputRef = useRef(null);
 
     const UploadButtonComponent = useMemo(() => {
         const upload = async () => {
-            if(loading) return;
-            setLoading(true);
 
             if(link.length > 0) {
                 const linkSupported = await Linking.canOpenURL(link);
     
                 if(!linkSupported) {
-                    setLoading(false);
                     return;
                 }
             }
@@ -52,14 +48,12 @@ export const NewAnnouncementScreen = ({ navigation }) => {
     
             try {
                 await createPost(announcement);
-                navigation.navigate('FeedScreen');
             } catch(error) {
                 console.log(error);
             }
-            setLoading(false);
         };
-        return () => <UploadButton onPress={upload} loading={loading} />
-    }, [loading, content, link, profile]);
+        return () => <UploadButton onPress={upload}/>
+    }, [content, link, profile]);
 
     useEffect(() => {
         if(content.length > 0) {

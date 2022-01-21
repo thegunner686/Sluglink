@@ -30,10 +30,17 @@ export const NewEventScreen4 = ({ navigation, route }) => {
   const [selectedOption, setSelectedOption] = useState(0);
   const [newEvent, setNewEvent] = useNewEvent(state => [state.newEvent, state.setNewEvent]);
 
+  const navigateNext = () => {
+    setNewEvent({
+      isPhysical: options[selectedOption] === 'Yes',
+    });
+    navigation.navigate('NewEventScreen5');
+  };
+
   useEffect(() => {
-    if(newEvent.location != null) {
+    if(newEvent.location != null || options[selectedOption] === 'No') {
       navigation.setOptions({
-        headerRight: () => <NextButton />
+        headerRight: () => <NextButton onPress={navigateNext} />
       });
     } else {
       setTimeout(() => {

@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {
+    useState
+} from 'react';
 
 import { 
     StyleSheet
@@ -7,10 +9,22 @@ import {
     Button,
     Icon
 } from 'react-native-elements';
+import { useNavigation } from '@react-navigation/core';
 
 import { Colors, Fonts } from '../../../../../styles';
 
-export const UploadButton = ({ onPress, loading }) => {
+export const UploadButton = ({ onPress }) => {
+    const [loading, setLoading] = useState(false);
+    const navigation = useNavigation();
+
+    const handlePress = async () => {
+        if(loading) return;
+        setLoading(true);
+
+        await onPress();
+        setLoading(false);
+        navigation.navigate('FeedScreen');
+    }
     return (
         <Button 
             title='Upload'
@@ -18,7 +32,7 @@ export const UploadButton = ({ onPress, loading }) => {
             titleStyle={styles.title}
             containerStyle={styles.container}
             buttonStyle={styles.button}
-            onPress={onPress}
+            onPress={handlePress}
             loading={loading}
         />
     );

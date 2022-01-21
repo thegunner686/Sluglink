@@ -9,30 +9,13 @@ import {
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { FeedScreen } from '../screens';
-import { NewPostStack } from './newpost';
 import { Colors, Fonts, width } from '../styles';
-import { ViewProfileScreen } from '../screens';
 import Animated, {
     FadeInUp,
     FadeOutUp
 } from 'react-native-reanimated';
 
 const Stack = createNativeStackNavigator();
-
-const SubStack = createNativeStackNavigator();
-
-const ViewProfileStack = () => {
-    return (
-        <SubStack.Navigator
-            initialRouteName='ViewProfileScreen'
-        >
-            <Stack.Screen
-                name='ViewProfileScreen'
-                component={ViewProfileScreen}
-            />
-        </SubStack.Navigator>
-    )
-};
 
 export const FeedStack = () => {
 
@@ -53,13 +36,16 @@ export const FeedStack = () => {
 
     return (
         <Stack.Navigator
-            screenOptions={({ route }) => ({
-                headerTitle: () => <Logo />,
-            })}
+            // screenOptions={({ route }) => ({
+            //     headerTitle: () => <Logo />,
+            // })}
         >
             <Stack.Screen
                 name='FeedScreen'
                 component={FeedScreen}
+                options={{
+                    headerTitle: () => <Logo />,
+                }}
             />
         </Stack.Navigator>
     )

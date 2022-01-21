@@ -31,7 +31,7 @@ export const BottomTabs = () => {
                             iconName = 'explore';
                             break;
                         case 'Profile':
-                            iconName = customClaims?.organization ? 'groups' : 'person';
+                            iconName = 'person';
                             break;
                     }
                     return <Icon

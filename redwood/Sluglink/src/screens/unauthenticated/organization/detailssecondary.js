@@ -18,7 +18,7 @@ import { useSignUp } from './signupstore';
 export const OrganizationSignUpDetailsSecondaryScreen = ({ route, navigation }) => {
     const [organization, setOrganization] = useSignUp(state => [state.organization, state.setOrganization]);
     const [categories, setCategories] = useState([]);
-    const [category, setCategory] = useState(organization.category || 'Sports');
+    const [category, setCategory] = useState(organization.category || '');
     const [otherCategory, setOtherCategory] = useState(organization.otherCategory || '');
 
     useEffect(() => {
@@ -37,9 +37,13 @@ export const OrganizationSignUpDetailsSecondaryScreen = ({ route, navigation }) 
                     headerRight: null
                 });
             }
-        } else {
+        } else if(category !== '') {
             navigation.setOptions({
                 headerRight: () => <NextButton onPress={goToNextScreen} />
+            });
+        } else {
+            navigation.setOptions({
+                headerRight: null
             });
         }
     }, [category, otherCategory]);
@@ -66,6 +70,7 @@ export const OrganizationSignUpDetailsSecondaryScreen = ({ route, navigation }) 
                 style={styles.picker}
                 itemStyle={styles.pickerItem}
             >
+                <Picker.Item key='' label='' value='' />
                 {categories.map((cat) => (
                     <Picker.Item key={cat.name} label={cat.name} value={cat.name} />
                 ))}

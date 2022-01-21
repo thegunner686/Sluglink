@@ -30,10 +30,10 @@ export const NewEventScreen3 = ({ navigation, route }) => {
   const [newEvent, setNewEvent] = useNewEvent(state => [state.newEvent, state.setNewEvent])
 
   const navigateNext = () => {
-    navigation.navigate('NewEventScreen4');
     setNewEvent({
       isVirtual: options[selectedOption] === 'Yes'
     });
+    navigation.navigate('NewEventScreen4');
   };
 
   useEffect(() => {
