@@ -3,7 +3,9 @@ import create from "zustand";
 import auth from "@react-native-firebase/auth";
 import functions from '@react-native-firebase/functions';
 
-import { GOOGLE_SIGN_IN_WEB_CLIENT_ID } from "@env";
+import {
+    GOOGLE_SIGN_IN_WEB_CLIENT_ID
+} from "@env";
 
 import {
     GoogleSignin
@@ -27,46 +29,67 @@ export const useAuth = create((set, get) => ({
     registered: false,
     onAuthStateChanged: () => {
         return auth().onAuthStateChanged(user => {
-            if(!get().registered && user == null) {
-                set(state => ({ registered: true }));
+            if (!get().registered && user == null) {
+                set(state => ({
+                    registered: true
+                }));
                 return;
             }
-            if(user) {
-                functions().httpsCallable('auth-userSignIn')().then(async ({ data }) => {
-                    const { isNewUser } = data;
+            if (user) {
+                functions().httpsCallable('auth-userSignIn')().then(async ({
+                    data
+                }) => {
+                    const {
+                        isNewUser
+                    } = data;
                     await auth().currentUser.getIdToken(true);
                     const res = await auth().currentUser.getIdTokenResult();
-                    set(state => ({ user, isNewUser, customClaims: res.claims }));
+                    set(state => ({
+                        user,
+                        isNewUser,
+                        customClaims: res.claims
+                    }));
                 }).catch(async (error) => {
                     try {
                         await auth().signOut();
-                    } catch(e) {
+                    } catch (e) {
                         console.log(e);
                     }
-                    set(state => ({ user: null, isNewUser: false, customClaims: null }));
+                    set(state => ({
+                        user: null,
+                        isNewUser: false,
+                        customClaims: null
+                    }));
                 });
             } else {
-                set(state => ({ user: null, isNewUser: false, customClaims: null }));
+                set(state => ({
+                    user: null,
+                    isNewUser: false,
+                    customClaims: null
+                }));
             }
         });
     },
 
     signIn: async () => {
-        if(get().isSignedIn()) {
+        if (get().isSignedIn()) {
             await auth().currentUser.getIdToken(true);
             return;
         }
         try {
             // Get the users ID token
-            const { idToken } = await GoogleSignin.signIn();
+            const {
+                idToken
+            } = await GoogleSignin.signIn();
 
             // Create a Google credential with the token
             const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
             // Sign-in the user with the credential
             await auth().signInWithCredential(googleCredential);
+            console.log("auth");
             return true;
-        } catch(e) {
+        } catch (e) {
             console.log(e);
             return false;
         }
@@ -76,7 +99,7 @@ export const useAuth = create((set, get) => ({
         try {
             await auth().signOut();
             return true;
-        } catch(e) {
+        } catch (e) {
             return false;
         }
     },

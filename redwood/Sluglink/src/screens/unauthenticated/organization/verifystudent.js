@@ -25,7 +25,7 @@ export const StudentVerificationScreen = ({ route, navigation }) => {
 
     useEffect(() => {
 
-        if(isVerified) {
+        if (isVerified) {
             navigation.setOptions({
                 headerRight: () => <NextButton onPress={goToNextScreen} />
             });
@@ -37,8 +37,8 @@ export const StudentVerificationScreen = ({ route, navigation }) => {
     }, [isVerified]);
 
     const verifyCode = useCallback(() => {
-        if(isLoading) return;
-        if(studentVerificationCode == null || studentVerificationCode.trim() == '' || studentVerificationCode.length != 6) {
+        if (isLoading) return;
+        if (studentVerificationCode == null || studentVerificationCode.trim() == '' || studentVerificationCode.length != 6) {
             inputRef.current?.shake();
             return;
         }
@@ -53,14 +53,14 @@ export const StudentVerificationScreen = ({ route, navigation }) => {
 
         functions().httpsCallable('orgsignup-verifyCode')(verificationinfo)
             .then(({ data }) => {
-                if(data.status == 'OK') {
-                    if(data.verified) {
+                if (data.status == 'OK') {
+                    if (data.verified) {
                         navigation.navigate("OrganizationSignUpNextSteps");
                     } else {
                         inputRef.current?.shake();
                         setStudentVerificationCode('');
                     }
-                } else if(data.status == 'ERROR') {
+                } else if (data.status == 'ERROR') {
                     Alert.alert(data.message);
                 }
             }).catch(e => {
@@ -94,6 +94,7 @@ export const StudentVerificationScreen = ({ route, navigation }) => {
                 clearButtonMode='always'
                 returnKeyType='done'
                 autoCorrect={false}
+                keyboardType="numeric"
             />
             <Button
                 title='Verify'
@@ -111,7 +112,7 @@ let styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.White.rgb,
-        display: 'flex', 
+        display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'flex-start',

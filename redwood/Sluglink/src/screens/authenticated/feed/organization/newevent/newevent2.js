@@ -14,14 +14,17 @@ import { useNewEvent } from './neweventstore';
 
 export const NewEventScreen2 = ({ navigation, route }) => {
   const [newEvent, setNewEvent] = useNewEvent(state => [state.newEvent, state.setNewEvent]);
-  
+
   useEffect(() => {
     setTimeout(() => {
       navigation.setOptions({
         headerRight: () => (
-          <NextButton onPress={() => 
+          <NextButton onPress={() => {
+            if (!newEvent.startDate) setNewEvent({ startDate: new Date() });
+            if (!newEvent.endDate) setNewEvent({ endDate: new Date() });
             navigation.navigate('NewEventScreen3')
-          }/>
+          }
+          } />
         )
       });
     }, 500);
@@ -29,8 +32,8 @@ export const NewEventScreen2 = ({ navigation, route }) => {
 
   return (
     <SafeAreaView
-        style={styles.container}
-        edges={['bottom','left','right']}
+      style={styles.container}
+      edges={['bottom', 'left', 'right']}
     >
       <View>
         <TimePicker
@@ -50,7 +53,7 @@ export const NewEventScreen2 = ({ navigation, route }) => {
           onChange={(event, date) => setNewEvent({
             endDate: date
           })}
-          minimumDate={newEvent.startDate}
+          minimumDate={new Date()}
         />
       </View>
 

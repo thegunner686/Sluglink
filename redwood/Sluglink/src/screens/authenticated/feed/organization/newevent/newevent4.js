@@ -6,7 +6,8 @@ import React, {
 import {
   View,
   StyleSheet,
-  Text
+  Text,
+  KeyboardAvoidingView
 } from 'react-native';
 import {
   ButtonGroup,
@@ -24,6 +25,7 @@ import { NextButton } from '../../../..';
 import { Colors, Fonts, sizes } from '../../../../../styles';
 import { CappedInput } from '../components';
 import { useNewEvent } from './neweventstore';
+import MapView, { Marker } from 'react-native-maps';
 
 export const NewEventScreen4 = ({ navigation, route }) => {
   const options = ['No', 'Yes'];
@@ -38,7 +40,7 @@ export const NewEventScreen4 = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    if(newEvent.location != null || options[selectedOption] === 'No') {
+    if (newEvent.location != null || options[selectedOption] === 'No') {
       navigation.setOptions({
         headerRight: () => <NextButton onPress={navigateNext} />
       });
@@ -53,8 +55,8 @@ export const NewEventScreen4 = ({ navigation, route }) => {
 
   return (
     <SafeAreaView
-        style={styles.container}
-        edges={['bottom','left','right']}
+      style={styles.container}
+      edges={['bottom', 'left', 'right']}
     >
       <Text style={styles.msg}>Can students attend the event in-person?</Text>
       <ButtonGroup
@@ -64,8 +66,8 @@ export const NewEventScreen4 = ({ navigation, route }) => {
         textStyle={Fonts.Paragraph2}
       />
       {options[selectedOption] === 'Yes' && (
-        <View style={styles.info}>
-          <Animated.Text 
+        <KeyboardAvoidingView style={styles.info}>
+          <Animated.Text
             entering={FadeInLeft}
             exiting={FadeOutLeft}
             style={{
@@ -73,20 +75,38 @@ export const NewEventScreen4 = ({ navigation, route }) => {
               ...Fonts.Paragraph3
             }}
           >
-              Where is the event located?
+            Where is the event located?
           </Animated.Text>
           <Animated.View
             entering={FadeInUp.delay(100)}
             exiting={FadeOutUp.delay(100)}
           >
-            {newEvent.location && 
+            {newEvent.location &&
               <Animated.View
                 entering={FadeInUp.delay(200)}
                 exiting={FadeOutUp.delay(100)}
                 style={{
-                  margin: 10,
+
                 }}
               >
+                {/* <MapView
+                  style={{
+                    height: "70%"
+                  }}
+                  initialRegion={{
+                    latitude: newEvent.location.latitude,
+                    longitude: newEvent.location.longitude
+                  }}
+                >
+                  <Marker
+                    coordinate={{
+                      latitude: newEvent.location.latitude,
+                      longitude: newEvent.location.longitude
+                    }}
+                    title={"Event Location"}
+                  // description={"description"}
+                  />
+                </MapView> */}
                 <Text style={Fonts.Graph2}>{newEvent.location.name}</Text>
                 <Text style={Fonts.Paragraph3}>{newEvent.location.address}</Text>
               </Animated.View>
@@ -112,7 +132,7 @@ export const NewEventScreen4 = ({ navigation, route }) => {
               iconRight
             />
           </Animated.View>
-          <Animated.Text 
+          <Animated.Text
             entering={FadeInLeft}
             exiting={FadeOutLeft}
             style={{
@@ -120,7 +140,7 @@ export const NewEventScreen4 = ({ navigation, route }) => {
               ...Fonts.Paragraph3
             }}
           >
-              Is there anything else they need to know to attend?
+            Is there anything else they need to know to attend?
           </Animated.Text>
           <Animated.View
             entering={FadeInUp.delay(200)}
@@ -140,7 +160,7 @@ export const NewEventScreen4 = ({ navigation, route }) => {
               onChangeText={(text) => setNewEvent({ physicalInfo: text })}
             />
           </Animated.View>
-        </View>
+        </KeyboardAvoidingView>
       )}
     </SafeAreaView>
   );
@@ -158,5 +178,6 @@ const styles = StyleSheet.create({
   info: {
     flex: 1,
     paddingTop: 10,
+    // marginBottom: "10%"
   }
 });

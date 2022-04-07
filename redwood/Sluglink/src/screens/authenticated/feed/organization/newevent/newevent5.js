@@ -29,32 +29,49 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import { NextButton } from '../../../..';
 
 export const NewEventScreen5 = ({ navigation, route }) => {
-  const [newEvent] = useNewEvent(state => [state.newEvent]);
+  const [newEvent, setNewEvent] = useNewEvent(state => [state.newEvent, state.setNewEvent]);
   const [photos, setPhotos] = useState([]);
   const [currentPhoto, setCurrentPhoto] = useState(null);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const viewabilityConfigRef = useRef({ itemVisiblePercentThreshold: 90 });
   const onViewabbleItemsChangedRef = useRef(({ viewableItems, changed }) => {
-    if(viewableItems.length == 0) return;
+    if (viewableItems.length == 0) return;
     let { item, index } = viewableItems[0];
-    console.log(viewableItems[0])
+    // console.log(viewableItems[0])
     setCurrentPhotoIndex(index);
     setCurrentPhoto(item);
   });
   const photoLimit = 5;
 
   const navigateNext = () => {
-    setNewEvent({
-      photos,
-    });
+    // console.log("page 5: ", photos);
+    // console.log(newEvent.photos);
+
+    // console.log("ran setNew");
+    //handles case when no pictures were updated
+    // if (newEvent.photos && newEvent.photos.length === photos.length && photos.every((val, indx) => val === newEvent.photos[indx])) {
     navigation.navigate('NewEventScreen6');
+    // }
   };
+
+  //upon setting new or changing the new photos array *should work with empty array*
+  // useEffect(() => {
+  //   if (newEvent.photos)
+  //     navigation.navigate('NewEventScreen6');
+  // }, [newEvent.photos]);
 
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => <NextButton />
+      headerRight: () => <NextButton onPress={navigateNext} />
     });
   }, []);
+
+  useEffect(() => {
+    console.log("photos updated", photos);
+    setNewEvent({
+      photos: [...photos],
+    });
+  }, [photos])
 
   const addPhoto = () => {
     launchImageLibrary({
@@ -62,20 +79,20 @@ export const NewEventScreen5 = ({ navigation, route }) => {
       quality: 1,
       selectionLimit: 1,
     }, async (res) => {
-      if(!res.didCancel && !res.errorCode) {
+      if (!res.didCancel && !res.errorCode) {
         let { uri, fileName } = res.assets[0];
         const photo = {
           uri,
           fileName
         };
-        console.log(res.assets)
-        
+        // console.log(res.assets)
+
         setPhotos(oldPhotos => ([
           ...oldPhotos, photo
         ]));
         setCurrentPhoto(photo);
-        setCurrentPhotoIndex(oldIndex => oldIndex+1);
-      } else if(res.errorCode) {
+        setCurrentPhotoIndex(oldIndex => oldIndex + 1);
+      } else if (res.errorCode) {
         Alert.alert('Couldn\'t upload that image');
       }
     });
@@ -102,9 +119,9 @@ export const NewEventScreen5 = ({ navigation, route }) => {
         }}
       >
         <Text style={Fonts.SubHeader2}>Event Photos</Text>
-        <Text style={Fonts.Paragraph3, {
+        <Text style={[Fonts.Paragraph3, {
           textAlign: 'center'
-        }}>
+        }]}>
           They're optional, but photos help generate buzz and excitement about your event.
         </Text>
       </View>
@@ -120,18 +137,23 @@ export const NewEventScreen5 = ({ navigation, route }) => {
         }}
         icon={() => (
           <Icon
-          name='add-photo-alternate'
-          size={sizes.Icon4}
-          color={Colors.SteelBlue.rgb}
-        />
+            name='add-photo-alternate'
+            size={sizes.Icon4}
+            color={Colors.SteelBlue.rgb}
+          />
         )}
         onPress={addPhoto}
       />
     </View>
   );
 
-  const removePhoto = (photo) => {
-    setPhotos(oldPhotos => oldPhotos.filter(p => p.uri != photo.uri));
+  const removePhoto = () => {
+    var copy = [...photos];
+    currentPhotoIndex;
+    if (currentPhotoIndex !== -1) {
+      copy.splice(currentPhotoIndex, 1);
+      setPhotos(copy);
+    }
   };
 
   const renderPhoto = ({ item, index }) => {
@@ -187,9 +209,9 @@ export const NewEventScreen5 = ({ navigation, route }) => {
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <Text style={Fonts.Paragraph3, {
+        <Text style={[Fonts.Paragraph3, {
           color: Colors.White.rgb
-        }}>{currentPhotoIndex + 1}/{photoLimit}</Text>
+        }]}>{currentPhotoIndex + 1}/{photoLimit}</Text>
       </View>
       <Button
         title='Remove'
@@ -205,15 +227,15 @@ export const NewEventScreen5 = ({ navigation, route }) => {
             color={Colors.Red2.rgb}
           />
         )}
-        onPress={() => removePhoto(currentPhoto)}
+        onPress={() => removePhoto()}
       />
     </Animated.View>
   );
 
   return (
     <SafeAreaView
-        style={styles.container}
-        edges={['left','right']}
+      style={styles.container}
+      edges={['left', 'right']}
     >
       {photos.length > 0 ? Header : null}
       <View style={{ flexGrow: 1 }}>
@@ -229,7 +251,7 @@ export const NewEventScreen5 = ({ navigation, route }) => {
           renderItem={renderPhoto}
           style={{ flexGrow: 1 }}
           pagingEnabled={true}
-          viewabilityConfig={{ itemVisiblePercentThreshold: 90 }}
+        // viewabilityConfig={{ itemVisiblePercentThreshold: 90 }}
         />
       </View>
     </SafeAreaView>
