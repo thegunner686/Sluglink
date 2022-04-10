@@ -42,6 +42,8 @@ export const PostHeader = ({
         setActionsVisible(!actionsVisible);
     }, [actionsVisible]);
 
+    const typeColorStyle = { color: (post?.type == "Announcement" ? Colors.Red4.rgb : Colors.Blue4.rgb) };
+
     return (
         <>
         <View style={styles.container}>
@@ -62,6 +64,7 @@ export const PostHeader = ({
                                 organization?.category
                             }
                         </Text>
+                        <Text style={[Fonts.Label4, typeColorStyle]}>{post?.type}</Text>
                     </View>
                 </View>
             </TouchableOpacity>

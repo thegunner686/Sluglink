@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 
 import { Announcement } from './announcement';
+import { Event } from './event/event';
 
 export const PostsFlatList = ({
     posts,
@@ -14,13 +15,13 @@ export const PostsFlatList = ({
     fetchMore,
     refresh,
     emptyComponent,
+    navigation
 }) => {    
     const renderPost = ({ item, index }) => {
-        if(item.type === 'Announcement') {
-            return (
-                <Announcement post={item} index={index}/>
-            )
-        }
+        if(item.type === 'Announcement')
+            return (<Announcement post={item} index={index}/>);
+        if(item.type === 'Event')
+            return (<Event post={item} index={index + 1} navigation={navigation} />);
     };
 
     const keyExtractor = (item) => item.id;

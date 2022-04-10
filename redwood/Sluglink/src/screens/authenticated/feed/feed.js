@@ -68,6 +68,7 @@ export const FeedScreen = ({ navigation }) => {
                 isFetching={isFetchingFeed}
                 fetchMore={fetchMoreFeed}
                 emptyComponent={FindOrganizationsButton}
+                navigation={navigation}
             />
         </SafeAreaView>
     );
