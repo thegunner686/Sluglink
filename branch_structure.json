@@ -1,0 +1,24 @@
+{
+  "default_branch": "staging",
+  "branches": [
+    "error",
+    "main",
+    "master",
+    "origin",
+    "staging"
+  ],
+  "parent": {
+    "error": "staging",
+    "main": "staging",
+    "master": "staging",
+    "origin": "staging",
+    "staging": null
+  },
+  "order": [
+    "staging",
+    "error",
+    "main",
+    "master",
+    "origin"
+  ]
+}

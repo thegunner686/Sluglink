@@ -1,7 +1,7 @@
 import React, {
   useEffect,
   useState,
- } from 'react';
+} from 'react';
 
 import {
   StyleSheet,
@@ -24,14 +24,14 @@ import { Fonts, Colors, width, height, Shadow } from '../../../../../styles';
 
 const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
 
-const default_result = {"description": "University of California Santa Cruz, High Street, Santa Cruz, CA, USA", "matched_substrings": [{"length": 3, "offset": 0}], "place_id": "ChIJT7-M_6JBjoAR1SCDknw7jjo", "reference": "ChIJT7-M_6JBjoAR1SCDknw7jjo", "structured_formatting": {"main_text": "University of California Santa Cruz", "main_text_matched_substrings": [[Object]], "secondary_text": "High Street, Santa Cruz, CA, USA"}, "terms": [{"offset": 0, "value": "University of California Santa Cruz"}, {"offset": 37, "value": "High Street"}, {"offset": 50, "value": "Santa Cruz"}, {"offset": 62, "value": "CA"}, {"offset": 66, "value": "USA"}], "types": ["university", "point_of_interest", "establishment"]};
+const default_result = { "description": "University of California Santa Cruz, High Street, Santa Cruz, CA, USA", "matched_substrings": [{ "length": 3, "offset": 0 }], "place_id": "ChIJT7-M_6JBjoAR1SCDknw7jjo", "reference": "ChIJT7-M_6JBjoAR1SCDknw7jjo", "structured_formatting": { "main_text": "University of California Santa Cruz", "main_text_matched_substrings": [[Object]], "secondary_text": "High Street, Santa Cruz, CA, USA" }, "terms": [{ "offset": 0, "value": "University of California Santa Cruz" }, { "offset": 37, "value": "High Street" }, { "offset": 50, "value": "Santa Cruz" }, { "offset": 62, "value": "CA" }, { "offset": 66, "value": "USA" }], "types": ["university", "point_of_interest", "establishment"] };
 
 const SearchResult = ({ index, result, onPress, selected }) => {
   return (
     <AnimatedTouchableOpacity
       onPress={() => onPress(result)}
-      entering={FadeInLeft.delay(index*100)}
-      exiting={FadeOutRight.delay(index*100)}
+      entering={FadeInLeft.delay(index * 100)}
+      exiting={FadeOutRight.delay(index * 100)}
       style={[styles.result, {
         borderBottomWidth: selected ? 5 : 0,
         borderBottomColor: Colors.Green3.rgb
@@ -49,22 +49,22 @@ export const LocationSearch = ({ onChange, location }) => {
   const [selectedResult, setSelectedResult] = useState(default_result);
 
   useEffect(() => {
-    if(location != null && selectedResult != null) {
+    if (location != null && selectedResult != null) {
       setSelectedResult(location);
     }
   }, [location, selectedResult]);
 
   useEffect(() => {
-    if(response && response.predictions) {
+    if (response && response.predictions) {
       setResults(response.predictions);
     }
   }, [response]);
 
   useEffect(() => {
     feed(search);
-    if(search.length > 0) setSelectedResult(null);
+    if (search.length > 0) setSelectedResult(null);
   }, [search]);
-  
+
   const onResultPress = async (result) => {
     const details = await getDetails(result.place_id);
     setSearch('');
@@ -107,16 +107,16 @@ export const LocationSearch = ({ onChange, location }) => {
             onPress={onResultPress}
           />
         ) :
-        <>
-          {results.map((result, index) => (
-            <SearchResult
-              key={result.place_id}
-              index={index}
-              result={result}
-              onPress={onResultPress}
-            />
-          ))}
-        </>
+          <>
+            {results.map((result, index) => (
+              <SearchResult
+                key={result.place_id}
+                index={index}
+                result={result}
+                onPress={onResultPress}
+              />
+            ))}
+          </>
         }
       </View>
     </View>

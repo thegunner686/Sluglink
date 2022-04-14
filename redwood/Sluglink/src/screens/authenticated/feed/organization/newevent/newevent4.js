@@ -39,6 +39,7 @@ export const NewEventScreen4 = ({ navigation, route }) => {
     navigation.navigate('NewEventScreen5');
   };
 
+
   useEffect(() => {
     if (newEvent.location != null || options[selectedOption] === 'No') {
       navigation.setOptions({

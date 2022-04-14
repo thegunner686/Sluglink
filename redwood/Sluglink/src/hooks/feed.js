@@ -21,12 +21,14 @@ export const useFeed = (limit) => {
         }
     });
 
+    useEffect(() => { console.log(docs); })
+
     const fetch = useCallback(() => {
         refresh();
     }, [refresh]);
 
     useEffect(() => {
-        if(user?.uid != null) fetch();
+        if (user?.uid != null) fetch();
     }, [user]);
 
     useEffect(() => {

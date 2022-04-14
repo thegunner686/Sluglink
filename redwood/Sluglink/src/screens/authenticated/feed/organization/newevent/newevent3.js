@@ -37,8 +37,8 @@ export const NewEventScreen3 = ({ navigation, route }) => {
   };
 
   useEffect(() => {
-    if(options[selectedOption] === 'Yes') {
-      if(newEvent.link != null && newEvent.link.length > 0) {
+    if (options[selectedOption] === 'Yes') {
+      if (newEvent.link != null && newEvent.link.length > 0) {
         navigation.setOptions({
           headerRight: () => (
             <NextButton
@@ -66,8 +66,8 @@ export const NewEventScreen3 = ({ navigation, route }) => {
 
   return (
     <SafeAreaView
-        style={styles.container}
-        edges={['bottom','left','right']}
+      style={styles.container}
+      edges={['bottom', 'left', 'right']}
     >
       <Text style={styles.msg}>Can students attend the event virtually?</Text>
       <ButtonGroup
@@ -78,7 +78,7 @@ export const NewEventScreen3 = ({ navigation, route }) => {
       />
       {options[selectedOption] === 'Yes' && (
         <View style={styles.info}>
-          <Animated.Text 
+          <Animated.Text
             entering={FadeInLeft}
             exiting={FadeOutLeft}
             style={{
@@ -86,7 +86,7 @@ export const NewEventScreen3 = ({ navigation, route }) => {
               ...Fonts.Paragraph3
             }}
           >
-              What link should they use to join?
+            What link should they use to join?
           </Animated.Text>
           <Animated.View
             entering={FadeInUp.delay(100)}
@@ -96,7 +96,7 @@ export const NewEventScreen3 = ({ navigation, route }) => {
               autoFocus
               placeholder='https://www.example.com'
               value={newEvent.link || ''}
-              onChangeText={(text) => setNewEvent({ 
+              onChangeText={(text) => setNewEvent({
                 link: text
               })}
               autoCapitalize='none'
@@ -107,7 +107,7 @@ export const NewEventScreen3 = ({ navigation, route }) => {
               }]}
             />
           </Animated.View>
-          <Animated.Text 
+          <Animated.Text
             entering={FadeInLeft}
             exiting={FadeOutLeft}
             style={{
@@ -115,7 +115,7 @@ export const NewEventScreen3 = ({ navigation, route }) => {
               ...Fonts.Paragraph3
             }}
           >
-              Is there anything else they need to know to attend?
+            Is there anything else they need to know to attend?
           </Animated.Text>
           <Animated.View
             entering={FadeInUp.delay(200)}
