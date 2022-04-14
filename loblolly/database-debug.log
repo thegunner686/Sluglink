@@ -3,5 +3,12 @@ WARNING: Illegal reflective access by io.netty.util.internal.ReflectionUtil (fil
 WARNING: Please consider reporting this to the maintainers of io.netty.util.internal.ReflectionUtil
 WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
 WARNING: All illegal access operations will be denied in a future release
-12:37:57.386 [NamespaceSystem-akka.actor.default-dispatcher-6] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started
-12:37:57.607 [main] INFO com.firebase.server.forge.App$ - Listening at 0.0.0.0:9000
+13:00:41.473 [NamespaceSystem-akka.actor.default-dispatcher-5] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+13:00:41.750 [main] INFO com.firebase.server.forge.App$ - Listening at 0.0.0.0:9000
+13:23:14.766 [Thread-0] INFO com.firebase.server.forge.App$ - Attempting graceful shutdown.
+13:23:14.797 [NamespaceSystem-akka.actor.default-dispatcher-11] INFO com.firebase.core.namespace.Terminator$Terminator - 2 actors left to terminate: sluglink-2804d, sluglink-2804d-default-rtdb
+13:23:14.817 [NamespaceSystem-akka.actor.default-dispatcher-12] INFO com.firebase.core.namespace.NamespaceActor - Stopping namespace actor for sluglink-2804d-default-rtdb
+13:23:14.818 [NamespaceSystem-akka.actor.default-dispatcher-14] INFO com.firebase.core.namespace.NamespaceActor - Stopping namespace actor for sluglink-2804d
+13:23:14.819 [NamespaceSystem-akka.actor.default-dispatcher-12] INFO com.firebase.core.namespace.NamespaceActor - Gauges removed for sluglink-2804d-default-rtdb
+13:23:14.819 [NamespaceSystem-akka.actor.default-dispatcher-14] INFO com.firebase.core.namespace.NamespaceActor - Gauges removed for sluglink-2804d
+13:23:14.826 [Thread-0] INFO com.firebase.server.forge.App$ - Graceful shutdown complete.
