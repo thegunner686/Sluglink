@@ -16,12 +16,14 @@ export const PostsFlatList = ({
     refresh,
     emptyComponent,
     navigation
-}) => {    
+}) => {
     const renderPost = ({ item, index }) => {
-        if(item.type === 'Announcement')
-            return (<Announcement post={item} index={index}/>);
-        if(item.type === 'Event')
-            return (<Event post={item} index={index + 1} navigation={navigation} />);
+        if (item.item.type === 'Announcement')
+            return (<Announcement post={item} index={index} />);
+        if (item.item.type === 'Event') {
+            return (<Event post={item.item} index={index + 1} navigation={navigation} />);
+        }
+
     };
 
     const keyExtractor = (item) => item.id;
@@ -32,7 +34,7 @@ export const PostsFlatList = ({
             onRefresh={refresh}
         />
     );
-    
+
     return (
         <FlatList
             data={posts}

@@ -27,18 +27,19 @@ export const FeedScreen = ({ navigation }) => {
     useEffect(() => {
         navigation.setOptions({
             headerRight: customClaims?.organization == false ? null :
-            () => <NewPostButton onPress={() => navigation.navigate('NewPost')}/>,
+                () => <NewPostButton onPress={() => navigation.navigate('NewPost')} />,
         });
     }, [customClaims]);
 
     useEffect(() => {
-        if(user == null) return;
+        if (user == null) return;
+        console.log("h");
         refreshFeed();
     }, [user]);
 
     const FindOrganizationsButton = (
         <View style={{ paddingTop: height / 3 }}>
-            <Animated.View 
+            <Animated.View
                 entering={FadeInUp}
                 style={{
                     alignSelf: 'center',
@@ -58,7 +59,7 @@ export const FeedScreen = ({ navigation }) => {
     );
 
     return (
-        <SafeAreaView 
+        <SafeAreaView
             edges={['left', 'right']}
             style={styles.container}
         >

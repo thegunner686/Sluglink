@@ -35,22 +35,23 @@ export const EventFooter = ({
 
     // should probably put into a component or util file
     const trimLink = (link) => {
+
         const limit = 50;
-        if(link.length > limit) {
-            return `${link.substring(0, limit-3)}...`;
+        if (link.length > limit) {
+            return `${link.substring(0, limit - 3)}...`;
         }
         return link;
     };
 
     const LocationSubComponent = (
         <View style={styles.row}>
-                <Icon
-                    name='location-pin'
-                    size={sizes.Icon5}
-                    color={Colors.Grey3.rgb}
-                    containerStyle={{ marginRight: 5}}
-                />
-                <Text style={[Fonts.Paragraph3, { color: Colors.Grey3.rgb }]}>{event.location?.name}</Text>
+            <Icon
+                name='location-pin'
+                size={sizes.Icon5}
+                color={Colors.Grey3.rgb}
+                containerStyle={{ marginRight: 5 }}
+            />
+            <Text style={[Fonts.Paragraph3, { color: Colors.Grey3.rgb }]}>{event?.location ? event.location?.name : ""}</Text>
         </View>
     );
 
@@ -60,9 +61,9 @@ export const EventFooter = ({
                 name='link'
                 size={sizes.Icon5}
                 color={Colors.SteelBlue.rgb}
-                containerStyle={{ marginRight: 5}}
+                containerStyle={{ marginRight: 5 }}
             />
-            <Text style={[Fonts.Paragraph3, { color: Colors.SteelBlue.rgb }]}>{trimLink(event.link)}</Text>
+            <Text style={[Fonts.Paragraph3, { color: Colors.SteelBlue.rgb }]}>{event?.link ? trimLink(event?.link) : ""}</Text>
         </View>
     );
 
@@ -85,12 +86,12 @@ export const EventFooter = ({
 
     return (
         <View style={styles.container}>
-            { event.isPhysical && LocationSubComponent }
-            { event.isVirtual && VirtualLinkSubComponent }
+            {event?.isPhysical && LocationSubComponent}
+            {event?.isVirtual && VirtualLinkSubComponent}
             <View style={styles.row}>
-                { FormattedDate(starttime) }
+                {FormattedDate(starttime)}
                 <Text style={[Fonts.Paragraph3, { color: Colors.Grey3.rgb }]}> - </Text>
-                { FormattedDate(endtime) }
+                {FormattedDate(endtime)}
             </View>
         </View>
     )

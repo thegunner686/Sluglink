@@ -13,7 +13,7 @@ import {
 import {
     Divider
 } from 'react-native-elements';
-import Animated, { 
+import Animated, {
     AnimatedLayout,
     SlideInUp,
     SlideInLeft,
@@ -38,12 +38,14 @@ export const Event = ({
     const [organization] = useOrganization(post.organizationId);
     const [event, setEvent] = useState(null);
 
+    useEffect(() => { console.log("jjj"); })
+
     useEffect(() => {
         const fetch = async () => {
             const res = await getPost(post.id);
             setEvent(res);
         };
-        if(post?.id != null) fetch();
+        if (post?.id != null) fetch();
     }, [post.id]);
 
     /*
@@ -86,21 +88,21 @@ export const Event = ({
     */
 
     return (
-        <Animated.View 
-            entering={FadeInDown.delay(index*100)}
+        <Animated.View
+            entering={FadeInDown.delay(index * 100)}
             exiting={FadeOutUp}
             style={styles.container}
         >
             <PostHeader post={event} organization={organization} type={post?.type} />
-            
-            <TouchableOpacity onPress={() => console.log("Screen not specified yet")}> { /* navigation.navigate('DetailedEvent') */ }
+
+            <TouchableOpacity onPress={() => console.log("Screen not specified yet")}>
                 <View style={styles.content}>
                     <Text style={[Fonts.Graph4, {
                         lineHeight: 25,
                     }]}>{event?.content}</Text>
                 </View>
                 <EventFooter event={event} />
-                <Divider width={1} color={Colors.Grey6.rgb}/>
+                <Divider width={1} color={Colors.Grey6.rgb} />
             </TouchableOpacity>
         </Animated.View>
     );

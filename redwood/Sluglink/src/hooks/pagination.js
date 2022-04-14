@@ -30,7 +30,7 @@ export const usePagination = ({
     const [lastDoc, setLastDoc] = useState(null);
 
     const orderByTransform = (ref) => {
-        if(orderBy && orderBy.name && orderBy.order) {
+        if (orderBy && orderBy.name && orderBy.order) {
             ref = ref.orderBy(orderBy.name, orderBy.order);
         } else {
             ref = ref.orderBy('datetime', 'desc');
@@ -39,17 +39,17 @@ export const usePagination = ({
     };
 
     const refresh = useCallback(async () => {
-        if(fetching) return;
+        if (fetching) return;
         // setFetching(true);
         let ref = firestore().collection(collection);
-        if(doc) {
+        if (doc) {
             ref = ref.doc(doc);
-            if(subCollection) {
+            if (subCollection) {
                 ref = ref.collection(subCollection);
             }
         }
-        if(queries && queries.length > 0) {
-            for(const query of queries) {
+        if (queries && queries.length > 0) {
+            for (const query of queries) {
                 ref = query(ref);
             }
         }
@@ -58,7 +58,7 @@ export const usePagination = ({
 
         const snapshot = await ref.get();
 
-        if(snapshot.docs == null || snapshot.docs.length == 0) {
+        if (snapshot.docs == null || snapshot.docs.length == 0) {
             setDocs([]);
             // setFetching(false);
             return;
@@ -71,28 +71,29 @@ export const usePagination = ({
         snapshot.docs.forEach((doc) => {
             newDocs.push(doc.data());
         });
-
-        setDocs([...new Map([...newDocs].map(item => (
-                [item.id, item]
-        ))).values()].sort((p1, p2) => {
-            return p1.datetime.toDate() < p2.datetime.toDate()
+        // console.log(newDocs);
+        // setDocs([...new Map([1, 2, 3])])
+        setDocs(newDocs.map(item => (
+            { id: item.id, item: item }
+        )).sort((p1, p2) => {
+            return p1.item.datetime.toDate() < p2.item.datetime.toDate()
         }));
 
         // setFetching(false);
     }, [docs, lastDoc, fetching, queries, setDocs, setLastDoc]);
 
     const fetchMore = useCallback(async () => {
-        if(fetching) return;
+        if (fetching) return;
         // setFetching(true);
         let ref = firestore().collection(collection);
-        if(doc) {
+        if (doc) {
             ref = ref.doc(doc);
-            if(subCollection) {
+            if (subCollection) {
                 ref = ref.collection(subCollection);
             }
         }
-        if(queries && queries.length > 0) {
-            for(const query of queries) {
+        if (queries && queries.length > 0) {
+            for (const query of queries) {
                 ref = query(ref);
             }
         }
@@ -102,7 +103,7 @@ export const usePagination = ({
 
         const snapshot = await ref.get();
 
-        if(snapshot.docs == null || snapshot.docs.length == 0) {
+        if (snapshot.docs == null || snapshot.docs.length == 0) {
             // setFetching(false);
             return;
         }
@@ -117,7 +118,7 @@ export const usePagination = ({
 
         setDocs(oldDocs => {
             return [...new Map([...oldDocs, ...newDocs].map(item => (
-                    [item.id, item]
+                [item.id, item]
             ))).values()].sort((p1, p2) => {
                 return p1.datetime.toDate() < p2.datetime.toDate()
             });
