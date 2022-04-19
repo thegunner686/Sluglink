@@ -1,6 +1,7 @@
 import React, {
     useCallback,
-    useMemo
+    useMemo,
+    useEffect
 } from 'react';
 
 import {
@@ -30,27 +31,28 @@ const Dot = () => (
 export const EventFooter = ({
     event
 }) => {
-    const starttime = useMemo(() => event?.starttime?.toDate(), [event?.starttime]);
-    const endtime = useMemo(() => event?.endtime?.toDate(), [event?.endtime]);
-
+    // const starttime = useMemo(() => event?.startDate?.toString(), [event?.startDate]);
+    // const endtime = useMemo(() => event?.endDate?.toString(), [event?.endDate]);
     // should probably put into a component or util file
+
+
     const trimLink = (link) => {
         const limit = 50;
-        if(link.length > limit) {
-            return `${link.substring(0, limit-3)}...`;
+        if (link.length > limit) {
+            return `${link.substring(0, limit - 3)}...`;
         }
         return link;
     };
 
     const LocationSubComponent = (
         <View style={styles.row}>
-                <Icon
-                    name='location-pin'
-                    size={sizes.Icon5}
-                    color={Colors.Grey3.rgb}
-                    containerStyle={{ marginRight: 5}}
-                />
-                <Text style={[Fonts.Paragraph3, { color: Colors.Grey3.rgb }]}>{event.location?.name}</Text>
+            <Icon
+                name='location-pin'
+                size={sizes.Icon5}
+                color={Colors.Grey3.rgb}
+                containerStyle={{ marginRight: 5 }}
+            />
+            <Text style={[Fonts.Paragraph3, { color: Colors.Grey3.rgb }]}>{event.location?.name}</Text>
         </View>
     );
 
@@ -60,7 +62,7 @@ export const EventFooter = ({
                 name='link'
                 size={sizes.Icon5}
                 color={Colors.SteelBlue.rgb}
-                containerStyle={{ marginRight: 5}}
+                containerStyle={{ marginRight: 5 }}
             />
             <Text style={[Fonts.Paragraph3, { color: Colors.SteelBlue.rgb }]}>{trimLink(event.link)}</Text>
         </View>
@@ -85,12 +87,14 @@ export const EventFooter = ({
 
     return (
         <View style={styles.container}>
-            { event.isPhysical && LocationSubComponent }
-            { event.isVirtual && VirtualLinkSubComponent }
+            {event && event.isPhysical ? LocationSubComponent : null}
+            {event && event.isVirtual ? VirtualLinkSubComponent : null}
             <View style={styles.row}>
-                { FormattedDate(starttime) }
-                <Text style={[Fonts.Paragraph3, { color: Colors.Grey3.rgb }]}> - </Text>
-                { FormattedDate(endtime) }
+                <Text style={[Fonts.Paragraph3, { color: Colors.Grey3.rgb }]}>
+                    {FormattedDate(new Date(event.startDate))}
+
+                </Text>
+
             </View>
         </View>
     )

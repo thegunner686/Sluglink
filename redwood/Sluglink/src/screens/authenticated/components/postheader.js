@@ -46,48 +46,48 @@ export const PostHeader = ({
 
     return (
         <>
-        <View style={styles.container}>
-            <TouchableOpacity style={styles.profile} onPress={viewProfile}>
-                <View style={styles.pictureContainer}>
-                    <Image 
-                        source={{ uri: organization?.picture }}
-                        style={styles.picture}
-                        placeholderStyle={styles.placeholderPicture}
-                    />
-                </View>
-                <View style={styles.content}>
-                    <View>
-                        <Text style={Fonts.Paragraph1}>{organization?.name}</Text>
-                        <Text style={Fonts.Label4}>
-                            {organization?.category == 'Other' ? 
-                                `(Other Category) ${organization?.otherCategory} ` :
-                                organization?.category
-                            }
-                        </Text>
-                        <Text style={[Fonts.Label4, typeColorStyle]}>{post?.type}</Text>
+            <View style={styles.container}>
+                <TouchableOpacity style={styles.profile} onPress={viewProfile}>
+                    <View style={styles.pictureContainer}>
+                        <Image
+                            source={{ uri: organization?.picture }}
+                            style={styles.picture}
+                            placeholderStyle={styles.placeholderPicture}
+                        />
                     </View>
-                </View>
-            </TouchableOpacity>
-            {user != null && organization != null && user?.uid == organization?.uid ?
-                <TouchableOpacity style={styles.menuButton} onPress={toggleActions}>
-                    <Icon
-                        name='dots-horizontal'
-                        type='material-community'
-                        size={sizes.Icon4}
-                        color={Colors.Black.rgb}
-                    />
+                    <View style={styles.content}>
+                        <View>
+                            <Text style={Fonts.Paragraph1}>{organization?.name}</Text>
+                            <Text style={Fonts.Label4}>
+                                {organization?.category == 'Other' ?
+                                    `(Other Category) ${organization?.otherCategory} ` :
+                                    organization?.category
+                                }
+                            </Text>
+                            <Text style={[Fonts.Label4, typeColorStyle]}>{post?.type}</Text>
+                        </View>
+                    </View>
                 </TouchableOpacity>
-                :
-                null
-            }
-        </View>
-        <Portal >
-            <PostActions
-                post={post}
-                isVisible={actionsVisible}
-                toggle={toggleActions}
-            />
-        </Portal>
+                {user != null && organization != null && user?.uid == organization?.uid ?
+                    <TouchableOpacity style={styles.menuButton} onPress={toggleActions}>
+                        <Icon
+                            name='dots-horizontal'
+                            type='material-community'
+                            size={sizes.Icon4}
+                            color={Colors.Black.rgb}
+                        />
+                    </TouchableOpacity>
+                    :
+                    null
+                }
+            </View>
+            <Portal >
+                <PostActions
+                    post={post}
+                    isVisible={actionsVisible}
+                    toggle={toggleActions}
+                />
+            </Portal>
         </>
     )
 };

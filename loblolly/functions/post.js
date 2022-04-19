@@ -2,7 +2,11 @@
 const functions = require('firebase-functions');
 
 // The Firebase Admin SDK to access Firestore.
-const { firestore, database, auth } = require('firebase-admin');
+const {
+    firestore,
+    database,
+    auth
+} = require('firebase-admin');
 
 const stringHash = require('string-hash');
 
@@ -22,7 +26,7 @@ const stringHash = require('string-hash');
  *      // event
  *      title,
  *      startTime,
- *      endTime,
+ *      endDate,
  *      photos,
  *      category,
  *      location: {
@@ -91,18 +95,20 @@ const stringHash = require('string-hash');
  */
 
 exports.create = functions.https.onCall(async (data, context) => {
-    const { uid } = context.auth;
+    const {
+        uid
+    } = context.auth;
 
     let isOrganization;
     try {
         const record = await auth().getUser(uid);
         isOrganization = record.customClaims.organization;
-    } catch(error) {
+    } catch (error) {
         console.error(error);
         throw new functions.https.HttpsError('permission-denied', 'Not authorized to post');
     }
 
-    if(uid == null || !isOrganization) {
+    if (uid == null || !isOrganization) {
         throw new functions.https.HttpsError('permission-denied', 'Not authorized to post');
     }
 
@@ -112,24 +118,31 @@ exports.create = functions.https.onCall(async (data, context) => {
 
     // Save in the global post store
     const postRef = firestore().collection('Posts').doc();
-    
+
     batch.set(postRef, {
         ...data,
         id: postRef.id,
         organizationId: uid,
         createdAt: now,
         datetime: now,
+        startDate: data.startDate,
+        title: data.title,
+        endDate: data.endDate,
         views: 0,
     });
 
     // Save as a user's post
     const userPostsRef = firestore().collection('Users').doc(uid)
-                        .collection('Posts').doc(postRef.id);
+        .collection('Posts').doc(postRef.id);
 
     batch.set(userPostsRef, {
         id: postRef.id,
+        postRef: postRef,
         organizationId: uid,
         type: data.type,
+        startDate: data.startDate,
+        title: data.title,
+        endDate: data.endDate,
         datetime: now,
     });
 
@@ -137,13 +150,17 @@ exports.create = functions.https.onCall(async (data, context) => {
 
     const feedPost = {
         id: postRef.id,
+        postRef: postRef,
         organizationId: uid,
         type: data.type,
+        startDate: data.startDate,
+        title: data.title,
+        endDate: data.endDate,
         datetime: now,
     };
 
     const userFeedRef = firestore().collection('Users').doc(uid)
-                            .collection('Feed').doc(postRef.id);
+        .collection('Feed').doc(postRef.id);
 
     batch.set(userFeedRef, feedPost);
 
@@ -152,19 +169,19 @@ exports.create = functions.https.onCall(async (data, context) => {
     try {
         const snapshots = await firestore().collection('Users').doc(uid).collection('Followers').get();
         snapshots.forEach((doc) => {
-        const followerRef = firestore().collection('Users').doc(doc.data().uid)
-                                .collection('Feed').doc(postRef.id);
+            const followerRef = firestore().collection('Users').doc(doc.data().uid)
+                .collection('Feed').doc(postRef.id);
 
-        batch.set(followerRef, feedPost);
-    });
-    } catch(error) {
+            batch.set(followerRef, feedPost);
+        });
+    } catch (error) {
         console.log(error);
         throw new functions.https.HttpsError('internal', 'Failed to fetch and post to followers');
     }
 
     try {
         await batch.commit();
-    } catch(e) {
+    } catch (e) {
         console.error(e);
         throw new functions.https.HttpsError('internal', 'Failed to post announcement');
     }
@@ -179,40 +196,44 @@ exports.updateAnnouncement = functions.https.onCall(async (data, context) => {
 });
 
 exports.delete = functions.https.onCall(async (data, context) => {
-    const { uid } = context.auth;
+    const {
+        uid
+    } = context.auth;
 
     let isOrganization;
     try {
         const record = await auth().getUser(uid);
         isOrganization = record.customClaims.organization;
-    } catch(error) {
+    } catch (error) {
         console.error(error);
         throw new functions.https.HttpsError('permission-denied', 'Not authorized to delete post');
     }
 
-    if(uid == null || !isOrganization) {
+    if (uid == null || !isOrganization) {
         throw new functions.https.HttpsError('permission-denied', 'Not authorized to delete post');
     }
 
-    const { id } = data;
+    const {
+        id
+    } = data;
 
     const batch = firestore().batch();
 
     // Delete from the global post store
     const postRef = firestore().collection('Posts').doc(id);
-    
+
     batch.delete(postRef);
 
     // Delete user's post
     const userPostsRef = firestore().collection('Users').doc(uid)
-                        .collection('Posts').doc(id);
+        .collection('Posts').doc(id);
 
     batch.delete(userPostsRef);
 
     // Post to this user's feed
 
     const userFeedRef = firestore().collection('Users').doc(uid)
-                            .collection('Feed').doc(id);
+        .collection('Feed').doc(id);
 
     batch.delete(userFeedRef);
 
@@ -222,11 +243,11 @@ exports.delete = functions.https.onCall(async (data, context) => {
         const snapshots = await firestore().collection('Users').doc(uid).collection('Followers').get();
         snapshots.forEach((doc) => {
             const followerRef = firestore().collection('Users').doc(doc.data().uid)
-                                .collection('Feed').doc(id);
+                .collection('Feed').doc(id);
 
             batch.delete(followerRef);
         });
-    } catch(error) {
+    } catch (error) {
         console.log(error);
         throw new functions.https.HttpsError('internal', 'Failed to fetch and post to followers');
     }
@@ -234,7 +255,7 @@ exports.delete = functions.https.onCall(async (data, context) => {
     try {
         await batch.commit();
         console.log("Batch commited")
-    } catch(e) {
+    } catch (e) {
         console.error(e);
         throw new functions.https.HttpsError('internal', 'Failed to post announcement');
     }

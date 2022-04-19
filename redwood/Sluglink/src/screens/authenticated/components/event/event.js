@@ -13,7 +13,7 @@ import {
 import {
     Divider
 } from 'react-native-elements';
-import Animated, { 
+import Animated, {
     AnimatedLayout,
     SlideInUp,
     SlideInLeft,
@@ -43,9 +43,10 @@ export const Event = ({
             const res = await getPost(post.id);
             setEvent(res);
         };
-        if(post?.id != null) fetch();
+        if (post?.id != null) fetch();
     }, [post.id]);
 
+    // useEffect(() => console.log(event), [])
     /*
 
     Snippet used for testing w mock data. Not sure if the data is modelled correctly. 
@@ -86,21 +87,21 @@ export const Event = ({
     */
 
     return (
-        <Animated.View 
-            entering={FadeInDown.delay(index*100)}
+        <Animated.View
+            entering={FadeInDown.delay(index * 100)}
             exiting={FadeOutUp}
             style={styles.container}
         >
-            <PostHeader post={event} organization={organization} type={post?.type} />
-            
-            <TouchableOpacity onPress={() => console.log("Screen not specified yet")}> { /* navigation.navigate('DetailedEvent') */ }
+            <PostHeader post={post} organization={organization} type={post.type} />
+
+            <TouchableOpacity onPress={() => console.log("Screen not specified yet")}>
                 <View style={styles.content}>
                     <Text style={[Fonts.Graph4, {
                         lineHeight: 25,
-                    }]}>{event?.content}</Text>
+                    }]}>{post?.title}</Text>
                 </View>
-                <EventFooter event={event} />
-                <Divider width={1} color={Colors.Grey6.rgb}/>
+                <EventFooter event={post} />
+                <Divider width={1} color={Colors.Grey6.rgb} />
             </TouchableOpacity>
         </Animated.View>
     );
@@ -109,7 +110,6 @@ export const Event = ({
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
-        marginBottom: 50,
         padding: 10,
     },
     content: {

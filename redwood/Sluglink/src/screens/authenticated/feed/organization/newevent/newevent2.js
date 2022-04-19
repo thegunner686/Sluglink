@@ -1,5 +1,5 @@
 import React, {
-  useEffect,
+  useEffect, useState,
 } from 'react';
 
 import {
@@ -14,14 +14,20 @@ import { useNewEvent } from './neweventstore';
 
 export const NewEventScreen2 = ({ navigation, route }) => {
   const [newEvent, setNewEvent] = useNewEvent(state => [state.newEvent, state.setNewEvent]);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
   useEffect(() => {
     setTimeout(() => {
       navigation.setOptions({
         headerRight: () => (
           <NextButton onPress={() => {
-            if (!newEvent.startDate) setNewEvent({ startDate: new Date() });
-            if (!newEvent.endDate) setNewEvent({ endDate: new Date() });
+            console.log("start: ", startDate);
+            console.log("end: ", endDate);
+            // setNewEvent({
+            //   startDate: startDate.getTime(),
+            //   endDate: endDate.getTime()
+            // })
             navigation.navigate('NewEventScreen3')
           }
           } />
@@ -29,6 +35,18 @@ export const NewEventScreen2 = ({ navigation, route }) => {
       });
     }, 500);
   }, []);
+
+  useEffect(() => {
+    setNewEvent({
+      startDate: startDate.getTime()
+    })
+  }, [startDate])
+
+  useEffect(() => {
+    setNewEvent({
+      endDate: endDate.getTime()
+    })
+  }, [endDate])
 
   return (
     <SafeAreaView
@@ -38,10 +56,10 @@ export const NewEventScreen2 = ({ navigation, route }) => {
       <View>
         <TimePicker
           prompt='Select Start Time'
-          value={newEvent.startDate || new Date()}
-          onChange={(event, date) => setNewEvent({
-            startDate: date
-          })}
+          value={startDate}
+          onChange={(event, date) =>
+            setStartDate(date)
+          }
           minimumDate={new Date()}
         />
       </View>
@@ -49,10 +67,11 @@ export const NewEventScreen2 = ({ navigation, route }) => {
       <View>
         <TimePicker
           prompt='Select End Time'
-          value={newEvent.endDate || new Date()}
-          onChange={(event, date) => setNewEvent({
-            endDate: date
-          })}
+          value={endDate}
+          onChange={(event, date) => {
+            console.log(date)
+            setEndDate(date)
+          }}
           minimumDate={new Date()}
         />
       </View>

@@ -22,6 +22,29 @@ import { useNewEvent } from './neweventstore';
 import { DetailedEvent } from "../../components/detailedevent";
 
 export const NewEventScreen6 = ({ navigation, route }) => {
+    const [createPost] = usePosts(state => [state.createPost]);
+    const [newEvent, setNewEvent] = useNewEvent(state => [state.newEvent, state.setNewEvent]);
+    const [profile] = useProfile();
+
+    const postEvent = async () => {
+
+        const event = {
+            ...newEvent,
+            type: 'Event',
+            category: profile.category,
+            otherCategory: profile.otherCategory || undefined
+        };
+        console.log(event);
+        try {
+            await createPost(event);
+        } catch (error) {
+            alert("We were unable to post the event at this moment, please try again in a moment");
+            console.log(error);
+        }
+        // setNewEvent({});
+        navigation.navigate('FeedScreen')
+    }
+
     return (
         <DetailedEvent navigation={navigation} route={route} />
     );

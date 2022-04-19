@@ -36,6 +36,8 @@ export const NewEventScreen3 = ({ navigation, route }) => {
     navigation.navigate('NewEventScreen4');
   };
 
+  useEffect(() => { console.log(newEvent); })
+
   useEffect(() => {
     if(options[selectedOption] === 'Yes') {
       if(newEvent.link != null && newEvent.link.length > 0) {

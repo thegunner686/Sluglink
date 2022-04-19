@@ -40,6 +40,8 @@ import {
 import {
     useNewEvent
 } from '../organization/newevent/neweventstore';
+import { getNumeralTime, getNumeralDate } from '../../../../utils';
+
 
 export const DetailedEvent = ({ navigation, route }) => {
     const information = "event information stuff"
@@ -47,6 +49,10 @@ export const DetailedEvent = ({ navigation, route }) => {
     const [newEvent, setNewEvent] = useNewEvent(state => [state.newEvent, state.setNewEvent]);
     const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
     const viewabilityConfigRef = useRef({ itemVisiblePercentThreshold: 90 });
+
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
+
     const onViewabbleItemsChangedRef = useRef(({ viewableItems, changed }) => {
         if (viewableItems.length == 0) return;
         let { item, index } = viewableItems[0];
@@ -66,6 +72,11 @@ export const DetailedEvent = ({ navigation, route }) => {
     useEffect(() => {
         if (newEvent.photos) setPhotos(newEvent.photos);
     }, [newEvent.photos])
+
+    useEffect(() => {
+        setStartDate(new Date(newEvent.startDate));
+        setEndDate(new Date(newEvent.endDate));
+    }, [])
 
     const renderPhoto = ({ item, index }) => {
         return (
@@ -130,9 +141,9 @@ export const DetailedEvent = ({ navigation, route }) => {
     const InPersonInfo = (
         <View style={{ marginTop: 2 }}>
             <Text style={Fonts.SubHeader6}>Location: {newEvent.isPhysical ? newEvent.location : newEvent.isVirtual ? "Virtual" : "*no location entered*"}</Text>
-            <Text style={[Fonts.Paragraph2, styles.infoPadding]}>Date: {newEvent.startDate.toDateString()}</Text>
+            <Text style={[Fonts.Paragraph2, styles.infoPadding]}>Date: {startDate.toDateString()} {startDate.toDateString() === endDate.toDateString() ? "" : " - " + endDate.toDateString()}</Text>
             <Text style={[Fonts.Paragraph2, styles.infoPadding]}>
-                Time: {newEvent.startDate.getHours() % 12 + ":" + newEvent.startDate.getMinutes() + " " + (newEvent.startDate.getHours() / 12 ? "PM" : "AM")} to {newEvent.endDate.getHours() % 12 + ":" + newEvent.endDate.getMinutes() + " " + (newEvent.endDate.getHours() / 12 ? "PM" : "AM")}
+                Time: {getNumeralTime(startDate)} to {getNumeralTime(endDate)}
             </Text>
 
         </View>

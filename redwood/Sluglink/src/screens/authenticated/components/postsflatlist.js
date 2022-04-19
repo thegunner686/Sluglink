@@ -16,11 +16,11 @@ export const PostsFlatList = ({
     refresh,
     emptyComponent,
     navigation
-}) => {    
+}) => {
     const renderPost = ({ item, index }) => {
-        if(item.type === 'Announcement')
-            return (<Announcement post={item} index={index}/>);
-        if(item.type === 'Event')
+        if (item.type === 'Announcement')
+            return (<Announcement post={item} index={index} />);
+        if (item.type === 'Event')
             return (<Event post={item} index={index + 1} navigation={navigation} />);
     };
 
@@ -32,7 +32,7 @@ export const PostsFlatList = ({
             onRefresh={refresh}
         />
     );
-    
+
     return (
         <FlatList
             data={posts}
