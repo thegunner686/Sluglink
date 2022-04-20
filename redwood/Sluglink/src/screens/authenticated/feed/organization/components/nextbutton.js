@@ -27,9 +27,9 @@ export const NextButton = (props) => {
     }, [props.on])
 
     return (
-        <TouchableOpacity style={{ height: 40, width: "40%", alignSelf: "center" }} onPress={() => props.onPress()}>
+        <TouchableOpacity style={{ height: 55, width: "80%", alignSelf: "center" }} onPress={() => props.onPress()}>
             <Animated.View
-                style={[animationStyle, { backgroundColor: "#00509D", borderRadius: 20, height: "100%", width: "100%", justifyContent: "center", alignItems: "center" }]}
+                style={[animationStyle, { backgroundColor: "#00509D", borderRadius: 40, height: "100%", width: "100%", justifyContent: "center", alignItems: "center" }]}
             >
                 <Text style={{ color: "white", fontSize: 20, fontFamily: "HelveticaNeue-Bold" }}>
                     Continue

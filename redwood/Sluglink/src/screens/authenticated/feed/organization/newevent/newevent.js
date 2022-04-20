@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   msg: {
     alignSelf: "center",
     marginBottom: "10%",
-    marginTop: "5%",
+    marginTop: "20%",
     ...Fonts.Header1
   }
 });

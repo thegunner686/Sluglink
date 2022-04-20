@@ -7,34 +7,35 @@ import {
   StyleSheet,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { NextButton } from '../../../..';
 import { Colors, Fonts } from '../../../../../styles';;
 import { TimePicker } from '../components';
 import { useNewEvent } from './neweventstore';
+import { ProgressBar } from '../components';
+import { NextButton } from '../components';
 
 export const NewEventScreen2 = ({ navigation, route }) => {
   const [newEvent, setNewEvent] = useNewEvent(state => [state.newEvent, state.setNewEvent]);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
-  useEffect(() => {
-    setTimeout(() => {
-      navigation.setOptions({
-        headerRight: () => (
-          <NextButton onPress={() => {
-            console.log("start: ", startDate);
-            console.log("end: ", endDate);
-            // setNewEvent({
-            //   startDate: startDate.getTime(),
-            //   endDate: endDate.getTime()
-            // })
-            navigation.navigate('NewEventScreen3')
-          }
-          } />
-        )
-      });
-    }, 500);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     navigation.setOptions({
+  //       headerRight: () => (
+  //         <NextButton onPress={() => {
+  //           console.log("start: ", startDate);
+  //           console.log("end: ", endDate);
+  //           // setNewEvent({
+  //           //   startDate: startDate.getTime(),
+  //           //   endDate: endDate.getTime()
+  //           // })
+  //           navigation.navigate('NewEventScreen3')
+  //         }
+  //         } />
+  //       )
+  //     });
+  //   }, 500);
+  // }, []);
 
   useEffect(() => {
     setNewEvent({
@@ -53,9 +54,12 @@ export const NewEventScreen2 = ({ navigation, route }) => {
       style={styles.container}
       edges={['bottom', 'left', 'right']}
     >
-      <View>
+      <ProgressBar
+        progress={2 / 6}
+      />
+      <View style={{ marginTop: "30%", flex: 1 }}>
         <TimePicker
-          prompt='Select Start Time'
+          prompt='When is the start time?'
           value={startDate}
           onChange={(event, date) =>
             setStartDate(date)
@@ -64,9 +68,9 @@ export const NewEventScreen2 = ({ navigation, route }) => {
         />
       </View>
 
-      <View>
+      <View style={{ flex: 1 }}>
         <TimePicker
-          prompt='Select End Time'
+          prompt='When is the end time?'
           value={endDate}
           onChange={(event, date) => {
             console.log(date)
@@ -75,7 +79,12 @@ export const NewEventScreen2 = ({ navigation, route }) => {
           minimumDate={new Date()}
         />
       </View>
-
+      <View style={{ flex: 2, justifyContent: "center" }}>
+        <NextButton
+          onPress={() => { navigation.navigate('NewEventScreen3') }}
+          on={true}
+        />
+      </View>
     </SafeAreaView>
   );
 };
