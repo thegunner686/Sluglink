@@ -20,6 +20,7 @@ import Animated, {
 import { Colors, Fonts, sizes, width, height, rgba } from '../../../../../styles';
 import { useNewEvent } from './neweventstore';
 import { DetailedEvent } from "../../components/detailedevent";
+import { usePosts, useProfile } from "../../../../../hooks";
 
 export const NewEventScreen6 = ({ navigation, route }) => {
     const [createPost] = usePosts(state => [state.createPost]);
@@ -46,7 +47,15 @@ export const NewEventScreen6 = ({ navigation, route }) => {
     }
 
     return (
-        <DetailedEvent navigation={navigation} route={route} />
+        <View style={{ flex: 1 }}>
+            <DetailedEvent navigation={navigation} route={route} />
+            <Button
+                title={"submit"}
+                style={{ marginBottom: "15%", width: "80%", alignSelf: "center", borderRadius: 10 }}
+                titleStyle={{ fontSize: 20, fontWeight: 'bold' }}
+                onPress={postEvent}
+            />
+        </View>
     );
 };
 

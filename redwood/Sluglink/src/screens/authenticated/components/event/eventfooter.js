@@ -37,6 +37,7 @@ export const EventFooter = ({
 
 
     const trimLink = (link) => {
+        if (!link) return "";
         const limit = 50;
         if (link.length > limit) {
             return `${link.substring(0, limit - 3)}...`;
