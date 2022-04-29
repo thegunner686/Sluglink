@@ -57,7 +57,7 @@ export const EditPhysicalEventScreen = ({ navigation }) => {
   const [animating, setAnimating] = useState(false);
 
   useEffect(() => {
-    if(newEvent.location) setLocation(newEvent.location);
+    if (newEvent.location) setLocation(newEvent.location);
   }, [newEvent]);
 
   const handleLocationChange = (search_result, place) => {
@@ -81,14 +81,14 @@ export const EditPhysicalEventScreen = ({ navigation }) => {
   };
 
   const handleRegionChange = useCallback((region) => {
-    if(animating) return;
-    if(location?.name == null || location?.address == null) return;
+    if (animating) return;
+    if (location?.name == null || location?.address == null) return;
     setLocation(loc => ({
       ...loc,
       ...region
     }));
   }, [animating, location]);
-  
+
   const handleSetLocation = useCallback(() => {
     setNewEvent({
       location,
@@ -112,12 +112,12 @@ export const EditPhysicalEventScreen = ({ navigation }) => {
         location={location}
         onChange={handleLocationChange}
       />
-      <BackButton 
+      <BackButton
         onPress={navigation.goBack}
         icon='chevron-left'
       />
       <Pin />
-      <Button 
+      <Button
         onPress={handleSetLocation}
         title='Set Location'
         type='solid'

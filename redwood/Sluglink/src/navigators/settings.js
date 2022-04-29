@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import {
     Text
@@ -12,12 +12,18 @@ import { AccountScreen } from '../screens';
 const Drawer = createDrawerNavigator();
 
 export const SettingsDrawer = () => {
+
     return (
         <Drawer.Navigator
             initialRouteName='ProfileStack'
             screenOptions={({ navigation, route }) => ({
+                drawerType: 'slide',
                 drawerPosition: 'right',
-                headerTitle: () => <Text style={Fonts.Paragraph3}>{route.name}</Text>
+                headerTitle: () => <Text style={Fonts.Paragraph3}>{route.name}</Text>,
+                drawerStyle: {
+                    right: 0,
+                    width: "50%"
+                }
             })}
         >
             <Drawer.Screen

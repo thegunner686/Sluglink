@@ -6,7 +6,8 @@ import React, {
 import {
   View,
   StyleSheet,
-  Text
+  Text,
+  KeyboardAvoidingView
 } from 'react-native';
 import {
   ButtonGroup,
@@ -20,128 +21,118 @@ import Animated, {
   FadeOutUp,
 } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { NextButton } from '../../../..';
 import { Colors, Fonts, sizes } from '../../../../../styles';
 import { CappedInput } from '../components';
 import { useNewEvent } from './neweventstore';
+import { ProgressBar } from '../components';
+import { NextButton } from '../components';
 
 export const NewEventScreen4 = ({ navigation, route }) => {
-  const options = ['No', 'Yes'];
-  const [selectedOption, setSelectedOption] = useState(0);
   const [newEvent, setNewEvent] = useNewEvent(state => [state.newEvent, state.setNewEvent]);
 
   const navigateNext = () => {
-    setNewEvent({
-      isPhysical: options[selectedOption] === 'Yes',
-    });
-    navigation.navigate('NewEventScreen5');
+    navigation.navigate('NewEventScreen45');
   };
 
-  useEffect(() => {
-    if(newEvent.location != null || options[selectedOption] === 'No') {
-      navigation.setOptions({
-        headerRight: () => <NextButton onPress={navigateNext} />
-      });
-    } else {
-      setTimeout(() => {
-        navigation.setOptions({
-          headerRight: null
-        });
-      }, 500);
-    }
-  }, [newEvent.location])
+  useEffect(() => { setNewEvent({ location: "Porter" }) }, [])
+
+  // useEffect(() => {
+  //   if (newEvent.location != null || options[selectedOption] === 'No') {
+  //     navigation.setOptions({
+  //       headerRight: () => <NextButton onPress={navigateNext} />
+  //     });
+  //   } else {
+  //     setTimeout(() => {
+  //       navigation.setOptions({
+  //         headerRight: null
+  //       });
+  //     }, 500);
+  //   }
+  // }, [newEvent.location])
 
   return (
     <SafeAreaView
-        style={styles.container}
-        edges={['bottom','left','right']}
+      style={styles.container}
+      edges={['bottom', 'left', 'right']}
     >
-      <Text style={styles.msg}>Can students attend the event in-person?</Text>
-      <ButtonGroup
-        onPress={setSelectedOption}
-        buttons={options}
-        selectedIndex={selectedOption}
-        textStyle={Fonts.Paragraph2}
+
+      <ProgressBar
+        progress={4 / 6}
       />
-      {options[selectedOption] === 'Yes' && (
-        <View style={styles.info}>
-          <Animated.Text 
-            entering={FadeInLeft}
-            exiting={FadeOutLeft}
-            style={{
+      <KeyboardAvoidingView style={styles.info}>
+        <Animated.Text
+          entering={FadeInLeft}
+          exiting={FadeOutLeft}
+          style={[styles.msg, { marginBottom: "3%" }]}
+        >
+          Where is the event located?
+        </Animated.Text>
+        <Animated.View
+          entering={FadeInUp.delay(100)}
+          exiting={FadeOutUp.delay(100)}
+          style={{ width: "100%" }}
+        >
+          {/* {newEvent.location &&
+            <Animated.View
+              entering={FadeInUp.delay(200)}
+              exiting={FadeOutUp.delay(100)}
+              style={{
+
+              }}
+            >
+              <Text style={Fonts.Graph2}>{newEvent.location.name}</Text>
+              <Text style={Fonts.Paragraph3}>{newEvent.location.address}</Text>
+            </Animated.View>
+          } */}
+          <Button
+            onPress={() => navigation.navigate('EditPhysicalEventScreen')}
+            title={newEvent?.location ? 'Update Location' : 'Find Location'}
+            // type='outline'
+            titleStyle={[styles.msg, {
+              color: "white",
+              paddingVertical: 10
+            }]}
+            buttonStyle={{
               margin: 10,
-              ...Fonts.Paragraph3
+              backgroundColor: "#00509D",
+              width: "80%",
+              alignSelf: "center",
+              marginBottom: "10%"
             }}
-          >
-              Where is the event located?
-          </Animated.Text>
-          <Animated.View
-            entering={FadeInUp.delay(100)}
-            exiting={FadeOutUp.delay(100)}
-          >
-            {newEvent.location && 
-              <Animated.View
-                entering={FadeInUp.delay(200)}
-                exiting={FadeOutUp.delay(100)}
-                style={{
-                  margin: 10,
-                }}
-              >
-                <Text style={Fonts.Graph2}>{newEvent.location.name}</Text>
-                <Text style={Fonts.Paragraph3}>{newEvent.location.address}</Text>
-              </Animated.View>
-            }
-            <Button
-              onPress={() => navigation.navigate('EditPhysicalEventScreen')}
-              title={newEvent?.location ? 'Update Location' : 'Find Location'}
-              type='outline'
-              titleStyle={[Fonts.Paragraph2, {
-                color: newEvent?.location ? Colors.Green3.rgb : Colors.SteelBlue.rgb
-              }]}
-              buttonStyle={{
-                margin: 10,
-                borderColor: newEvent?.location ? Colors.Green3.rgb : Colors.SteelBlue.rgb
-              }}
-              icon={() => (
-                <Icon
-                  name='chevron-right'
-                  color={newEvent?.location ? Colors.Green3.rgb : Colors.SteelBlue.rgb}
-                  size={sizes.Icon5}
-                />
-              )}
-              iconRight
-            />
-          </Animated.View>
-          <Animated.Text 
-            entering={FadeInLeft}
-            exiting={FadeOutLeft}
-            style={{
-              marginHorizontal: 10,
-              ...Fonts.Paragraph3
+          />
+        </Animated.View>
+        <Animated.Text
+          entering={FadeInLeft}
+          exiting={FadeOutLeft}
+          style={[styles.msg, { marginBottom: "3%" }]}
+        >
+          Any additional information about the event?
+        </Animated.Text>
+        <Animated.View
+          entering={FadeInUp.delay(200)}
+          exiting={FadeOutUp.delay(200)}
+          style={{ width: "100%", marginBottom: "30%" }}
+        >
+          <CappedInput
+            multiline={true}
+            lines={20}
+            placeholder='Additional information for in-person goers: i.e. what to wear, bring, extra directions, etc...'
+            maxChars={300}
+            value={newEvent.physicalInfo || ''}
+            inputContainerStyle={{
+              height: 150,
+              alignItems: 'flex-start'
             }}
-          >
-              Is there anything else they need to know to attend?
-          </Animated.Text>
-          <Animated.View
-            entering={FadeInUp.delay(200)}
-            exiting={FadeOutUp.delay(200)}
-          >
-            <CappedInput
-              multiline={true}
-              lines={20}
-              placeholder='Additional information for in-person goers: i.e. what to wear, bring, extra directions, etc...'
-              maxChars={300}
-              value={newEvent.physicalInfo || ''}
-              inputContainerStyle={{
-                height: 120,
-                alignItems: 'flex-start'
-              }}
-              inputStyle={Fonts.Paragraph3}
-              onChangeText={(text) => setNewEvent({ physicalInfo: text })}
-            />
-          </Animated.View>
-        </View>
-      )}
+            inputStyle={Fonts.Paragraph3}
+            onChangeText={(text) => setNewEvent({ physicalInfo: text })}
+          />
+        </Animated.View>
+        <NextButton
+          onPress={navigateNext}
+          on={newEvent && newEvent?.location}
+        />
+      </KeyboardAvoidingView>
+
     </SafeAreaView>
   );
 };
@@ -152,11 +143,14 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.White.rgb,
   },
   msg: {
-    margin: 10,
-    ...Fonts.Paragraph3
+    fontSize: 15,
+    fontWeight: 'bold',
   },
   info: {
     flex: 1,
     paddingTop: 10,
+    alignItems: "center",
+    marginTop: "20%"
+    // marginBottom: "10%"
   }
 });

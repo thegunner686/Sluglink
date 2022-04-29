@@ -6,7 +6,9 @@ import React, {
 import {
   View,
   StyleSheet,
-  Text
+  Text,
+  Keyboard,
+  TouchableWithoutFeedback
 } from 'react-native';
 import {
   ButtonGroup
@@ -18,128 +20,146 @@ import Animated, {
   FadeOutUp,
 } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { NextButton } from '../../../..';
 import { Colors, Fonts } from '../../../../../styles';
 import { StyledInput } from '../../../../components';
 import { CappedInput, TimePicker } from '../components';
 import { useNewEvent } from './neweventstore';
+import SwitchSelector from "react-native-switch-selector";
+import { ProgressBar } from '../components';
+import { NextButton } from '../components';
 
 export const NewEventScreen3 = ({ navigation, route }) => {
-  const options = ['No', 'Yes'];
-  const [selectedOption, setSelectedOption] = useState(0);
+  const [isVirtual, setIsVirtual] = useState(false);
+  const [isPhysical, setIsPhysical] = useState(false);
   const [newEvent, setNewEvent] = useNewEvent(state => [state.newEvent, state.setNewEvent])
 
   const navigateNext = () => {
     setNewEvent({
-      isVirtual: options[selectedOption] === 'Yes'
+      isVirtual: isVirtual,
+      isPhysical: isPhysical
     });
     navigation.navigate('NewEventScreen4');
   };
 
-  useEffect(() => {
-    if(options[selectedOption] === 'Yes') {
-      if(newEvent.link != null && newEvent.link.length > 0) {
-        navigation.setOptions({
-          headerRight: () => (
-            <NextButton
-              onPress={navigateNext}
-            />
-          )
-        })
-      } else {
-        navigation.setOptions({
-          headerRight: null
-        })
-      }
-    } else {
-      setTimeout(() => {
-        navigation.setOptions({
-          headerRight: () => (
-            <NextButton
-              onPress={navigateNext}
-            />
-          )
-        })
-      }, 500);
-    }
-  }, [newEvent, selectedOption]);
-
   return (
     <SafeAreaView
-        style={styles.container}
-        edges={['bottom','left','right']}
+      style={styles.container}
+      edges={['bottom', 'left', 'right']}
     >
-      <Text style={styles.msg}>Can students attend the event virtually?</Text>
-      <ButtonGroup
-        onPress={setSelectedOption}
-        buttons={options}
-        selectedIndex={selectedOption}
-        textStyle={Fonts.Paragraph2}
+      <ProgressBar
+        progress={3 / 6}
       />
-      {options[selectedOption] === 'Yes' && (
-        <View style={styles.info}>
-          <Animated.Text 
-            entering={FadeInLeft}
-            exiting={FadeOutLeft}
-            style={{
-              margin: 10,
-              ...Fonts.Paragraph3
-            }}
-          >
-              What link should they use to join?
-          </Animated.Text>
-          <Animated.View
-            entering={FadeInUp.delay(100)}
-            exiting={FadeOutUp.delay(100)}
-          >
-            <StyledInput
-              autoFocus
-              placeholder='https://www.example.com'
-              value={newEvent.link || ''}
-              onChangeText={(text) => setNewEvent({ 
-                link: text
-              })}
-              autoCapitalize='none'
-              clearButtonMode='while-editing'
-              autoCorrect={false}
-              inputStyle={[Fonts.Paragraph3, {
-                color: Colors.SteelBlue.rgb
-              }]}
+      <TouchableWithoutFeedback style={{ flex: 1 }} onPress={() => Keyboard.dismiss()}>
+        <Animated.View style={{ flex: 1 }} entering={FadeInLeft} exiting={FadeOutLeft}>
+          <Text style={styles.msg}>Can students attend the event virtually?</Text>
+          <SwitchSelector
+            options={[{ label: "Yes", value: true }, { label: "No", value: false }]}
+            textColor={'#000000'}
+            buttonColor={'white'}
+            borderColor={'#E8E8E8'}
+            backgroundColor={"#E8E8E8"}
+            hasPadding
+            initial={1}
+            selectedTextStyle={{ color: "#00509D", ...Fonts.Graph2, fontWeight: "600" }}
+            textStyle={{ ...Fonts.Graph2, fontWeight: "600", opacity: .3 }}
+            onPress={val => setIsVirtual(val)}
+            style={{ width: "90%", marginHorizontal: "5%" }}
+            height={50}
+          />
+          <Text style={styles.msg}>Can students attend the event physically?</Text>
+          <SwitchSelector
+            options={[{ label: "Yes", value: true }, { label: "No", value: false }]}
+            textColor={'#000000'}
+            buttonColor={'white'}
+            borderColor={'#E8E8E8'}
+            backgroundColor={"#E8E8E8"}
+            hasPadding
+            initial={1}
+            selectedTextStyle={{ color: "#00509D", ...Fonts.Graph2, fontWeight: "600" }}
+            textStyle={{ ...Fonts.Graph2, fontWeight: "600", opacity: .3 }}
+            onPress={val => setIsPhysical(val)}
+            style={{ width: "90%", marginHorizontal: "5%" }}
+            height={50}
+          />
+          {/* <View style={styles.info}> */}
+          {/* {options[selectedOption] === 'Yes' && (
+              // <View style={{ flex: 1 }}>
+              //   <Animated.Text
+              //     entering={FadeInLeft}
+              //     exiting={FadeOutLeft}
+              //     style={{
+              //       margin: 10,
+              //       fontSize: 15,
+              //       fontWeight: "600",
+              //     }}
+              //   >
+              //     What link should they use to join?
+              //   </Animated.Text>
+              //   <Animated.View
+              //     entering={FadeInUp.delay(100)}
+              //     exiting={FadeOutUp.delay(100)}
+              //   >
+              //     <StyledInput
+              //       autoFocus
+              //       placeholder='https://www.example.com'
+              //       value={newEvent.link || ''}
+              //       onChangeText={(text) => setNewEvent({
+              //         link: text
+              //       })}
+              //       autoCapitalize='none'
+              //       clearButtonMode='while-editing'
+              //       autoCorrect={false}
+              //       inputStyle={[Fonts.Paragraph3, {
+              //         color: Colors.SteelBlue.rgb
+              //       }]}
+              //     />
+              //   </Animated.View>
+              //   <Animated.Text
+              //     entering={FadeInLeft}
+              //     exiting={FadeOutLeft}
+              //     style={{
+              //       marginHorizontal: 10,
+              //       fontSize: 15,
+              //       fontWeight: '600',
+              //     }}
+              //   >
+              //     Is there anything else they need to know to attend?
+              //   </Animated.Text>
+              //   <Animated.View
+              //     entering={FadeInUp.delay(200)}
+              //     exiting={FadeOutUp.delay(200)}
+              //   >
+              //     <CappedInput
+              //       multiline={true}
+              //       lines={20}
+              //       placeholder='Additional information for virtual goers: i.e. passwords, instructions, etc...'
+              //       maxChars={300}
+              //       value={newEvent.virtualInfo || ''}
+              //       inputContainerStyle={{
+              //         height: 120,
+              //         alignItems: 'flex-start'
+              //       }}
+              //       inputStyle={Fonts.Paragraph3}
+              //       onChangeText={(text) => setNewEvent({
+              //         virtualInfo: text
+              //       })}
+              //     />
+              //   </Animated.View>
+              // </View>
+            )} */}
+          {/* </View> */}
+          <View style={{
+            flex: 1,
+            marginTop: "20%"
+          }}>
+            < NextButton
+              on={true}
+              onPress={() => navigateNext()}
             />
-          </Animated.View>
-          <Animated.Text 
-            entering={FadeInLeft}
-            exiting={FadeOutLeft}
-            style={{
-              marginHorizontal: 10,
-              ...Fonts.Paragraph3
-            }}
-          >
-              Is there anything else they need to know to attend?
-          </Animated.Text>
-          <Animated.View
-            entering={FadeInUp.delay(200)}
-            exiting={FadeOutUp.delay(200)}
-          >
-            <CappedInput
-              multiline={true}
-              lines={20}
-              placeholder='Additional information for virtual goers: i.e. passwords, instructions, etc...'
-              maxChars={300}
-              value={newEvent.virtualInfo || ''}
-              inputContainerStyle={{
-                height: 120,
-                alignItems: 'flex-start'
-              }}
-              inputStyle={Fonts.Paragraph3}
-              onChangeText={(text) => setNewEvent({
-                virtualInfo: text
-              })}
-            />
-          </Animated.View>
-        </View>
-      )}
-    </SafeAreaView>
+          </View>
+        </Animated.View>
+      </TouchableWithoutFeedback>
+    </SafeAreaView >
   );
 };
 
@@ -149,8 +169,11 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.White.rgb,
   },
   msg: {
-    margin: 10,
-    ...Fonts.Paragraph3
+    marginBottom: 20,
+    fontSize: 15,
+    fontWeight: 'bold',
+    alignSelf: "center",
+    marginTop: "20%",
   },
   info: {
     flex: 1,

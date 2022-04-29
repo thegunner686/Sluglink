@@ -18,7 +18,6 @@ export const ProfileStack = () => {
     return (
         <Stack.Navigator
             screenOptions={({ route }) => ({
-                
                 headerBackTitleVisible: false
             })}
         >

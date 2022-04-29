@@ -30,12 +30,12 @@ export const TimePicker = ({
       entering={FadeInLeft.delay(200)}
       style={styles.container}
     >
-      <Text style={[Fonts.Paragraph3, { width: width / 10 * 3}]}>{prompt}</Text>
+      <Text style={[Fonts.SubHeader4]}>{prompt}</Text>
       <DateTimePicker
         minimumDate={minimumDate}
         mode='datetime'
         display='default'
-        style={{ flexGrow: 1}}
+        style={{ width: "100%", marginRight: "50%", marginTop: "5%" }}
         value={value}
         onChange={onChange}
       />
@@ -46,10 +46,8 @@ export const TimePicker = ({
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 10,
   },
   button: {
     width: '100%',

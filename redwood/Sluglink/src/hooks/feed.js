@@ -26,7 +26,7 @@ export const useFeed = (limit) => {
     }, [refresh]);
 
     useEffect(() => {
-        if(user?.uid != null) fetch();
+        if (user?.uid != null) fetch();
     }, [user]);
 
     useEffect(() => {

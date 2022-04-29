@@ -30,7 +30,8 @@ const styles = StyleSheet.create({
         borderColor: Colors.Grey5.rgb,
         borderBottomWidth: 0.5,
         borderWidth: 0.5,
-        borderRadius: 5,
-        padding: 5
+        borderRadius: 8,
+        paddingVertical: 5,
+        paddingHorizontal: 15,
     }
 });

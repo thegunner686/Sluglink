@@ -18,7 +18,7 @@
       "host": "0.0.0.0"
     },
     "functions": {
-      "port": 5001,
+      "port": 5002,
       "host": "0.0.0.0"
     },
     "firestore": {

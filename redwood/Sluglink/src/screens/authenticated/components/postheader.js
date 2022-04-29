@@ -42,30 +42,33 @@ export const PostHeader = ({
         setActionsVisible(!actionsVisible);
     }, [actionsVisible]);
 
+    const typeColorStyle = { color: (post?.type == "Announcement" ? Colors.Red4.rgb : Colors.Blue4.rgb) };
+
     return (
         <>
-        <View style={styles.container}>
-            <TouchableOpacity style={styles.profile} onPress={viewProfile}>
-                <View style={styles.pictureContainer}>
-                    <Image 
-                        source={{ uri: organization?.picture }}
-                        style={styles.picture}
-                        placeholderStyle={styles.placeholderPicture}
-                    />
-                </View>
-                <View style={styles.content}>
-                    <View>
-                        <Text style={Fonts.Paragraph1}>{organization?.name}</Text>
-                        <Text style={Fonts.Label4}>
-                            {organization?.category == 'Other' ? 
-                                `(Other Category) ${organization?.otherCategory} ` :
-                                organization?.category
-                            }
-                        </Text>
+            <View style={styles.container}>
+                <TouchableOpacity style={styles.profile} onPress={viewProfile}>
+                    <View style={styles.pictureContainer}>
+                        <Image
+                            source={{ uri: organization?.picture }}
+                            style={styles.picture}
+                            placeholderStyle={styles.placeholderPicture}
+                        />
                     </View>
-                </View>
-            </TouchableOpacity>
-            {user != null && organization != null && user?.uid == organization?.uid ?
+                    <View style={styles.content}>
+                        <View>
+                            <Text style={Fonts.Paragraph1}>{organization?.name}</Text>
+                            <Text style={Fonts.Label4}>
+                                {organization?.category == 'Other' ?
+                                    `(Other Category) ${organization?.otherCategory} ` :
+                                    organization?.category
+                                }
+                            </Text>
+                            <Text style={[Fonts.Label4, typeColorStyle]}>{post?.type}</Text>
+                        </View>
+                    </View>
+                </TouchableOpacity>
+                {/* {user != null && organization != null */}
                 <TouchableOpacity style={styles.menuButton} onPress={toggleActions}>
                     <Icon
                         name='dots-horizontal'
@@ -74,17 +77,18 @@ export const PostHeader = ({
                         color={Colors.Black.rgb}
                     />
                 </TouchableOpacity>
-                :
-                null
-            }
-        </View>
-        <Portal >
-            <PostActions
-                post={post}
-                isVisible={actionsVisible}
-                toggle={toggleActions}
-            />
-        </Portal>
+                {/* : */}
+                {/* null */}
+                {/* } */}
+            </View>
+            <Portal >
+                <PostActions
+                    post={post}
+                    isVisible={actionsVisible}
+                    toggle={toggleActions}
+                    report={user?.uid !== organization?.uid}
+                />
+            </Portal>
         </>
     )
 };

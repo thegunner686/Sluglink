@@ -10,7 +10,7 @@ export const usePosts = create((set, get) => ({
         try {
             const res = await functions().httpsCallable('post-create')(data);
             PostEvents.emit('post-create');
-        } catch(error) {
+        } catch (error) {
             console.error(error);
         }
     },
@@ -19,18 +19,26 @@ export const usePosts = create((set, get) => ({
         try {
             const res = await functions().httpsCallable('post-delete')(data);
             PostEvents.emit('post-delete');
-        } catch(error) {
+        } catch (error) {
             console.error(error);
         }
     },
 
     getPost: async (id) => {
         const snapshot = await firestore().collection('Posts').doc(id).get();
-        if(snapshot.exists) {
+        if (snapshot.exists) {
             return snapshot.data();
         } else {
             throw `Post with ID ${id} doesn't exist`;
         }
     },
+
+    reportPost: async (id) => {
+        try {
+            const res = await functions().httpsCallable('post-report')(id);
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
 }));

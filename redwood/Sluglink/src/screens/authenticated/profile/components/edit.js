@@ -8,7 +8,7 @@ import { Icon } from 'react-native-elements';
 
 import { Fonts, Colors, sizes } from '../../../../styles';
 
-export const SettingsButton = ({ onPress, slop = 30 }) => {
+export const EditButton = ({ onPress, slop = 30 }) => {
     return (
         <TouchableOpacity
             onPress={onPress}
@@ -22,7 +22,7 @@ export const SettingsButton = ({ onPress, slop = 30 }) => {
         >
             <Icon
                 size={sizes.Icon4}
-                name='settings'
+                name='edit'
             />
         </TouchableOpacity>
     )
@@ -30,7 +30,7 @@ export const SettingsButton = ({ onPress, slop = 30 }) => {
 
 const styles = StyleSheet.create({
     button: {
-        margin: 10,
+        // margin: 10,
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',

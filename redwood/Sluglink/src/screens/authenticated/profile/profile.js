@@ -12,9 +12,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/core';
 import Animated, {
     FadeInLeft
-}from 'react-native-reanimated';
+} from 'react-native-reanimated';
 
-import { SettingsButton, StretchFlatList } from './components';
+import { SettingsButton, StretchFlatList, EditButton } from './components';
 import { useProfileWithPosts } from '../../../hooks';
 import { Colors, Fonts, width, height, rgba } from '../../../styles';
 
@@ -23,24 +23,24 @@ const Header = ({ profile }) => {
 
     return (
         <ImageBackground
-            source={{ uri: profile?.picture }}
+            source={{ uri: profile.picture }}
             style={styles.header}
         >
             <Animated.View
                 style={styles.info}
                 entering={FadeInLeft.delay(500)}
             >
-                <Text style={Fonts.SubHeader1}>{profile?.name}</Text>
+                <Text style={Fonts.SubHeader1}>{profile.name}</Text>
                 <Text style={[Fonts.Label1, {
                     color: Colors.Grey3.rgb
-                }]}>{profile?.category == 'Other' ? `(Other Category) ${profile?.otherCategory}` : profile?.category}</Text>
-                <Text style={Fonts.Paragraph3}>{profile?.description}</Text>
-                <Button 
+                }]}>{profile.category == 'Other' ? `(Other Category) ${profile.otherCategory}` : profile.category}</Text>
+                <Text style={Fonts.Paragraph3}>{profile.description}</Text>
+                <Button
                     type='outline'
                     title='Edit Profile'
                     titleStyle={Fonts.Paragraph2}
                     buttonStyle={styles.editButton}
-                    containerStyle={{ marginTop: 10}}
+                    containerStyle={{ marginTop: 10 }}
                     onPress={() => navigation.navigate('EditProfileScreen')}
                 />
             </Animated.View>
@@ -57,16 +57,17 @@ export const ProfileScreen = ({ navigation }) => {
 
     useEffect(() => {
         navigation.setOptions({
-            headerRight: () => <SettingsButton onPress={toggleDrawer}/>
+            headerLeft: () => <EditButton onPress={() => navigation.navigate('EditProfileScreen')} />,
+            headerRight: () => <SettingsButton onPress={toggleDrawer} />,
         });
     }, []);
 
     useEffect(() => {
-        if(profile != null) refreshPosts();
+        if (profile != null) refreshPosts();
     }, [profile]);
 
     return (
-        <SafeAreaView 
+        <SafeAreaView
             style={styles.container}
             edges={['left', 'bottom', 'right']}
         >
