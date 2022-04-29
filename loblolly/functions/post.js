@@ -94,6 +94,38 @@ const stringHash = require('string-hash');
  * }
  */
 
+exports.report = functions.https.onCall(async (data, context) => {
+    const {
+        uid
+    } = context.auth;
+
+    if (!uid)
+        throw new functions.https.HttpsError('permission-denied', "Insufficient permissions");
+
+    let batch = firestore().batch();
+    const reportRef = firestore().collection('Reports').doc();
+
+    const now = firestore.FieldValue.serverTimestamp();
+    batch.set(reportRef, {
+        ...data,
+        id: reportRef.id,
+        reportTime: now
+    });
+
+
+    try {
+        await batch.commit();
+    } catch (e) {
+        console.error(e);
+        throw new functions.https.HttpsError('internal', 'Failed to post announcement');
+    }
+
+    return {
+        id: reportRef.id,
+    };
+})
+
+
 exports.create = functions.https.onCall(async (data, context) => {
     const {
         uid
@@ -119,7 +151,9 @@ exports.create = functions.https.onCall(async (data, context) => {
     // Save in the global post store
     const postRef = firestore().collection('Posts').doc();
 
-    batch.set(postRef, {
+    console.log(data.type);
+
+    const eventObj = {
         ...data,
         id: postRef.id,
         organizationId: uid,
@@ -129,40 +163,43 @@ exports.create = functions.https.onCall(async (data, context) => {
         title: data.title,
         endDate: data.endDate,
         views: 0,
-    });
+    };
+    const announcementObject = {
+        ...data,
+        id: postRef.id,
+        organizationId: uid,
+        createdAt: now,
+        datetime: now,
+        views: 0,
+    };
+
+
+    batch.set(postRef, data.type === "Event" ? eventObj : announcementObject);
+
 
     // Save as a user's post
     const userPostsRef = firestore().collection('Users').doc(uid)
         .collection('Posts').doc(postRef.id);
 
-    batch.set(userPostsRef, {
-        id: postRef.id,
-        postRef: postRef,
-        organizationId: uid,
-        type: data.type,
-        startDate: data.startDate,
-        title: data.title,
-        endDate: data.endDate,
-        datetime: now,
-    });
+    batch.set(userPostsRef, data.type === "Event" ? eventObj : announcementObject);
 
     // Post to this user's feed
 
-    const feedPost = {
-        id: postRef.id,
-        postRef: postRef,
-        organizationId: uid,
-        type: data.type,
-        startDate: data.startDate,
-        title: data.title,
-        endDate: data.endDate,
-        datetime: now,
-    };
+    // const feedPost = {
+    //     id: postRef.id,
+    //     postRef: postRef,
+    //     organizationId: uid,
+    //     type: data.type,
+    //     startDate: data.startDate,
+    //     title: data.title,
+    //     endDate: data.endDate,
+    //     datetime: now,
+    // };
 
     const userFeedRef = firestore().collection('Users').doc(uid)
         .collection('Feed').doc(postRef.id);
 
-    batch.set(userFeedRef, feedPost);
+    batch.set(userFeedRef, data.type === "Event" ? eventObj : announcementObject);
 
     // Post to followers feed
 

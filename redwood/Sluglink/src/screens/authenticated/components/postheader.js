@@ -68,24 +68,25 @@ export const PostHeader = ({
                         </View>
                     </View>
                 </TouchableOpacity>
-                {user != null && organization != null && user?.uid == organization?.uid ?
-                    <TouchableOpacity style={styles.menuButton} onPress={toggleActions}>
-                        <Icon
-                            name='dots-horizontal'
-                            type='material-community'
-                            size={sizes.Icon4}
-                            color={Colors.Black.rgb}
-                        />
-                    </TouchableOpacity>
-                    :
-                    null
-                }
+                {/* {user != null && organization != null */}
+                <TouchableOpacity style={styles.menuButton} onPress={toggleActions}>
+                    <Icon
+                        name='dots-horizontal'
+                        type='material-community'
+                        size={sizes.Icon4}
+                        color={Colors.Black.rgb}
+                    />
+                </TouchableOpacity>
+                {/* : */}
+                {/* null */}
+                {/* } */}
             </View>
             <Portal >
                 <PostActions
                     post={post}
                     isVisible={actionsVisible}
                     toggle={toggleActions}
+                    report={user?.uid !== organization?.uid}
                 />
             </Portal>
         </>
