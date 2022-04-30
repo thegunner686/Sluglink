@@ -1,55 +1,55 @@
 {
   "images" : [
     {
-      "filename" : "sluglink_app_icon_40.png",
+      "filename" : "SluglinkLogo20x2.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "20x20"
     },
     {
-      "filename" : "sluglink_app_icon_60.png",
+      "filename" : "SluglinkLogo20x3.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "20x20"
     },
     {
-      "filename" : "sluglink_app_icon_58.png",
+      "filename" : "SluglinkLogo29x2.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "29x29"
     },
     {
-      "filename" : "sluglink_app_icon_87.png",
+      "filename" : "SluglinkLogo29x3.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "29x29"
     },
     {
-      "filename" : "sluglink_app_icon_80.png",
+      "filename" : "SluglinkLogo40x2.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "40x40"
     },
     {
-      "filename" : "sluglink_app_icon_120-1.png",
+      "filename" : "SluglinkLogo40x3.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "40x40"
     },
     {
-      "filename" : "sluglink_app_icon_120.png",
+      "filename" : "SluglinkLogo60x2.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "60x60"
     },
     {
-      "filename" : "sluglink_app_icon_180.png",
+      "filename" : "SluglinkLogo60x3.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "60x60"
     },
     {
-      "filename" : "sluglink_app_icon_1024.png",
+      "filename" : "SluglinkLogo1024x1.png",
       "idiom" : "ios-marketing",
       "scale" : "1x",
       "size" : "1024x1024"

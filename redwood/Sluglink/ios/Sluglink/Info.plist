@@ -52,6 +52,8 @@
 	<string>Sluglink uses your location to sort events near you and display it on a map.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Users can upload profile pictures and photos for event listings.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Users can upload profile pictures and photos for event listings.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
