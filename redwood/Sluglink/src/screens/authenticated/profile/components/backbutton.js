@@ -10,10 +10,16 @@ import {
 
 import { Colors, rgba, sizes } from '../../../../styles';
 
-export const BackButton = ({ onPress, icon }) => {
+export const BackButton = ({ onPress, icon, offset=true }) => {
     return (
         <TouchableOpacity
-            style={styles.container}
+            style={[
+                styles.container,
+                {
+                    left: offset ? 10 : 0,
+                    top: offset ? 10 : -10,
+                }
+            ]}
             onPress={onPress}
             hitSlop={{
                 left: 20,
@@ -43,7 +49,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         position: 'absolute',
-        left: 10,
-        top: 10,
     },
 });

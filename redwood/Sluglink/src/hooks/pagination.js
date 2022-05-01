@@ -40,7 +40,7 @@ export const usePagination = ({
 
     const refresh = useCallback(async () => {
         if (fetching) return;
-        // setFetching(true);
+        setFetching(true);
         let ref = firestore().collection(collection);
         if (doc) {
             ref = ref.doc(doc);
@@ -60,7 +60,7 @@ export const usePagination = ({
 
         if (snapshot.docs == null || snapshot.docs.length == 0) {
             setDocs([]);
-            // setFetching(false);
+            setFetching(false);
             return;
         }
 
@@ -74,16 +74,19 @@ export const usePagination = ({
 
         setDocs([...new Map([...newDocs].map(item => (
             [item.id, item]
-        ))).values()].sort((p1, p2) => {
-            return p1.startDate < p2.startDate
-        }));
+        ))).values()]);
 
-        // setFetching(false);
+        // no need to sort
+        // .sort((p1, p2) => {
+        //     return p1.datetime > p2.datetime
+        // })
+
+        setFetching(false);
     }, [docs, lastDoc, fetching, queries, setDocs, setLastDoc]);
 
     const fetchMore = useCallback(async () => {
         if (fetching) return;
-        // setFetching(true);
+        setFetching(true);
         let ref = firestore().collection(collection);
         if (doc) {
             ref = ref.doc(doc);
@@ -103,7 +106,7 @@ export const usePagination = ({
         const snapshot = await ref.get();
 
         if (snapshot.docs == null || snapshot.docs.length == 0) {
-            // setFetching(false);
+            setFetching(false);
             return;
         }
 
@@ -119,12 +122,15 @@ export const usePagination = ({
         setDocs(oldDocs => {
             return [...new Map([...oldDocs, ...newDocs].map(item => (
                 [item.id, item]
-            ))).values()].sort((p1, p2) => {
-                return p1.startDate < p2.startDate
-            });
+            ))).values()]
         });
 
-        // setFetching(false);
+        // no need to sort
+        // .sort((p1, p2) => {
+        //     return p1.datetime > p2.datetime
+        // });
+
+        setFetching(false);
     }, [docs, lastDoc, fetching, queries, setDocs, setLastDoc]);
 
     return [docs, fetching, refresh, fetchMore];

@@ -11,31 +11,25 @@ import { Colors, Fonts } from '../../../../../styles';;
 import { TimePicker } from '../components';
 import { useNewEvent } from './neweventstore';
 import { ProgressBar } from '../components';
-import { NextButton } from '../components';
+import { NextButton } from '../../../../unauthenticated';
 
 export const NewEventScreen2 = ({ navigation, route }) => {
   const [newEvent, setNewEvent] = useNewEvent(state => [state.newEvent, state.setNewEvent]);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     navigation.setOptions({
-  //       headerRight: () => (
-  //         <NextButton onPress={() => {
-  //           console.log("start: ", startDate);
-  //           console.log("end: ", endDate);
-  //           // setNewEvent({
-  //           //   startDate: startDate.getTime(),
-  //           //   endDate: endDate.getTime()
-  //           // })
-  //           navigation.navigate('NewEventScreen3')
-  //         }
-  //         } />
-  //       )
-  //     });
-  //   }, 500);
-  // }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      navigation.setOptions({
+        headerRight: () => (
+          <NextButton onPress={() => {
+            navigation.navigate('NewEventScreen3')
+          }
+          } />
+        )
+      });
+    }, 500);
+  }, []);
 
   useEffect(() => {
     setNewEvent({
@@ -73,18 +67,12 @@ export const NewEventScreen2 = ({ navigation, route }) => {
           prompt='When is the end time?'
           value={endDate}
           onChange={(event, date) => {
-            console.log(date)
             setEndDate(date)
           }}
           minimumDate={new Date()}
         />
       </View>
-      <View style={{ flex: 2, justifyContent: "center" }}>
-        <NextButton
-          onPress={() => { navigation.navigate('NewEventScreen3') }}
-          on={true}
-        />
-      </View>
+      <View style={{ flex: 1}}></View>
     </SafeAreaView>
   );
 };

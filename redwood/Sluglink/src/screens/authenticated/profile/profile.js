@@ -17,8 +17,10 @@ import Animated, {
 import { SettingsButton, StretchFlatList, EditButton } from './components';
 import { useProfileWithPosts } from '../../../hooks';
 import { Colors, Fonts, width, height, rgba } from '../../../styles';
+import { useAuth } from '../../../hooks'
 
 const Header = ({ profile }) => {
+    const [signOut] = useAuth(state => [state.signOut])
     const navigation = useNavigation();
 
     return (
@@ -42,6 +44,11 @@ const Header = ({ profile }) => {
                     buttonStyle={styles.editButton}
                     containerStyle={{ marginTop: 10 }}
                     onPress={() => navigation.navigate('EditProfileScreen')}
+                />
+                <Button
+                    type='solid'
+                    title='sign out (testing)'
+                    onPress={() => signOut()}
                 />
             </Animated.View>
         </ImageBackground>

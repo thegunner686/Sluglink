@@ -35,12 +35,12 @@ export const PostsFlatList = ({
 
     return (
         <FlatList
+            showsVerticalScrollIndicator={false}
             data={posts}
             refreshing={isFetching}
             renderItem={renderPost}
             keyExtractor={keyExtractor}
             refreshControl={Refresher}
-            maxToRenderPerBatch={3}
             onEndReachedThreshold={0.01}
             onEndReached={fetchMore}
             ListEmptyComponent={emptyComponent || null}

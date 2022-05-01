@@ -2,6 +2,8 @@
 import React, {
     useEffect,
     useState,
+    useMemo,
+    useCallback
 } from 'react';
 
 import {
@@ -11,7 +13,8 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import {
-    Divider
+    Divider,
+    Icon
 } from 'react-native-elements';
 import Animated, {
     AnimatedLayout,
@@ -26,8 +29,9 @@ import Animated, {
 
 import { PostHeader } from '../postheader';
 import { usePosts, useOrganization } from '../../../../hooks';
-import { Fonts, Colors } from '../../../../styles';
+import { Fonts, Colors, width, height, sizes } from '../../../../styles';
 import { EventFooter } from './eventfooter';
+import { ThumbnailGallery } from './components/thumbnailgallery';
 
 export const Event = ({
     index,
@@ -46,45 +50,21 @@ export const Event = ({
         if (post?.id != null) fetch();
     }, [post.id]);
 
-    // useEffect(() => console.log(event), [])
-    /*
+    /**
+     * TODO: Truncate at last word (or space) to avoid 'we wi...'
+     */
+    const truncatedDescription = useMemo(() => {
+        const charLimit = 100;
+        if(event?.physicalInfo && event.physicalInfo.length > charLimit) {
+            return event.physicalInfo.slice(0, charLimit) + '...';
+        } else {
+            return event?.physicalInfo;
+        }
+    }, [event?.physicalInfo]);
 
-    Snippet used for testing w mock data. Not sure if the data is modelled correctly. 
-    The event uses the same scheme specified in loblolly/functions/post.js
-
-    // hard-coded org
-    const organization = useOrganization("72rrxDVACYx4o0MpYGaoDE0ueUKL");
-
-    const now = new Date(); 
-    // hard-coded event
-    const event = {
-        type: "Event",
-        id: "bA5smHgfFqyiHAmogEO3",
-        organizationId: "72rrxDVACYx4o0MpYGaoDE0ueUKL",
-        
-        createdAt: now,
-        content: "Some text about the event",
-        link: "https://google.com/",
-
-        title: "Some event",
-        starttime: now,
-        endtime: now,
-
-        photos: [],
-
-        location: {
-            name: "Your mom's house",
-            address: "151 Clay St",
-            latitude: -100,
-            longitude: -100,
-            notes: "Knock before entering"
-        },
-        
-        isVirtual: true,
-        isPhysical: true,
-
-    }
-    */
+    const navigateToEvent = useCallback(() => {
+        navigation.navigate('ViewEvent', { id: event.id})
+    }, [navigation, event?.id]);
 
     return (
         <Animated.View
@@ -92,16 +72,32 @@ export const Event = ({
             exiting={FadeOutUp}
             style={styles.container}
         >
-            <PostHeader post={post} organization={organization} type={post.type} />
-
-            <TouchableOpacity onPress={() => console.log("Screen not specified yet")}>
-                <View style={styles.content}>
-                    <Text style={[Fonts.Graph4, {
-                        lineHeight: 25,
-                    }]}>{post?.title}</Text>
+            <ThumbnailGallery photos={event?.photos || []}/>
+            <TouchableOpacity style={styles.button} onPress={navigateToEvent}>
+                <View style={styles.titleAndTime}>
+                    <Text style={styles.title}>{event?.title}</Text>
+                    <Icon
+                        type='material-community'
+                        name='clock-outline'
+                        size={sizes.Icon5}
+                        color={Colors.Black}
+                    />
+                    <Text style={styles.time}> 9AM - 6PM</Text>
                 </View>
-                <EventFooter event={post} />
-                <Divider width={1} color={Colors.Grey6.rgb} />
+                <View style={styles.descriptionAndChevron}>
+                    <View style={styles.descriptionContainer}>
+                        <Text style={styles.description}>{truncatedDescription}</Text>
+                    </View>
+                    <View style={styles.chevronContainer}>
+                        <Icon
+                            name='chevron-right'
+                            size={sizes.Icon5}
+                        />
+                    </View>
+                </View>
+                <View style={styles.footer}>
+                    <Text style={styles.createdAt}>8m ago</Text>
+                </View>
             </TouchableOpacity>
         </Animated.View>
     );
@@ -109,9 +105,53 @@ export const Event = ({
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+        alignSelf: 'center',
         display: 'flex',
-        padding: 10,
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: width / 10 * 9,
+        paddingVertical: 20,
     },
-    content: {
+    button: {
+        paddingTop: 10,
+        width: '100%'
+    },
+    titleAndTime: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    title: {
+        flex: 1,
+        ...Fonts.Paragraph1,
+    },
+    time: {
+        ...Fonts.Paragraph4
+    },
+    descriptionContainer: {
+        width: '100%',
+    },
+    description: {
+        ...Fonts.Paragraph4
+    },
+    footer: {
+        width: '100%',
+    },
+    createdAt: {
+        color: Colors.Grey3.rgb,
+        ...Fonts.Label4
+    },
+    descriptionAndChevron: {
+        display: 'flex',
+        flexDirection: 'row',
+    },
+    descriptionContainer: {
+        flex: 1,
+    },
+    chevronContainer: {
+        justifyContent: 'center'
     }
 });

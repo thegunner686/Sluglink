@@ -151,55 +151,42 @@ exports.create = functions.https.onCall(async (data, context) => {
     // Save in the global post store
     const postRef = firestore().collection('Posts').doc();
 
-    console.log(data.type);
-
-    const eventObj = {
+    const datetime = data.type === 'Event' ? data.startDate : now;
+    const post = {
         ...data,
         id: postRef.id,
         organizationId: uid,
         createdAt: now,
-        datetime: now,
-        startDate: data.startDate,
-        title: data.title,
-        endDate: data.endDate,
+        datetime,
         views: 0,
     };
-    const announcementObject = {
-        ...data,
+
+    batch.set(postRef, post);
+
+    /**
+     * This is a condensed version of the post for the User's collection and Feeds,
+     * it contains information needed to reference the main post (with all the details)
+     * and other sorting related info (datetime, type)
+     */
+    const feedPost = {
         id: postRef.id,
         organizationId: uid,
-        createdAt: now,
-        datetime: now,
-        views: 0,
+        type: data.type,
+        datetime
     };
-
-
-    batch.set(postRef, data.type === "Event" ? eventObj : announcementObject);
-
 
     // Save as a user's post
     const userPostsRef = firestore().collection('Users').doc(uid)
         .collection('Posts').doc(postRef.id);
 
-    batch.set(userPostsRef, data.type === "Event" ? eventObj : announcementObject);
+    batch.set(userPostsRef, feedPost);
 
     // Post to this user's feed
-
-    // const feedPost = {
-    //     id: postRef.id,
-    //     postRef: postRef,
-    //     organizationId: uid,
-    //     type: data.type,
-    //     startDate: data.startDate,
-    //     title: data.title,
-    //     endDate: data.endDate,
-    //     datetime: now,
-    // };
 
     const userFeedRef = firestore().collection('Users').doc(uid)
         .collection('Feed').doc(postRef.id);
 
-    batch.set(userFeedRef, data.type === "Event" ? eventObj : announcementObject);
+    batch.set(userFeedRef, feedPost);
 
     // Post to followers feed
 

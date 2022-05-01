@@ -1,7 +1,8 @@
 import React, {
   useEffect,
   useState,
-  useRef
+  useRef,
+  useMemo
 } from 'react';
 
 import {
@@ -67,7 +68,6 @@ export const NewEventScreen5 = ({ navigation, route }) => {
   }, []);
 
   useEffect(() => {
-    console.log("photos updated", photos);
     setNewEvent({
       photos: [...photos],
     });
@@ -98,7 +98,7 @@ export const NewEventScreen5 = ({ navigation, route }) => {
     });
   };
 
-  const Footer = (
+  const Footer = useMemo(() => (
     <View style={{
       width: width,
       height: '100%',
@@ -145,7 +145,7 @@ export const NewEventScreen5 = ({ navigation, route }) => {
         onPress={addPhoto}
       />
     </View>
-  );
+  ), [width, height, addPhoto]);
 
   const removePhoto = () => {
     var copy = [...photos];
@@ -172,7 +172,6 @@ export const NewEventScreen5 = ({ navigation, route }) => {
             flexDirection: 'row',
             justifyContent: 'flex-start',
             alignItems: 'flex-start',
-            backgroundColor: 'yellow'
           }}
           style={{
             width: width,
@@ -184,7 +183,7 @@ export const NewEventScreen5 = ({ navigation, route }) => {
     )
   };
 
-  const Header = (
+  const Header = useMemo(() => (
     <Animated.View
       entering={FadeInUp.delay(200)}
       exiting={FadeOutUp}
@@ -230,7 +229,7 @@ export const NewEventScreen5 = ({ navigation, route }) => {
         onPress={() => removePhoto()}
       />
     </Animated.View>
-  );
+  ), [currentPhotoIndex, photoLimit, removePhoto]);
 
   return (
     <SafeAreaView
@@ -251,7 +250,6 @@ export const NewEventScreen5 = ({ navigation, route }) => {
           renderItem={renderPhoto}
           style={{ flexGrow: 1 }}
           pagingEnabled={true}
-        // viewabilityConfig={{ itemVisiblePercentThreshold: 90 }}
         />
       </View>
     </SafeAreaView>
@@ -268,6 +266,5 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    backgroundColor: Colors.Red4.rgb
   }
 });

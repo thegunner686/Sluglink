@@ -16,7 +16,7 @@ import Animated, {
     useDerivedValue,
 } from "react-native-reanimated";
 
-export const StretchList = ({ header, body, headerSize=50, FlatListProps }) => {
+export const StretchList = ({ header, body, headerSize=50 }) => {
 
     let offsetY = useSharedValue(0);
     let headerShown = useSharedValue(true);

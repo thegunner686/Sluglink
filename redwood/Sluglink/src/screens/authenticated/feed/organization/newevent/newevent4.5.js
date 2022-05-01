@@ -35,7 +35,7 @@ export const NewEventScreen45 = ({ navigation, route }) => {
         navigation.navigate('NewEventScreen5');
     };
 
-    useEffect(() => { setNewEvent({ location: "Porter" }) }, [])
+    // useEffect(() => { setNewEvent({ location: "Porter" }) }, [])
 
     // useEffect(() => {
     //   if (newEvent.location != null || options[selectedOption] === 'No') {
