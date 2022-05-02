@@ -161,8 +161,9 @@ exports.deleteUser = functions.https.onCall(async (data, context) => {
     await database().ref(`Organizations/${photoId}`).remove();
     await database().ref(`Verifications/${photoId}`).remove();
 
+    console.log('ok')
     if (photoId != "") {
-        await storage().bucket("OrganizationSignUp").file(photoId).delete();
+        await storage().bucket().file(`OrganizationSignUp/${photoId}`).delete();
     }
 
     batch.delete(userRef);
