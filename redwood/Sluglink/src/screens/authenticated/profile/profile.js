@@ -14,6 +14,8 @@ import Animated, {
     FadeInLeft
 } from 'react-native-reanimated';
 
+import functions from "@react-native-firebase/functions";
+
 import { SettingsButton, StretchFlatList, EditButton } from './components';
 import { useProfileWithPosts } from '../../../hooks';
 import { Colors, Fonts, width, height, rgba } from '../../../styles';
@@ -86,6 +88,16 @@ export const ProfileScreen = ({ navigation }) => {
                 refresh={refreshPosts}
                 fetchMore={fetchMorePosts}
             />}
+            <Button
+                type='outline'
+                title='Delete'
+                titleStyle={Fonts.Paragraph2}
+                buttonStyle={styles.editButton}
+                containerStyle={{ marginTop: 10 }}
+                onPress={() => {
+                    functions().httpsCallable('users-deleteUser')({});
+                }}
+            />
         </SafeAreaView>
     );
 };
