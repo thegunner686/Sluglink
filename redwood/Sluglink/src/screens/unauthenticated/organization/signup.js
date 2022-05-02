@@ -89,6 +89,7 @@ export const OrganizationSignUpScreen = ({ navigation, route }) => {
                 }
             }).catch(e => {
                 inputRef.current?.shake();
+                console.log(e);
                 Alert.alert(
                     'Oops!',
                     `An error occurred while evaluating ${email}`,

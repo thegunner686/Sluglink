@@ -30,6 +30,15 @@ function App() {
   }, []);
 
   useEffect(() => {
+    // caache is set to 1 sec... for testing purposes
+    const setCache = async () => {
+      try {
+        await remoteConfig().fetch(1);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    setCache();
     remoteConfig().setDefaults(default_config)
       .then(() => remoteConfig().fetchAndActivate())
       .then((fetched) => {

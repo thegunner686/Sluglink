@@ -184,26 +184,26 @@ export const Fonts = {
     // Tiny
     Tiny1: {
         fontFamily: families.HelveticaNeue1,
-        fontSizes: sizes.Tiny
+        fontSize: sizes.Tiny
     },
     Tiny2: {
         fontFamily: families.HelveticaNeue2,
-        fontSizes: sizes.Tiny
+        fontSize: sizes.Tiny
     },
     Tiny3: {
         fontFamily: families.HelveticaNeue3,
-        fontSizes: sizes.Tiny
+        fontSize: sizes.Tiny
     },
     Tiny4: {
         fontFamily: families.HelveticaNeue4,
-        fontSizes: sizes.Tiny
+        fontSize: sizes.Tiny
     },
     Tiny5: {
         fontFamily: families.HelveticaNeue5,
-        fontSizes: sizes.Tiny
+        fontSize: sizes.Tiny
     },
     Tiny6: {
         fontFamily: families.HelveticaNeue6,
-        fontSizes: sizes.Tiny
+        fontSize: sizes.Tiny
     },
 };

@@ -17,7 +17,7 @@ export const useExplorePosts = (category) => {
     limit: 5,
     orderBy: {
       name: 'datetime',
-      order: 'desc'
+      order: 'asc'
     }
   });
 

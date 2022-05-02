@@ -53,7 +53,7 @@ export const EventFooter = ({
                 color={Colors.Grey3.rgb}
                 containerStyle={{ marginRight: 5 }}
             />
-            <Text style={[Fonts.Paragraph3, { color: Colors.Grey3.rgb }]}>{event.location?.name}</Text>
+            <Text style={[Fonts.Paragraph3, { color: Colors.Grey3.rgb }]}>{event?.location?.name}</Text>
         </View>
     );
 
@@ -65,13 +65,14 @@ export const EventFooter = ({
                 color={Colors.SteelBlue.rgb}
                 containerStyle={{ marginRight: 5 }}
             />
-            <Text style={[Fonts.Paragraph3, { color: Colors.SteelBlue.rgb }]}>{trimLink(event.link)}</Text>
+            <Text style={[Fonts.Paragraph3, { color: Colors.SteelBlue.rgb }]}>{trimLink(event?.link)}</Text>
         </View>
     );
 
     // this should probably also go in a components file
-    const FormattedDate = (date) => (
-        <>
+    const FormattedDate = (date) => {
+        console.log(getNumeralDate(date));
+        return <>
             <Text style={[Fonts.Paragraph3, {
                 color: Colors.Grey3.rgb
             }]}>
@@ -84,7 +85,11 @@ export const EventFooter = ({
                 {getNumeralDate(date)}
             </Text>
         </>
-    )
+    }
+    
+    const formattedDate = useMemo(() => {
+        return FormattedDate(new Date(event?.startDate));
+    }, [event?.startDate]);
 
     return (
         <View style={styles.container}>
@@ -92,7 +97,7 @@ export const EventFooter = ({
             {event && event.isVirtual ? VirtualLinkSubComponent : null}
             <View style={styles.row}>
                 <Text style={[Fonts.Paragraph3, { color: Colors.Grey3.rgb }]}>
-                    {FormattedDate(new Date(event.startDate))}
+                    {formattedDate}
 
                 </Text>
 

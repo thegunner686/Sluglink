@@ -43,7 +43,8 @@ import {
 import { getNumeralTime, getNumeralDate } from '../../../../utils';
 
 
-export const DetailedEvent = ({ navigation, route }) => {
+
+export const PDetailedEvent = ({ navigation, route }) => {
     const information = "event information stuff"
     const [photos, setPhotos] = useState([]);
     const [newEvent, setNewEvent] = useNewEvent(state => [state.newEvent, state.setNewEvent]);
