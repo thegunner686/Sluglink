@@ -46,22 +46,23 @@ export const PostActions = ({ post, isVisible, toggle, report }) => {
     }, []);
 
     const onDeleteLongPress = useCallback(async () => {
-        ReactNativeHapticFeedback.trigger('impactHeavy', haptic_options);
         setDeleteMessageVisible(false);
+        ReactNativeHapticFeedback.trigger('impactLight', haptic_options);
         try {
             await deletePost({ id: post.id });
+            ReactNativeHapticFeedback.trigger('impactHeavy', haptic_options);
         } catch (error) {
             console.error(error);
         }
     }, [post]);
 
     const onReportLongPress = useCallback(async () => {
-        console.log("happening");
-        ReactNativeHapticFeedback.trigger('impactHeavy', haptic_options);
         setReportMessageVisible(false);
+        ReactNativeHapticFeedback.trigger('impactLight', haptic_options);
         try {
             await reportPost(post.id);
-            alert("Post has been report and will be reviewed");
+            ReactNativeHapticFeedback.trigger('impactHeavy', haptic_options);
+            alert("Post has been report and will be reviewed.");
             toggle();
 
         } catch (error) {

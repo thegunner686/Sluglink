@@ -32,7 +32,10 @@ const FilterChip = ({ index, title, onPress, selected }) => {
         >
             <Chip
                 titleStyle={Fonts.Paragraph3}
-                onPress={onPress}
+                onPress={() => {
+                    console.log(title)
+                    onPress();
+                }}
                 containerStyle={{ margin: 5 }}
                 title={title}
                 type={selected ? 'solid': 'outline'}
@@ -42,7 +45,9 @@ const FilterChip = ({ index, title, onPress, selected }) => {
     )
 };
 
-export const ExploreScreen = () => {
+export const ExploreScreen = ({
+    navigation
+}) => {
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [posts, isFetching, refresh, fetchMore] = useExplorePosts(selectedCategory);
@@ -98,6 +103,7 @@ export const ExploreScreen = () => {
                 refresh={refresh}
                 isFetching={isFetching}
                 fetchMore={fetchMore}
+                navigation={navigation}
             />
         </SafeAreaView>
     );

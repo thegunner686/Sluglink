@@ -86,32 +86,26 @@ exports.userCreation = functions.auth.user().onCreate(async (user) => {
     }
 
     // Set custom claims
-    auth().setCustomUserClaims(uid, {
+    await auth().setCustomUserClaims(uid, {
         organization: isOrganization, // is it a verified organization?
         ucsc: isUCSC, // is it a ucsc affiliated account?
     });
 
-    try {
-        await firestore().collection('Users').doc(uid).set({
-            uid,
-            email,
-            email_verified: user.emailVerified || false,
-            phone_number: user.phoneNumber || null,
-            createdAt: firestore.FieldValue.serverTimestamp(),
-            lastLogin: firestore.FieldValue.serverTimestamp(),
-            organization: isOrganization,
-            ucsc: isUCSC,
-            name: user.displayName,
-            picture: user.photoURL,
-            description: '',
-            ...orgdata,
-        });
-    } catch(e) {
-        console.error(e);
-        return false;
-    }
-
-    return true;
+    
+    return firestore().collection('Users').doc(uid).set({
+        uid,
+        email,
+        email_verified: user.emailVerified || false,
+        phone_number: user.phoneNumber || null,
+        createdAt: firestore.FieldValue.serverTimestamp(),
+        lastLogin: firestore.FieldValue.serverTimestamp(),
+        organization: isOrganization,
+        ucsc: isUCSC,
+        name: user.displayName,
+        picture: user.photoURL,
+        description: '',
+        ...orgdata,
+    });
 });
 
 /**

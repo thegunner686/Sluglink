@@ -47,6 +47,7 @@ export const EditProfileScreen = ({ navigation }) => {
               uri,
               fileName
             };
+            // TODO: Upload photo to storage bucket and get url
             setEditedProfile(oldEditedProfile => ({ ...oldEditedProfile, picture: uri }))
           } else if (res.errorCode) {
             Alert.alert('Couldn\'t upload that image');
@@ -80,7 +81,7 @@ export const EditProfileScreen = ({ navigation }) => {
     useEffect(() => {
         if(profile == null || editedProfile == null) return;
         if(!propertiesAreEqual(editedProfile, profile, [
-            'name', 'description', 'picture', 'phone_number', 'other', 'otherCategory',
+            'name', 'description', 'picture', 'phone_number', 'category', 'otherCategory',
         ])) {
             navigation.setOptions({
                 headerRight: () => <UpdateButton onPress={validateAndUpdateProfile}/>
@@ -185,7 +186,7 @@ export const EditProfileScreen = ({ navigation }) => {
                                 inputContainerStyle={styles.inputContainerStyle}
                                 leftIconContainerStyle={styles.leftIconContainerStyle}
                                 value={editedProfile?.otherCategory}
-                                onChangeText={(val) => setProfile(oldEditedProfile => 
+                                onChangeText={(val) => setEditedProfile(oldEditedProfile => 
                                     ({ ...oldEditedProfile, otherCategory: val })
                                 )}
                                 returnKeyType='done'

@@ -9,11 +9,17 @@ import {
 import PostEvents from '../emitters/postevents';
 
 export const useExplorePosts = (category) => {
+  const queries = [
+    (ref) => ref.where('type', '==', 'Event'),
+  ];
+  if(category != null) {
+    queries.push(
+      (ref) => ref.where('category', '==', category)
+    );
+  }
   const [docs, fetching, refresh, fetchMore] = usePagination({
     collection: 'Posts',
-    queries: category == null ? null : [
-      (ref) => ref.where('category', '==', category),
-    ],
+    queries,
     limit: 5,
     orderBy: {
       name: 'datetime',

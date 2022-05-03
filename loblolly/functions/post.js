@@ -278,7 +278,6 @@ exports.delete = functions.https.onCall(async (data, context) => {
 
     try {
         await batch.commit();
-        console.log("Batch commited")
     } catch (e) {
         console.error(e);
         throw new functions.https.HttpsError('internal', 'Failed to post announcement');
