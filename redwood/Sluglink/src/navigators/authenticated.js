@@ -12,6 +12,8 @@ import { FadeInTransition } from "./transitions";
 import { BottomTabs } from './bottomtabs';
 import { NewPostStack } from './newpost';
 import { ViewProfileScreen } from '../screens';
+
+import ProfileScreen from "../screens/authenticated/profile/ProfileScreen";
 import { ViewEventScreen } from "../screens/authenticated/feed/viewevent";
 
 import { Fonts, Colors } from '../styles';
@@ -44,7 +46,7 @@ export const AuthenticatedStack = (props) => {
             />
             <Stack.Screen
                 name='ViewProfile'
-                component={ViewProfileScreen}
+                component={ProfileScreen}
                 options={{
                     presentation: 'modal',
                     headerShown: false

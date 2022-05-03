@@ -13,14 +13,16 @@ import {
 import {
     Button,
     Image,
-    Input
+    Input,
+    Icon
 } from 'react-native-elements';
 import { Picker } from '@react-native-picker/picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 import { UpdateButton } from './components';
 import { useProfile } from '../../../hooks';
 import { useAuth } from '../../../hooks';
-import { Colors, Fonts, width, height } from '../../../styles';
+import { Colors, Fonts, sizes, width, height } from '../../../styles';
 import { propertiesAreEqual } from '../../../utils';
 
 export const EditProfileScreen = ({ navigation }) => {
@@ -33,6 +35,25 @@ export const EditProfileScreen = ({ navigation }) => {
         setEditedProfile(profile);
     }, [profile]);
 
+    const addPhoto = () => {
+        launchImageLibrary({
+          mediaType: 'photo',
+          quality: 1,
+          selectionLimit: 1,
+        }, async (res) => {
+          if (!res.didCancel && !res.errorCode) {
+            let { uri, fileName } = res.assets[0];
+            const photo = {
+              uri,
+              fileName
+            };
+            setEditedProfile(oldEditedProfile => ({ ...oldEditedProfile, picture: uri }))
+          } else if (res.errorCode) {
+            Alert.alert('Couldn\'t upload that image');
+          }
+        });
+      };
+      
     const validateAndUpdateProfile = useCallback(async () => {
         if(isLoading) return;
         if(editedProfile.name == null || editedProfile.name.trim() == '') return;
@@ -77,24 +98,30 @@ export const EditProfileScreen = ({ navigation }) => {
                 style={{ backgroundColor: Colors.White.rgb, width, }}
                 contentContainerStyle={styles.container}
             >
-                <TouchableOpacity 
-                    style={styles.pictureBox}
-                    hitSlop={{
-                        left: 20,
-                        right: 20,
-                        bottom: 20,
-                        top: 20
+                <Image 
+                    source={{ uri: editedProfile?.picture }}
+                    style={styles.picture}
+                />
+
+                <Button
+                    title='Add Photo'
+                    titleStyle={[Fonts.Paragraph2, {
+                        color: Colors.SteelBlue.rgb
+                    }]}
+                    type='outline'
+                    buttonStyle={{
+                        borderColor: Colors.SteelBlue.rgb,
+                        borderRadius: 10
                     }}
-                >
-                    <Image 
-                        source={{ uri: editedProfile?.picture }}
-                        style={styles.picture}
-                    />
-                    <Text style={{
-                        ...Fonts.Label3,
-                        color: Colors.Blue4.rgb
-                    }}>Upload Picture</Text>
-                </TouchableOpacity>
+                    icon={() => (
+                        <Icon
+                        name='add-photo-alternate'
+                        size={sizes.Icon4}
+                        color={Colors.SteelBlue.rgb}
+                        />
+                    )}
+                    onPress={addPhoto}
+                />    
 
                 <Input 
                     placeholder="Email"
@@ -212,6 +239,7 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         borderRadius: 10,
+        marginBottom: 16,
     },
     picker: {
         width: width / 10 * 8,
