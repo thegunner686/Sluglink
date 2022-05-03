@@ -12,6 +12,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import auth from '@react-native-firebase/auth';
 import { useProfile } from '../../../hooks';
+import functions from "@react-native-firebase/functions";
 
 import styles from './SettingsScreen.styles.js';
 
@@ -33,7 +34,9 @@ export default SettingsScreen = ({ navigation }) => {
             'We\'ll miss you :(',
             [
                 { text: 'Cancel', onPress: () => {} },
-                { text: 'Yes, delete my account', style: "destructive", onPress: () => {} }
+                { text: 'Yes, delete my account', style: "destructive", onPress: () => {
+                    functions().httpsCallable('users-deleteUser')({}).then(() => navigation.navigate('Unauthenticated'));
+                } }
             ]
         );
 
