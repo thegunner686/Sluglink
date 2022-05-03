@@ -8,6 +8,7 @@ import { FadeInTransition } from "./transitions";
 import { BottomTabs } from './bottomtabs';
 import { NewPostStack } from './newpost';
 import { ViewProfileScreen } from '../screens';
+import ProfileScreen from "../screens/authenticated/profile/ProfileScreen";
 
 const Stack = createNativeStackNavigator()
 
@@ -36,7 +37,7 @@ export const AuthenticatedStack = (props) => {
             />
             <Stack.Screen
                 name='ViewProfile'
-                component={ViewProfileScreen}
+                component={ProfileScreen}
                 options={{
                     presentation: 'modal',
                     headerShown: false
