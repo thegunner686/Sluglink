@@ -94,6 +94,38 @@ const stringHash = require('string-hash');
  * }
  */
 
+exports.report = functions.https.onCall(async (data, context) => {
+    const {
+        uid
+    } = context.auth;
+
+    if (!uid)
+        throw new functions.https.HttpsError('permission-denied', "Insufficient permissions");
+
+    let batch = firestore().batch();
+    const reportRef = firestore().collection('Reports').doc();
+
+    const now = firestore.FieldValue.serverTimestamp();
+    batch.set(reportRef, {
+        ...data,
+        id: reportRef.id,
+        reportTime: now
+    });
+
+
+    try {
+        await batch.commit();
+    } catch (e) {
+        console.error(e);
+        throw new functions.https.HttpsError('internal', 'Failed to post announcement');
+    }
+
+    return {
+        id: reportRef.id,
+    };
+})
+
+
 exports.create = functions.https.onCall(async (data, context) => {
     const {
         uid
@@ -119,45 +151,37 @@ exports.create = functions.https.onCall(async (data, context) => {
     // Save in the global post store
     const postRef = firestore().collection('Posts').doc();
 
-    batch.set(postRef, {
+    const datetime = data.type === 'Event' ? data.startDate : now;
+    const post = {
         ...data,
         id: postRef.id,
         organizationId: uid,
         createdAt: now,
-        datetime: now,
-        startDate: data.startDate,
-        title: data.title,
-        endDate: data.endDate,
+        datetime,
         views: 0,
-    });
+    };
+
+    batch.set(postRef, post);
+
+    /**
+     * This is a condensed version of the post for the User's collection and Feeds,
+     * it contains information needed to reference the main post (with all the details)
+     * and other sorting related info (datetime, type)
+     */
+    const feedPost = {
+        id: postRef.id,
+        organizationId: uid,
+        type: data.type,
+        datetime
+    };
 
     // Save as a user's post
     const userPostsRef = firestore().collection('Users').doc(uid)
         .collection('Posts').doc(postRef.id);
 
-    batch.set(userPostsRef, {
-        id: postRef.id,
-        postRef: postRef,
-        organizationId: uid,
-        type: data.type,
-        startDate: data.startDate,
-        title: data.title,
-        endDate: data.endDate,
-        datetime: now,
-    });
+    batch.set(userPostsRef, feedPost);
 
     // Post to this user's feed
-
-    const feedPost = {
-        id: postRef.id,
-        postRef: postRef,
-        organizationId: uid,
-        type: data.type,
-        startDate: data.startDate,
-        title: data.title,
-        endDate: data.endDate,
-        datetime: now,
-    };
 
     const userFeedRef = firestore().collection('Users').doc(uid)
         .collection('Feed').doc(postRef.id);

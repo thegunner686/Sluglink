@@ -17,7 +17,7 @@ export const useFeed = (limit) => {
         limit,
         orderBy: {
             name: 'datetime',
-            order: 'desc'
+            order: 'asc'
         }
     });
 

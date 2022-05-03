@@ -3,23 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>587108766204-31g8fr0ocfr9u39lk6olkcii2hmg5ofh.apps.googleusercontent.com</string>
+	<string>684173672427-3p63u546aoui5qrumfii34im6g6e04ej.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.587108766204-31g8fr0ocfr9u39lk6olkcii2hmg5ofh</string>
+	<string>com.googleusercontent.apps.684173672427-3p63u546aoui5qrumfii34im6g6e04ej</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>587108766204-f1jego1su2ph8d7mrsmingm7v1eh68e1.apps.googleusercontent.com</string>
+	<string>684173672427-u44iv4mo86dm68ekqut9jfnas1hb2ilf.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBpANuQsSF9f077SPB15mCbrfTLF1JhX0I</string>
+	<string>AIzaSyArur_ASsvurd0yuxhfK1CRw8kGimdUtZM</string>
 	<key>GCM_SENDER_ID</key>
-	<string>587108766204</string>
+	<string>684173672427</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>edu.ucsc.sluglink</string>
 	<key>PROJECT_ID</key>
-	<string>sluglink-2804d</string>
+	<string>sluglink-e60af</string>
 	<key>STORAGE_BUCKET</key>
-	<string>sluglink-2804d.appspot.com</string>
+	<string>sluglink-e60af.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,6 +31,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:587108766204:ios:7a40ed8bd5d432b43ce279</string>
+	<string>1:684173672427:ios:cf1e17fd22ecc3c9dce3ae</string>
+	<key>DATABASE_URL</key>
+	<string>https://sluglink-e60af-default-rtdb.firebaseio.com</string>
 </dict>
 </plist>

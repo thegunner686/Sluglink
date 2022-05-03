@@ -55,9 +55,7 @@ export const useGooglePlaces = (latency) => {
 
   const request = async (input) => {
     if(input.length === 0) setResponse({ predictions: [] });
-
     const url = generateAutocompleteRequestURL(input, defaultAutocompleteParams);
-    
     try {
       const response = await fetch(url, {
         method: 'GET',

@@ -12,13 +12,30 @@ import Animated, {
   FadeInLeft
 } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { NextButton } from '../components';
-import { Colors, Fonts } from '../../../../../styles';;
+import { Colors, Fonts } from '../../../../../styles';import { NextButton } from '../../../../unauthenticated';
+;
 import { CappedInput, ProgressBar, TimePicker } from '../components';
 import { useNewEvent } from './neweventstore';
 
 export const NewEventScreen = ({ navigation }) => {
   const [newEvent, setNewEvent] = useNewEvent(state => [state.newEvent, state.setNewEvent]);
+
+  useEffect(() => {
+    if(newEvent.title != null && newEvent.title.length > 0) {
+      navigation.setOptions({
+        headerRight: () => (
+          <NextButton onPress={() => 
+            navigation.navigate('NewEventScreen2')
+          }/>
+        )
+      })
+    } else {
+      navigation.setOptions({
+        headerRight: null
+      })
+    }
+  }, [newEvent]);
+
 
   return (
     <SafeAreaView
@@ -48,10 +65,6 @@ export const NewEventScreen = ({ navigation }) => {
           clearButtonMode='while-editing'
         />
       </Animated.View>
-      <NextButton
-        on={newEvent.title != null && newEvent.title.length > 0}
-        onPress={() => navigation.navigate("NewEventScreen2")}
-      />
     </SafeAreaView>
   );
 };

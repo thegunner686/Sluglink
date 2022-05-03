@@ -14,24 +14,24 @@ export const useFollowing = (uid) => {
     const [user] = useAuth(state => [state.user]);
 
     useEffect(() => {
-        if(user == null) return;
+        if (user == null) return;
         return firestore().collection('Users').doc(user.uid)
-                .collection('Following').doc(uid).onSnapshot((doc) => {
-                    if(doc != null && doc.exists) {
-                        setIsFollowing(true);
-                    } else {
-                        setIsFollowing(false);
-                    }
-                });
+            .collection('Following').doc(uid).onSnapshot((doc) => {
+                if (doc != null && doc.exists) {
+                    setIsFollowing(true);
+                } else {
+                    setIsFollowing(false);
+                }
+            });
     }, [user]);
 
     const follow = useCallback(async () => {
-        if(uid == null) return;
+        if (uid == null) return;
         return functions().httpsCallable('users-follow')({ followId: uid });
     }, [uid]);
 
     const unfollow = useCallback(() => {
-        if(uid == null) return;
+        if (uid == null) return;
         return functions().httpsCallable('users-unfollow')({ unfollowId: uid });
     }, [uid]);
 

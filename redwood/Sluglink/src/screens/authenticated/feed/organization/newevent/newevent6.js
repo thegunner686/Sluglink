@@ -1,59 +1,80 @@
-import React from 'react';
+import React, { useCallback, useMemo, useEffect } from 'react';
 
 import {
     StyleSheet,
-    Text,
     Alert,
     View
 } from 'react-native';
-import {
-    Icon,
-    Button,
-    Image
-} from 'react-native-elements';
-import Animated, {
-    FadeInLeft,
-    FadeOutLeft,
-    FadeInUp,
-    FadeOutUp,
-} from 'react-native-reanimated';
-import { Colors, Fonts, sizes, width, height, rgba } from '../../../../../styles';
 import { useNewEvent } from './neweventstore';
-import { DetailedEvent } from "../../components/detailedevent";
 import { usePosts, useProfile } from "../../../../../hooks";
+import { useStorage } from '../../../../../hooks';
+import { DetailedEvent } from '../../../components/event/detailedevent'
+import { UploadButton } from '../components';
 
 export const NewEventScreen6 = ({ navigation, route }) => {
     const [createPost] = usePosts(state => [state.createPost]);
-    const [newEvent, setNewEvent] = useNewEvent(state => [state.newEvent, state.setNewEvent]);
+    const [newEvent, clearEvent] = useNewEvent(state => [state.newEvent, state.clearEvent]);
     const [profile] = useProfile();
+    const [uploadPhotos] = useStorage(state => [state.uploadPhotos]);
 
-    const postEvent = async () => {
+    useEffect(() => {
+        console.log({profile})
+    }, [profile]);
 
+    /**
+     * Uploads all photos related to the event to the firebase storage bucket and
+     * appends URLS to the .photos attribute, then uploads event
+     */
+    const postEvent = useCallback(async () => {
+        // Upload photos to firebase and store urls
+        let photos = [];
+        try {
+            photos = await uploadPhotos('Events', newEvent.photos)
+        } catch (error) {
+            console.log(error);
+        }
+
+        // Construct new event obj
         const event = {
             ...newEvent,
+            photos,
             type: 'Event',
             category: profile.category,
             otherCategory: profile.otherCategory || undefined
         };
-        console.log(event);
+
+        // Attempt to post
         try {
             await createPost(event);
         } catch (error) {
-            alert("We were unable to post the event at this moment, please try again in a moment");
+            Alert.alert("We were unable to post the event at this moment, please try again in a moment");
             console.log(error);
         }
-        // setNewEvent({});
-        navigation.navigate('FeedScreen')
-    }
+
+        // Clear event data and navigate to feed
+        clearEvent();
+        setTimeout(() => {
+            navigation.navigate('FeedScreen')
+        }, 100);
+    }, [newEvent, profile, createPost, clearEvent, uploadPhotos]);
+
+    useEffect(() => {
+        setTimeout(() => {
+            navigation.setOptions({
+                headerRight: () => <UploadButton onPress={postEvent} />
+            });
+        }, 500);
+    }, [newEvent.location, postEvent])
+
 
     return (
-        <View style={{ flex: 1 }}>
-            <DetailedEvent navigation={navigation} route={route} />
-            <Button
-                title={"submit"}
-                style={{ marginBottom: "15%", width: "80%", alignSelf: "center", borderRadius: 10 }}
-                titleStyle={{ fontSize: 20, fontWeight: 'bold' }}
-                onPress={postEvent}
+        <View style={styles.container}>
+            <DetailedEvent 
+                event={{
+                    ...newEvent,
+                    organizationId: profile?.uid
+                }}
+                navigation={navigation}
             />
         </View>
     );
@@ -61,14 +82,6 @@ export const NewEventScreen6 = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
     container: {
-        flexGrow: 1,
-    },
-    image: {
-        width: width,
         flex: 1,
-        display: 'flex',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
-        backgroundColor: Colors.Red4.rgb
-    }
+    },
 });

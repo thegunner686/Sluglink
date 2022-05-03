@@ -9,24 +9,30 @@ export const useUser = (uid) => create((set, get) => ({
     update: async (updates) => {
         return firestore().collection('Users').doc(uid).update(updates);
     },
-    
+
     attachListener: () => {
         // remove the current user listener if one is already instantiated
         get().removeListener();
-        
+
         // create the listener
         let listener = firestore().collection("Users").doc(uid).onSnapshot(snapshot => {
-            set(state => ({ user: snapshot.data() }));
+            set(state => ({
+                user: snapshot.data()
+            }));
         }, (error) => {
             console.log(error);
         });
 
-        set(state => ({ listener }));
+        set(state => ({
+            listener
+        }));
     },
 
     removeListener: () => {
-        if(get().listener) get().listener();
-        set(state => ({ listener: null }));
+        if (get().listener) get().listener();
+        set(state => ({
+            listener: null
+        }));
     },
 
     uploadProfilePicture: async (filename, uri) => {

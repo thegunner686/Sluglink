@@ -3,24 +3,26 @@ import React, {
   useEffect,
 } from 'react';
 
-import { usePagination } from './pagination';
+import {
+  usePagination
+} from './pagination';
 import PostEvents from '../emitters/postevents';
 
 export const useExplorePosts = (category) => {
   const [docs, fetching, refresh, fetchMore] = usePagination({
-      collection: 'Posts',
-      queries: category == null ? null : [
-        (ref) => ref.where('category', '==', category),
-      ],
-      limit: 5,
-      orderBy: {
-          name: 'datetime',
-          order: 'desc'
-      }
+    collection: 'Posts',
+    queries: category == null ? null : [
+      (ref) => ref.where('category', '==', category),
+    ],
+    limit: 5,
+    orderBy: {
+      name: 'datetime',
+      order: 'asc'
+    }
   });
 
   const fetch = useCallback(() => {
-      refresh();
+    refresh();
   }, [refresh]);
 
   useEffect(() => {
@@ -28,13 +30,13 @@ export const useExplorePosts = (category) => {
   }, [category]);
 
   useEffect(() => {
-      PostEvents.on('post-create', fetch);
-      return () => PostEvents.removeListener('post-create', fetch);
+    PostEvents.on('post-create', fetch);
+    return () => PostEvents.removeListener('post-create', fetch);
   }, []);
 
   useEffect(() => {
-      PostEvents.on('post-delete', fetch);
-      return () => PostEvents.removeListener('post-delete', fetch);
+    PostEvents.on('post-delete', fetch);
+    return () => PostEvents.removeListener('post-delete', fetch);
   }, []);
 
   return [docs, fetching, refresh, fetchMore];

@@ -20,10 +20,10 @@ firestore().settings({
 // Use a local emulator in development
 if (__DEV__) {
   console.log("Running in development.");
-  // const host = 'localhost';
   // const host = '100.64.35.59'; // Eduroam
   // const host = '100.64.36.2'; // Reswifi
-  const host = 'localhost'; // home
+  // const host = 'localhost'; // home
+  const host = '192.168.1.186';
   // If you are running on a physical device, replace http://localhost with the local ip of your PC. (http://192.168.x.x)
   auth().useEmulator(`http://${host}:9099`);
   functions().useFunctionsEmulator(`http://${host}:5002`);

@@ -11,8 +11,6 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		1677C6E427125CB100DFB9FF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1677C6E327125CB100DFB9FF /* GoogleService-Info.plist */; };
-		1677C6E527125CB100DFB9FF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1677C6E327125CB100DFB9FF /* GoogleService-Info.plist */; };
 		168F8080271F69E100B26C96 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 168F806F271F69E000B26C96 /* FontAwesome5_Regular.ttf */; };
 		168F8082271F69E100B26C96 /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 168F8070271F69E000B26C96 /* Zocial.ttf */; };
 		168F8084271F69E100B26C96 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 168F8071271F69E000B26C96 /* Entypo.ttf */; };
@@ -29,6 +27,8 @@
 		168F809A271F69E100B26C96 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 168F807C271F69E000B26C96 /* FontAwesome.ttf */; };
 		168F809C271F69E100B26C96 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 168F807D271F69E000B26C96 /* Feather.ttf */; };
 		168F809E271F69E100B26C96 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 168F807E271F69E000B26C96 /* MaterialCommunityIcons.ttf */; };
+		16E875E0281DB5C700C376E8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16E875DF281DB5C700C376E8 /* GoogleService-Info.plist */; };
+		16E875E1281DB5C700C376E8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 16E875DF281DB5C700C376E8 /* GoogleService-Info.plist */; };
 		41812ABA6E40FB953E060BFB /* libPods-Sluglink.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03512F790DE2A53265A97D86 /* libPods-Sluglink.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		E1D0F05754B97F2D0A57BE2B /* libPods-Sluglink-SluglinkTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75159DBC4C99ACC3EB951ED2 /* libPods-Sluglink-SluglinkTests.a */; };
@@ -55,7 +55,6 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Sluglink/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Sluglink/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Sluglink/main.m; sourceTree = "<group>"; };
-		1677C6E327125CB100DFB9FF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		168F8034271F3E9C00B26C96 /* libGoogleSignIn.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libGoogleSignIn.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		168F8036271F3EEC00B26C96 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		168F8038271F3EFA00B26C96 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
@@ -77,6 +76,7 @@
 		168F807C271F69E000B26C96 /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.ttf; sourceTree = "<group>"; };
 		168F807D271F69E000B26C96 /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Feather.ttf; sourceTree = "<group>"; };
 		168F807E271F69E000B26C96 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialCommunityIcons.ttf; sourceTree = "<group>"; };
+		16E875DF281DB5C700C376E8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		61267B0A24747B792825AED8 /* Pods-Sluglink.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sluglink.release.xcconfig"; path = "Target Support Files/Pods-Sluglink/Pods-Sluglink.release.xcconfig"; sourceTree = "<group>"; };
 		6D15E168D103B2EA37524730 /* Pods-Sluglink-SluglinkTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sluglink-SluglinkTests.debug.xcconfig"; path = "Target Support Files/Pods-Sluglink-SluglinkTests/Pods-Sluglink-SluglinkTests.debug.xcconfig"; sourceTree = "<group>"; };
 		75159DBC4C99ACC3EB951ED2 /* libPods-Sluglink-SluglinkTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Sluglink-SluglinkTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -195,8 +195,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				16E875DF281DB5C700C376E8 /* GoogleService-Info.plist */,
 				168F803E271F688C00B26C96 /* Fonts */,
-				1677C6E327125CB100DFB9FF /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* Sluglink */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* SluglinkTests */,
@@ -318,10 +318,10 @@
 				168F8096271F69E100B26C96 /* EvilIcons.ttf in Resources */,
 				168F8082271F69E100B26C96 /* Zocial.ttf in Resources */,
 				168F8090271F69E100B26C96 /* SimpleLineIcons.ttf in Resources */,
+				16E875E1281DB5C700C376E8 /* GoogleService-Info.plist in Resources */,
 				168F809A271F69E100B26C96 /* FontAwesome.ttf in Resources */,
 				168F809E271F69E100B26C96 /* MaterialCommunityIcons.ttf in Resources */,
 				168F8094271F69E100B26C96 /* FontAwesome5_Solid.ttf in Resources */,
-				1677C6E527125CB100DFB9FF /* GoogleService-Info.plist in Resources */,
 				168F8086271F69E100B26C96 /* FontAwesome5_Brands.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -332,7 +332,7 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				1677C6E427125CB100DFB9FF /* GoogleService-Info.plist in Resources */,
+				16E875E0281DB5C700C376E8 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -588,6 +588,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = H3X7635RVC;
 				ENABLE_BITCODE = NO;
@@ -604,6 +606,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = edu.ucsc.sluglink;
 				PRODUCT_NAME = Sluglink;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -618,6 +621,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = H3X7635RVC;
 				INFOPLIST_FILE = Sluglink/Info.plist;
@@ -633,6 +638,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = edu.ucsc.sluglink;
 				PRODUCT_NAME = Sluglink;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";

@@ -2,9 +2,7 @@
 const functions = require('firebase-functions');
 
 // The Firebase Admin SDK to access Firestore.
-const admin = require('firebase-admin');
 const { firestore, database } = require('firebase-admin');
-admin.initializeApp();
 
 const stringHash = require('string-hash');
 const { v4: uuidv4 } = require('uuid');
@@ -151,15 +149,13 @@ exports.refreshVerificationTokensOnRegistration = functions.firestore
     .onCreate(async (snap, context) => {
         const { email, name, contact } = snap.data();
 
-        refreshVerificationTokens({ 
+        return refreshVerificationTokens({ 
             email, 
             name
         }, { 
             email: contact.email, 
             name: contact.name 
         });
-
-        return true;
     });
 
 exports.verifyCode = functions.https.onCall(async (data, context) => {
@@ -240,7 +236,7 @@ exports.getStatus = functions.https.onCall(async (data, context) => {
     const orgsignup = doc.data();
 
     if(!orgsignup.organizationVerified || !orgsignup.studentVerified) {
-        refreshVerificationTokens({ 
+        await refreshVerificationTokens({ 
             email: orgsignup.email, 
             name: orgsignup.name
         }, { 

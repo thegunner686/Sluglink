@@ -29,6 +29,10 @@ export const useAuth = create((set, get) => ({
     registered: false,
     onAuthStateChanged: () => {
         return auth().onAuthStateChanged(user => {
+            /**
+             * This looks weird but we need it to avoid some
+             * strange auth state behavior
+             */
             if (!get().registered && user == null) {
                 set(state => ({
                     registered: true

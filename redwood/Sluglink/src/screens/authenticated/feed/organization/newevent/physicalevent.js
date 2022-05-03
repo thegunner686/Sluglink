@@ -6,14 +6,8 @@ import React, {
 } from 'react';
 
 import {
-  View,
-  Text
-} from 'react-native';
-
-import {
   Icon,
   Button,
-  Input
 } from 'react-native-elements';
 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -105,7 +99,7 @@ export const EditPhysicalEventScreen = ({ navigation }) => {
         showsBuildings={true}
         showsPointsOfInterest={true}
         onRegionChange={handleRegionChange}
-        initialRegion={newEvent.location || UCSC_REGION}
+        initialRegion={UCSC_REGION}
         style={{ flex: 1 }}
       />
       <LocationSearch

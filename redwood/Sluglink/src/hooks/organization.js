@@ -6,7 +6,9 @@ import React, {
 
 import firestore from '@react-native-firebase/firestore';
 
-import { usePagination } from './pagination';
+import {
+    usePagination
+} from './pagination';
 import PostEvents from '../emitters/postevents';
 
 export const useOrganization = (uid) => {
@@ -16,13 +18,13 @@ export const useOrganization = (uid) => {
         const fetch = async () => {
             const snapshot = await firestore().collection('Users').doc(uid).get();
 
-            if(snapshot != null && snapshot.exists) {
+            if (snapshot != null && snapshot.exists) {
                 setOrganization(snapshot.data());
             } else {
                 setOrganization(null);
             }
         };
-        if(uid != null) fetch();
+        if (uid != null) fetch();
     }, [uid]);
 
     return [organization];
@@ -46,7 +48,7 @@ export const useOrganizationWithPosts = (uid) => {
     }, [refresh]);
 
     useEffect(() => {
-        if(uid != null) refresh();
+        if (uid != null) refresh();
     }, [uid]);
 
     useEffect(() => {
@@ -57,6 +59,11 @@ export const useOrganizationWithPosts = (uid) => {
     useEffect(() => {
         PostEvents.on('post-delete', fetch)
         return () => PostEvents.removeListener('post-delete', fetch);
+    }, []);
+
+    useEffect(() => {
+        PostEvents.on('post-report', fetch)
+        return () => PostEvents.removeListener('post-report', fetch);
     }, []);
 
     return [organization, docs, fetching, refresh, fetchMore];

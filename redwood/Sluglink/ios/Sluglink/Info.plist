@@ -27,7 +27,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.587108766204-31g8fr0ocfr9u39lk6olkcii2hmg5ofh</string>
+				<string>com.googleusercontent.apps.684173672427-3p63u546aoui5qrumfii34im6g6e04ej</string>
 			</array>
 		</dict>
 	</array>
@@ -51,6 +51,8 @@
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Sluglink uses your location to sort events near you and display it on a map.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Users can upload profile pictures and photos for event listings.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Users can upload profile pictures and photos for event listings.</string>
 	<key>UIAppFonts</key>
 	<array>

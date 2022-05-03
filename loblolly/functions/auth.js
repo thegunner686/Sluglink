@@ -2,6 +2,17 @@
 const functions = require('firebase-functions');
 
 // The Firebase Admin SDK to access Firestore.
+const admin = require('firebase-admin');
+
+var serviceAccount = require("./keys.json");
+
+if (admin.apps.length === 0) {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://sluglink-e60af-default-rtdb.firebaseio.com"
+  });
+}
+
 const { firestore, database, auth } = require('firebase-admin');
 
 const stringHash = require('string-hash');

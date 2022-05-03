@@ -33,4 +33,12 @@ export const usePosts = create((set, get) => ({
         }
     },
 
+    reportPost: async (id) => {
+        try {
+            const res = await functions().httpsCallable('post-report')(id);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
 }));
