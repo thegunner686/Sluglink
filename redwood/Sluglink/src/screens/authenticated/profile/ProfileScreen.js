@@ -19,8 +19,6 @@ import { getProfilePosts, useProfile } from '../../../hooks/useProfile';
 // TODO:
 // edit profile page for organization category
 // add report account button
-// finish settings page
-//   - add delete account button functionality
 
 const EditProfileButtons = ({ navigation }) => (
     <View style={ styles.buttonContainer }>
