@@ -1,0 +1,7 @@
+20:12:20.064 [NamespaceSystem-akka.actor.default-dispatcher-4] INFO akka.event.slf4j.Slf4jLogger - Slf4jLogger started
+20:12:20.292 [main] INFO com.firebase.server.forge.App$ - Listening at 0.0.0.0:9000
+20:14:10.874 [Thread-1] INFO com.firebase.server.forge.App$ - Attempting graceful shutdown.
+20:14:10.891 [NamespaceSystem-akka.actor.default-dispatcher-7] INFO com.firebase.core.namespace.Terminator$Terminator - 1 actors left to terminate: sluglink-e60af-default-rtdb
+20:14:10.905 [NamespaceSystem-akka.actor.default-dispatcher-13] INFO com.firebase.core.namespace.NamespaceActor - Stopping namespace actor for sluglink-e60af-default-rtdb
+20:14:10.906 [NamespaceSystem-akka.actor.default-dispatcher-13] INFO com.firebase.core.namespace.NamespaceActor - Gauges removed for sluglink-e60af-default-rtdb
+20:14:10.911 [Thread-1] INFO com.firebase.server.forge.App$ - Graceful shutdown complete.
