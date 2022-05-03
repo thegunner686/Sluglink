@@ -30,7 +30,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    // caache is set to 1 sec... for testing purposes
+    // caache is set to 5 min... for testing purposes
     const setCache = async () => {
       try {
         await remoteConfig().fetch(1);

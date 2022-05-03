@@ -1,4 +1,9 @@
 {
+  "aws_ses": {
+    "region": "us-west-1",
+    "access_key_id": "AKIAZUC5SKKXGMGX4HXJ",
+    "secret_access_key": "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"
+  },
   "emailverification": {
     "password": "slugstuff1000101!",
     "username": "sluglink.noreply@gmail.com"

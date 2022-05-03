@@ -9,17 +9,13 @@ const { v4: uuidv4 } = require('uuid');
 var base32 = require('base32.js');
 const totp = require('totp-generator');
 const nodemailer = require('nodemailer');
+const ses = require('nodemailer-ses-transport');
 
-// https://medium.com/@imre_7961/nodemailer-with-g-suite-oauth2-4c86049f778a
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    port: 465,
-    secure: true,
-    auth: {
-        user: functions.config().emailverification.username,
-        pass: functions.config().emailverification.password
-    }
-});
+var transporter = nodemailer.createTransport(ses({
+    accessKeyId: functions.config().aws_ses.access_key_id,
+    secretAccessKey: functions.config().aws_ses.secret_access_key,
+    region: functions.config().aws_ses.region,
+}));
 
 const verifyOrganizationEmail = (email) => {
     const regex = /(@ucsc\.edu)|(@gmail\.com)/g;
@@ -89,24 +85,52 @@ exports.newRegistration = functions.https.onCall(async (data, context) => {
     return { status: 'OK' };
 });
 
-const sendEmail = (email, subject, body) => {
+const createParams = (email, subject, body) => {
+    return {
+        Destination: { /* required */
+            CcAddresses: [],
+            ToAddresses: [email]
+        },
+        Message: { /* required */
+            Body: { /* required */
+                Html: {
+                    Charset: "UTF-8",
+                    Data: body,
+                },
+                Text: {
+                    Charset: "UTF-8",
+                    Data: "TEXT_FORMAT_BODY"
+                }
+            },
+            Subject: {
+                Charset: 'UTF-8',
+                Data: subject,
+            }
+            },
+        Source: 'sluglink@ucsc.edu', /* required */
+        ReplyToAddresses: [
+            'sluglink@ucsc.edu',
+           /* more items */
+         ],
+    };
+}
+
+const sendEmail = async (email, subject, body) => {
     return new Promise((resolve, reject) => {
         transporter.sendMail({
-            from: functions.config().emailverification.username,
+            from: 'sluglink@ucsc.edu',
             to: email,
             subject,
-            html: body
-        }, (error, info) => {
-            if (error) {
-                console.error(error);
-                reject(error);
-            } else {
-                console.log(`Email (${subject}) sent to ${email}`);
-                console.log(info);
-                resolve();
+            html: body,
+        },
+        function(err, data) {
+            if (err) {
+                console.log(err);
+                reject(err);
             }
-        });
-    });
+            resolve(data);
+        }); 
+    })
 }
 
 const refreshVerificationTokens = async (organization, student) => {

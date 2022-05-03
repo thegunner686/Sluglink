@@ -56,7 +56,12 @@ export const OrganizationSignUpDetailsSecondaryScreen = ({ route, navigation }) 
 
     useEffect(() => {
         const json = remoteConfig().getValue('categories').asString();
-        setCategories(JSON.parse(json));
+        try {
+            setCategories(JSON.parse(json));
+        } catch (error) {
+            console.log(error);
+            setCategories([]);
+        }
     }, []);
 
     return (
