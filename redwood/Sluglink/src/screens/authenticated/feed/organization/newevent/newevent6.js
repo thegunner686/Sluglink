@@ -18,7 +18,7 @@ export const NewEventScreen6 = ({ navigation, route }) => {
     const [uploadPhotos] = useStorage(state => [state.uploadPhotos]);
 
     useEffect(() => {
-        console.log({profile})
+        console.log({ profile })
     }, [profile]);
 
     /**
@@ -54,7 +54,8 @@ export const NewEventScreen6 = ({ navigation, route }) => {
         // Clear event data and navigate to feed
         clearEvent();
         setTimeout(() => {
-            navigation.navigate('FeedScreen')
+            // navigation.navigate('FeedScreen')
+            navigation.pop()
         }, 100);
     }, [newEvent, profile, createPost, clearEvent, uploadPhotos]);
 
@@ -69,7 +70,7 @@ export const NewEventScreen6 = ({ navigation, route }) => {
 
     return (
         <View style={styles.container}>
-            <DetailedEvent 
+            <DetailedEvent
                 event={{
                     ...newEvent,
                     organizationId: profile?.uid

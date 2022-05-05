@@ -1,6 +1,7 @@
 import create from "zustand";
 
 import firestore from "@react-native-firebase/firestore";
+import functions from "@react-native-firebase/functions";
 
 export const useUser = (uid) => create((set, get) => ({
     user: null,
@@ -41,6 +42,17 @@ export const useUser = (uid) => create((set, get) => ({
         await ref.putFile(uri);
 
         return ref.getDownloadURL();
+    },
+
+    deleteUser: () => {
+        try {
+            functions().httpsCallable('users-deleteUser')({});
+            return 0;
+        } catch (err) {
+            console.error(err);
+            return -1;
+        }
+
     }
 
 }));

@@ -14,12 +14,10 @@ import Animated, {
     FadeInLeft
 } from 'react-native-reanimated';
 
-import functions from "@react-native-firebase/functions";
-
 import { SettingsButton, StretchFlatList, EditButton } from './components';
 import { useProfileWithPosts } from '../../../hooks';
 import { Colors, Fonts, width, height, rgba } from '../../../styles';
-import { useAuth } from '../../../hooks'
+import { useAuth, useUser } from '../../../hooks'
 
 const Header = ({ profile }) => {
     const [signOut] = useAuth(state => [state.signOut])
@@ -59,6 +57,8 @@ const Header = ({ profile }) => {
 
 export const ProfileScreen = ({ navigation }) => {
     const [profile, update, posts, isFetchingPosts, refreshPosts, fetchMorePosts] = useProfileWithPosts();
+    const [deleteUser] = useUser(state => [state.deleteUser]);
+    const [signOut] = useAuth(state => [state.signOut])
 
     const toggleDrawer = useCallback(() => {
         navigation.toggleDrawer();
@@ -95,7 +95,11 @@ export const ProfileScreen = ({ navigation }) => {
                 buttonStyle={styles.editButton}
                 containerStyle={{ marginTop: 10 }}
                 onPress={() => {
-                    functions().httpsCallable('users-deleteUser')({});
+                    if (deleteUser() == 0) {
+                        // navigation.navigate("SignIn");
+                    } else {
+                        alert("There was an issue deleting your account, please try again later");
+                    }
                 }}
             />
         </SafeAreaView>

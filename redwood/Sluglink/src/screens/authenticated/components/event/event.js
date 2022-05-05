@@ -45,6 +45,7 @@ export const Event = ({
     useEffect(() => {
         const fetch = async () => {
             const res = await getPost(post.id);
+            console.log(res);
             setEvent(res);
         };
         if (post?.id != null) fetch();
@@ -55,7 +56,7 @@ export const Event = ({
      */
     const truncatedDescription = useMemo(() => {
         const charLimit = 100;
-        if(event?.physicalInfo && event.physicalInfo.length > charLimit) {
+        if (event?.physicalInfo && event.physicalInfo.length > charLimit) {
             return event.physicalInfo.slice(0, charLimit) + '...';
         } else {
             return event?.physicalInfo;
@@ -63,7 +64,7 @@ export const Event = ({
     }, [event?.physicalInfo]);
 
     const navigateToEvent = useCallback(() => {
-        navigation.navigate('ViewEvent', { id: event.id})
+        navigation.navigate('ViewEvent', { id: event.id })
     }, [navigation, event?.id]);
 
     return (
@@ -72,7 +73,7 @@ export const Event = ({
             exiting={FadeOutUp}
             style={styles.container}
         >
-            <ThumbnailGallery photos={event?.photos || []}/>
+            <ThumbnailGallery photos={event?.photos || []} />
             <TouchableOpacity style={styles.button} onPress={navigateToEvent}>
                 <View style={styles.titleAndTime}>
                     <Text style={styles.title}>{event?.title}</Text>

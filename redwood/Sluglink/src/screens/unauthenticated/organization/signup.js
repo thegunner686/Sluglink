@@ -28,11 +28,11 @@ export const OrganizationSignUpScreen = ({ navigation, route }) => {
     };
 
     const evaluateEmail = useCallback(() => {
-        if(isLoading) return;
+        if (isLoading) return;
 
         setIsLoading(true);
 
-        if(!validate(email)) {
+        if (!validate(email)) {
             inputRef.current?.shake();
             return;
         }
@@ -41,13 +41,13 @@ export const OrganizationSignUpScreen = ({ navigation, route }) => {
             .then(({ data }) => {
                 const { status } = data;
 
-                switch(status) {
+                switch (status) {
                     case 'UNREGISTERED':
                         setOrganization({ email });
                         navigation.navigate('OrganizationSignUpDetailsPrimary');
                         break;
                     case 'REGISTERED':
-                        if(data.organization.verified && data.student.verified) {
+                        if (data.organization.verified && data.student.verified) {
                             Alert.alert(
                                 'Registered',
                                 `${data.organization.name} has been registered and is in the process of being verified.`,
@@ -101,7 +101,7 @@ export const OrganizationSignUpScreen = ({ navigation, route }) => {
 
     useEffect(() => {
 
-        if(email.length > 0 && validate(email)) {
+        if (email.length > 0 && validate(email)) {
             navigation.setOptions({
                 headerRight: () => <NextButton onPress={evaluateEmail} />
             });
@@ -152,7 +152,7 @@ let styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.White.rgb,
-        display: 'flex', 
+        display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'flex-start',
