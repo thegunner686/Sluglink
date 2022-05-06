@@ -14,6 +14,7 @@ import { useAuth, useFollowing } from '../../../hooks';
 import styles from './ProfileScreen.styles.js';
 import { PostsFlatList } from '../components';
 import { useFocusEffect } from '@react-navigation/native';
+import { useOrganizationWithPosts } from '../../../hooks';
 import { getProfilePosts, useProfile } from '../../../hooks/useProfile';
 
 // TODO:
@@ -68,23 +69,20 @@ export default ProfileScreen = ({ navigation, route }) => {
 
     // when navigating to this screen, change state so that it refreshes the profile
     // important after editing your profile
-    const [ reset, setReset ] = useState(0);
-    useFocusEffect(useCallback(() => { setReset(Math.random()); } , []))
-    
+
     // load profile data
-    const profile = useProfile(uid, [uid, reset]);
-    const [posts, fetching, refresh, fetchMore] = getProfilePosts(uid);
+    const [profile, posts, fetching, refresh, fetchMore] = useOrganizationWithPosts(uid);
     const [isFollowing, follow, unfollow] = useFollowing(route.params?.uid || user.uid);
 
     if(!profile)
         return (<View />);
 
-    const category = profile.otherCategory ? `(Other Category) ${profile.otherCategory}` : profile.category;
+    const category = profile.otherCategory ? `(Other) ${profile.otherCategory}` : profile.category;
 
     return (
         <SafeAreaView 
             style={styles.container}
-            edges={['left', 'bottom', 'right']}
+            edges={['left', 'right']}
         >
             <View style={styles.background}></View>
             <View style={styles.content}>
@@ -104,10 +102,8 @@ export default ProfileScreen = ({ navigation, route }) => {
             {isOwnProfile ? <EditProfileButtons navigation={navigation} /> : <FollowButton isFollowing={isFollowing} follow={follow} unfollow={unfollow} />}
             
             {profile.organization && 
-            <View style={styles.posts}>
-                <Text>Posts</Text>
                 <PostsFlatList posts={posts} refresh={refresh} isFetching={fetching} fetchMore={fetchMore} emptyComponent={<Text>empty</Text>} navigation={navigation} />
-            </View>}
+            }
         </SafeAreaView>
     );
 };
