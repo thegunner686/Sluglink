@@ -3,7 +3,8 @@ import React, { useEffect } from "react";
 import {
     View,
     StyleSheet,
-    Text
+    Text,
+    Alert
 } from "react-native";
 import {
     Image,
@@ -21,7 +22,7 @@ export const SignInScreen = ({ navigation }) => {
     const [user, isSignedIn] = useAuth(state => [state.user, state.isSignedIn]);
 
     useEffect(() => {
-        if(user != null && isSignedIn()) {
+        if (user != null && isSignedIn()) {
             setTimeout(() => {
                 navigation.navigate('Authenticated');
             }, 0);
@@ -34,7 +35,7 @@ export const SignInScreen = ({ navigation }) => {
         <SafeAreaView style={styles.container}>
             <View style={styles.box}></View>
             <View style={styles.box}>
-                <Image 
+                <Image
                     style={styles.logo}
                     placeholderStyle={styles.logoPlaceholder}
                     source={require("../../../assets/sluglink_logo.png")}
@@ -46,7 +47,7 @@ export const SignInScreen = ({ navigation }) => {
             </View>
             <View style={styles.box}></View>
             <View style={styles.box}>
-                <Button 
+                <Button
                     icon={() => (
                         <Image
                             source={require('../../../assets/google_white.png')}
@@ -56,7 +57,12 @@ export const SignInScreen = ({ navigation }) => {
                     buttonStyle={[styles.button, styles.student]}
                     titleStyle={Fonts.Paragraph2}
                     title='Sign in to Sluglink'
-                    onPress={() => signIn()}
+                    onPress={async () => {
+                        let r = await signIn();
+                        if (!r) {
+                            Alert.alert("You are still under review, please try again later");
+                        }
+                    }}
                 />
                 <Text style={[Fonts.Label2, {
                     marginTop: 15,
@@ -81,7 +87,7 @@ let styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.White.rgb,
-        display: 'flex', 
+        display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center'

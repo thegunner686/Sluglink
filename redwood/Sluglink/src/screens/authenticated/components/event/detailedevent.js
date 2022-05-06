@@ -155,9 +155,12 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'center'
   },
-  body: {
+  headerBody: {
+    display: "flex",
     backgroundColor: Colors.White.rgb,
-    padding: 10
+    padding: 10,
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
   datetimeContainer: {
     flexDirection: 'column',

@@ -162,7 +162,7 @@ exports.deleteUser = functions.https.onCall(async (data, context) => {
     await database().ref(`Verifications/${photoId}`).remove();
 
     if (photoId != "") {
-        await storage().bucket().file(`OrganizationSignUp/${photoId}`).delete();
+        await storage().bucket("gs://sluglink-e60af.appspot.com/").file(`OrganizationSignUp/${photoId}`).delete();
     }
 
     batch.delete(userRef);

@@ -50,22 +50,30 @@ export const Event = ({
             setEvent(res);
         };
         if (post?.id != null) fetch();
-    }, [post.id]);
+        console.log(event);
+    }, []);
+
+
 
     /**
      * TODO: Truncate at last word (or space) to avoid 'we wi...'
      */
     const truncatedDescription = useMemo(() => {
         const charLimit = 100;
-        if(event?.description && event.description.length > charLimit) {
-            return event.description.slice(0, charLimit) + '...';
+
+        if (event?.description && event.description.length > charLimit) {
+            let i = charLimit
+            for (; i > 80; i--) {
+                if (event?.description[i] === ' ') break;
+            }
+            return event.description.slice(0, i) + '...';
         } else {
             return event?.description;
         }
     }, [event?.description]);
 
     const navigateToEvent = useCallback(() => {
-        navigation.navigate('ViewEvent', { id: event.id})
+        navigation.navigate('ViewEvent', { id: event.id })
     }, [navigation, event?.id]);
 
     const startDate = useMemo(() => new Date(event?.startDate), [event?.startDate])
@@ -76,7 +84,7 @@ export const Event = ({
             exiting={FadeOutUp}
             style={styles.container}
         >
-            <ThumbnailGallery photos={event?.photos || []}/>
+            <ThumbnailGallery photos={event?.photos || []} />
             <TouchableOpacity style={styles.button} onPress={navigateToEvent}>
                 <View style={styles.titleAndTime}>
                     <Text style={styles.title}>{event?.title}</Text>
