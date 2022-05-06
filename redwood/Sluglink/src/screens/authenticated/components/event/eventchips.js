@@ -18,7 +18,7 @@ export const EventChips = React.memo(({
 }) => {
   return (
     <View style={styles.row}>
-      {isVirtual && 
+      {isPhysical && 
         <Chip
           title='In-Person'
           titleStyle={{color: Colors.White.rgb, ...Fonts.Label3}}
@@ -34,7 +34,7 @@ export const EventChips = React.memo(({
           }
         />
       }
-      {isPhysical && 
+      {isVirtual && 
         <Chip
           title='Virtual'
           titleStyle={Fonts.Label3}
