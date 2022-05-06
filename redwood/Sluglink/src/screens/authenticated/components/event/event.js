@@ -45,19 +45,26 @@ export const Event = ({
     useEffect(() => {
         const fetch = async () => {
             const res = await getPost(post.id);
-            console.log(res);
             setEvent(res);
         };
         if (post?.id != null) fetch();
-    }, [post.id]);
+        console.log(event);
+    }, []);
+
+
 
     /**
      * TODO: Truncate at last word (or space) to avoid 'we wi...'
      */
     const truncatedDescription = useMemo(() => {
         const charLimit = 100;
+
         if (event?.physicalInfo && event.physicalInfo.length > charLimit) {
-            return event.physicalInfo.slice(0, charLimit) + '...';
+            let i = charLimit
+            for (; i > 80; i--) {
+                if (event?.physicalInfo[i] === ' ') break;
+            }
+            return event.physicalInfo.slice(0, i) + '...';
         } else {
             return event?.physicalInfo;
         }

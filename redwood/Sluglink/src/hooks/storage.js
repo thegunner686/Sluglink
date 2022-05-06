@@ -13,7 +13,7 @@ export const useStorage = create((set, get) => ({
         let ref = storage().ref(`${path}/${filename}`);
 
         await ref.putFile(uri);
-        
+
         return ref.getDownloadURL();
     },
 
@@ -24,9 +24,17 @@ export const useStorage = create((set, get) => ({
      * @returns Array of { filename, url }
      */
     uploadPhotos: async (path, photos) => {
-        return Promise.all(photos.map(async ({fileName, uri}) => {
-            const url = await get().uploadPhoto(path, fileName, uri);
-            return { filename: fileName, url };
-        }));
+        return Promise.all(
+            photos.map(async ({
+                fileName,
+                uri
+            }) => {
+                await get().uploadPhoto(path, fileName, uri)
+                    .then((url) => {
+                        return {
+                            url
+                        };
+                    });
+            }));
     }
 }));

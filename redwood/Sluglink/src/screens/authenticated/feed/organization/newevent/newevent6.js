@@ -17,9 +17,13 @@ export const NewEventScreen6 = ({ navigation, route }) => {
     const [profile] = useProfile();
     const [uploadPhotos] = useStorage(state => [state.uploadPhotos]);
 
+    // useEffect(() => {
+    //     console.log({ profile })
+    // }, [profile]);
+
     useEffect(() => {
-        console.log({ profile })
-    }, [profile]);
+        console.log(newEvent.photos);
+    }, []);
 
     /**
      * Uploads all photos related to the event to the firebase storage bucket and
@@ -29,7 +33,7 @@ export const NewEventScreen6 = ({ navigation, route }) => {
         // Upload photos to firebase and store urls
         let photos = [];
         try {
-            photos = await uploadPhotos('Events', newEvent.photos)
+            photos = await uploadPhotos('Events', newEvent.photos);
         } catch (error) {
             console.log(error);
         }
@@ -54,8 +58,7 @@ export const NewEventScreen6 = ({ navigation, route }) => {
         // Clear event data and navigate to feed
         clearEvent();
         setTimeout(() => {
-            // navigation.navigate('FeedScreen')
-            navigation.pop()
+            navigation.navigate('Home');
         }, 100);
     }, [newEvent, profile, createPost, clearEvent, uploadPhotos]);
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -26,10 +26,6 @@ export const DetailedEvent = React.memo(({
 }) => {
   const [organization] = useOrganization(event?.organizationId);
 
-  useEffect(() => {
-    console.log(event)
-  })
-
   const StretchListHeader = useMemo(() => {
     return (
       <FullGallery
@@ -44,12 +40,10 @@ export const DetailedEvent = React.memo(({
   }
 
   const formatTime = (date) => {
+    if (!date) return "";
     let timePattern = new RegExp(/(\d+:\d+).*([A-Z].)/);
     match = timePattern.exec(new Date(date).toLocaleTimeString('en-US'));
-    console.log(match);
     return match[1] + " " + match[2];
-
-    // return list[0] + ":" + list[1] + list[2]
   }
 
   const openMaps = (location) => {
@@ -83,40 +77,38 @@ export const DetailedEvent = React.memo(({
 
           <View style={styles.rightHeader}>
             {event?.isPhysical ?
-              <View style={styles.datetimeContainer}>
-                <TouchableOpacity style={{ flexDirection: 'row' }} onPress={() => openMaps(event.location)}>
-                  <Text>
-                    {event?.location?.name}
-                  </Text>
+              <TouchableOpacity style={{ flex: 1 }} onPress={() => openMaps(event.location)}>
+                <View style={styles.datetimeContainer}>
+
                   <Icon
                     type='material-community'
                     name='map-marker-outline'
                     size={sizes.Icon5}
-                    style={{ marginLeft: 5 }}
+                    style={{ marginRight: 5 }}
                   />
-                </TouchableOpacity>
-              </View>
+                  <Text numberOfLines={1} ellipsizeMode="tail">{event?.location?.name}</Text>
+
+                </View>
+              </TouchableOpacity>
               : null
             }
             <View style={styles.datetimeContainer}>
-              <Text>{formatDate(event.startDate)}</Text>
               <Icon
                 type='material-community'
                 name='calendar'
                 size={sizes.Icon5}
-                style={{ marginLeft: 5 }}
+                style={{ marginRight: 5 }}
               />
-
+              <Text>{formatDate(event.startDate)}</Text>
             </View>
             <View style={styles.datetimeContainer}>
-              <Text>{formatTime(event.startDate)}</Text>
               <Icon
                 type='material-community'
                 name='clock-outline'
                 size={sizes.Icon5}
-                style={{ marginLeft: 5 }}
+                style={{ marginRight: 5 }}
               />
-
+              <Text>{formatTime(event.startDate)}</Text>
             </View>
           </View>
         </View >
@@ -165,19 +157,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 1,
     alignItems: 'center',
-    justifyContent: "flex-end"
+    // justifyContent: "space-between"
   },
   leftHeader: {
-    width: "70%"
+    flex: .6
   },
   rightHeader: {
-    width: "30%",
-    justifyContent: "flex-end",
+    width: "40%",
+    display: "flex",
+    flex: .4,
     alignItems: "flex-end"
   },
   textBody: {
     flex: 1,
     display: "flex",
-
   }
 })
