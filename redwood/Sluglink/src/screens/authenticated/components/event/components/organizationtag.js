@@ -8,7 +8,7 @@ import {
 import {
   Image
 } from 'react-native-elements';
-import { Fonts, sizes } from '../../../../../styles';
+import { Fonts, Colors, sizes } from '../../../../../styles';
 
 export const OrganizationTag = React.memo(({
   organization,
@@ -25,6 +25,12 @@ export const OrganizationTag = React.memo(({
         style={styles.picture}
       />
       <Text style={styles.name}> {organization?.name}</Text>
+      <Text style={styles.category}> 
+        {organization?.category == 'Other' ? 
+          organization?.otherCategory :
+          organization?.category
+        }
+      </Text>
     </TouchableOpacity>
   )
 });
@@ -34,6 +40,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     paddingVertical: 5,
     flex: 1,
   },
@@ -44,5 +51,10 @@ const styles = StyleSheet.create({
   },
   name: {
     ...Fonts.Paragraph2,
+  },
+  category: {
+    marginLeft: 10,
+    ...Fonts.Paragraph4,
+    color: Colors.Grey4.rgb
   }
 })

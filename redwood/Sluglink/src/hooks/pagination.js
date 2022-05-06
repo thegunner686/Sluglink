@@ -15,7 +15,9 @@ import firestore from '@react-native-firebase/firestore';
  *  },
  * }
  */
-
+/**
+ * Follow the [rules of queries](https://firebase.google.com/docs/firestore/query-data/queries)
+ */
 export const usePagination = ({
     collection,
     doc,
@@ -48,6 +50,7 @@ export const usePagination = ({
                 ref = ref.collection(subCollection);
             }
         }
+
         if (queries && queries.length > 0) {
             for (const query of queries) {
                 ref = query(ref);

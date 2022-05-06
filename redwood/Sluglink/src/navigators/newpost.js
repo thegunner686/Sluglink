@@ -15,8 +15,7 @@ import {
     EditPhysicalEventScreen,
     NewEventScreen5,
     NewEventScreen6,
-    DetailedEvent,
-    NewEventScreen45
+    NewEventScreen7,
 } from '../screens';
 import { Fonts } from '../styles';
 import { BackButton } from '.';
@@ -68,24 +67,24 @@ export const NewPostStack = () => {
                 })}
             />
             <Stack.Screen
-                name='NewEventScreen45'
-                component={NewEventScreen45}
-                options={({ navigation, route }) => ({
-                    headerLeft: () => <BackButton goBack={navigation.goBack} />,
-                    headerTitle: () => <Text style={Fonts.Paragraph3}>In-Person Setup</Text>,
-                })}
-            />
-            <Stack.Screen
                 name='NewEventScreen5'
                 component={NewEventScreen5}
                 options={({ navigation, route }) => ({
                     headerLeft: () => <BackButton goBack={navigation.goBack} />,
-                    headerTitle: () => <Text style={Fonts.Paragraph3}>Event Media</Text>,
+                    headerTitle: () => <Text style={Fonts.Paragraph3}>Event Description</Text>,
                 })}
             />
             <Stack.Screen
                 name='NewEventScreen6'
                 component={NewEventScreen6}
+                options={({ navigation, route }) => ({
+                    headerLeft: () => <BackButton goBack={navigation.goBack} />,
+                    headerTitle: () => <Text style={Fonts.Paragraph3}>Add Pictures</Text>,
+                })}
+            />
+            <Stack.Screen
+                name='NewEventScreen7'
+                component={NewEventScreen7}
                 options={({ navigation, route }) => ({
                     headerLeft: () => <BackButton goBack={navigation.goBack} />,
                     headerTitle: () => <Text style={Fonts.Paragraph3}>Event Review</Text>,

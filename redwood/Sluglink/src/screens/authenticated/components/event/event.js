@@ -32,6 +32,8 @@ import { usePosts, useOrganization } from '../../../../hooks';
 import { Fonts, Colors, width, height, sizes } from '../../../../styles';
 import { EventFooter } from './eventfooter';
 import { ThumbnailGallery } from './components/thumbnailgallery';
+import { EventChips } from './eventchips';
+import { getDayWithEnding, getMonthName, getNumeralTime, getNumeralDateAndTime } from '../../../../utils';
 
 export const Event = ({
     index,
@@ -55,17 +57,19 @@ export const Event = ({
      */
     const truncatedDescription = useMemo(() => {
         const charLimit = 100;
-        if(event?.physicalInfo && event.physicalInfo.length > charLimit) {
-            return event.physicalInfo.slice(0, charLimit) + '...';
+        if(event?.description && event.description.length > charLimit) {
+            return event.description.slice(0, charLimit) + '...';
         } else {
-            return event?.physicalInfo;
+            return event?.description;
         }
-    }, [event?.physicalInfo]);
+    }, [event?.description]);
 
     const navigateToEvent = useCallback(() => {
         navigation.navigate('ViewEvent', { id: event.id})
     }, [navigation, event?.id]);
 
+    const startDate = useMemo(() => new Date(event?.startDate), [event?.startDate])
+    const createdAt = useMemo(() => event?.createdAt.toDate(), [event?.createdAt])
     return (
         <Animated.View
             entering={FadeInDown.delay(index * 100)}
@@ -78,11 +82,11 @@ export const Event = ({
                     <Text style={styles.title}>{event?.title}</Text>
                     <Icon
                         type='material-community'
-                        name='clock-outline'
+                        name='calendar'
                         size={sizes.Icon5}
                         color={Colors.Black}
                     />
-                    <Text style={styles.time}> 9AM - 6PM</Text>
+                    <Text style={styles.time}>{` ${getMonthName(startDate)} ${getDayWithEnding(startDate)} at ${getNumeralTime(startDate)}`}</Text>
                 </View>
                 <View style={styles.descriptionAndChevron}>
                     <View style={styles.descriptionContainer}>
@@ -95,8 +99,9 @@ export const Event = ({
                         />
                     </View>
                 </View>
+                <EventChips isVirtual={event?.isVirtual} isPhysical={event?.isPhysical}/>
                 <View style={styles.footer}>
-                    <Text style={styles.createdAt}>8m ago</Text>
+                    <Text style={styles.createdAt}>Posted {getNumeralDateAndTime(createdAt)}</Text>
                 </View>
             </TouchableOpacity>
         </Animated.View>

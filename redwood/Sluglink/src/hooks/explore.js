@@ -11,6 +11,7 @@ import PostEvents from '../emitters/postevents';
 export const useExplorePosts = (category) => {
   const queries = [
     (ref) => ref.where('type', '==', 'Event'),
+    // (ref) => ref.where('endDate', '>', Date.now()),
   ];
   if(category != null) {
     queries.push(

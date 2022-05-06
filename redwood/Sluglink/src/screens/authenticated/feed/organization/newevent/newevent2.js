@@ -69,7 +69,7 @@ export const NewEventScreen2 = ({ navigation, route }) => {
           onChange={(event, date) => {
             setEndDate(date)
           }}
-          minimumDate={new Date()}
+          minimumDate={startDate}
         />
       </View>
       <View style={{ flex: 1}}></View>
