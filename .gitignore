@@ -20,6 +20,7 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
+Podfile.lock
 
 # Android/IntelliJ
 #
@@ -65,3 +66,6 @@ buck-out/
 .env
 .local.env
 keys.json
+
+# Firebase Logs
+loblolly/*.log

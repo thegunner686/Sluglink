@@ -39,7 +39,7 @@ export const NewEventScreen5 = ({ navigation }) => {
       edges={['bottom', 'left', 'right', 'top']}
     >
       <ProgressBar
-        progress={1 / 6}
+        progress={5 / 6}
       />
       <Animated.Text
         entering={FadeInLeft.delay(500)}

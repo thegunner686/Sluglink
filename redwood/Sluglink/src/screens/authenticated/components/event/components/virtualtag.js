@@ -41,7 +41,7 @@ export const VirtualTag = React.memo(({
           <Text style={{ color: Colors.SteelBlue.rgb, ...Fonts.Paragraph2}}>
             {link}
           </Text>
-          <Text style={Fonts.Paragraph4}>{virtualInfo}</Text>
+          {virtualInfo != null && <Text style={Fonts.Paragraph4}>{virtualInfo}</Text>}
         </View>
         <View>
           <Icon

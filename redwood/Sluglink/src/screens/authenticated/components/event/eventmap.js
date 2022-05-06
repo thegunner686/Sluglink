@@ -44,6 +44,7 @@ export const EventMap = React.memo(({
 const styles = StyleSheet.create({
   map: {
     width: 'auto',
-    height: width / 10 * 9
+    height: width / 10 * 9,
+    borderRadius: 10,
   }
 });

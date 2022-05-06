@@ -1,6 +1,7 @@
 import React, {
   useEffect,
-  useState
+  useState,
+  useCallback
 } from 'react';
 
 import {
@@ -39,9 +40,11 @@ export const NewEventScreen4 = ({ navigation, route }) => {
 
   useEffect(() => {
     if(newEvent.location != null || newEvent.isVirtual) {
-      navigation.setOptions({
-        headerRight: () => <NextButton onPress={navigateNext}/>
-      });
+      setTimeout(() => {
+        navigation.setOptions({
+          headerRight: () => <NextButton onPress={navigateNext}/>
+        });
+      }, 500);
     } else {
       setTimeout(() => {
         navigation.setOptions({
@@ -50,7 +53,6 @@ export const NewEventScreen4 = ({ navigation, route }) => {
       }, 500);
     }
   }, [newEvent.location])
-
   return (
     <SafeAreaView
         style={styles.container}

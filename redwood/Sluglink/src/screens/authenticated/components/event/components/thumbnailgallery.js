@@ -24,7 +24,7 @@ export const ThumbnailGallery = React.memo(({
   const renderPhoto = useCallback(({ item: photo, index}) => {
     return (
       <Image
-        source={{ uri: photo.url || photo.uri }}
+        source={{ uri: photo?.url || photo?.uri }}
         containerStyle={styles.photoContainer}
         style={styles.photo}
         resizeMode='cover'

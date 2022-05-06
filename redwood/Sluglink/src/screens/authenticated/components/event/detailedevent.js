@@ -94,11 +94,12 @@ export const DetailedEvent = React.memo(({
       navigation.navigate('ViewProfile', { uid: event?.organizationId })
     };
 
-    const createdAt = event?.createdAt.toDate();
+    const createdAt = event?.createdAt?.toDate();
 
     return (
       <View style={styles.body}>
         <Text style={styles.title}>{event?.title}</Text>
+        <Text style={{textAlign: 'center', ...Fonts.Label4}}>Hosted by</Text>
         <View style={styles.centeredRow}>
           <OrganizationTag
             organization={organization}
@@ -120,11 +121,16 @@ export const DetailedEvent = React.memo(({
           </>
           : null
         }
-        <Text style={{
-          ...Fonts.Paragraph5,
-          color: Colors.Grey5.rgb,
-          marginTop: 10,
-        }}>Posted on {getNumeralDate(createdAt)}</Text>
+        {createdAt != null ? 
+          <Text style={{
+            ...Fonts.Paragraph5,
+            color: Colors.Grey5.rgb,
+            marginTop: 10,
+          }}>
+            Posted {getNumeralDateAndTime(createdAt)}
+          </Text>
+          : null
+        }
       </View>
     )
   }, [
@@ -141,11 +147,16 @@ export const DetailedEvent = React.memo(({
   const stretchListHeaderHeight = useMemo(() => Math.floor((width / height) * 100), [width, height]);
 
   return (
-    <StretchList
-      header={StretchListHeader}
-      body={StretchListBody}
-      headerSize={stretchListHeaderHeight}
-    />
+    event?.photos?.length > 0 ?
+      <StretchList
+        header={StretchListHeader}
+        body={StretchListBody}
+        headerSize={stretchListHeaderHeight}
+      />
+      :
+      <View style={styles.noPhotosBody}>
+        {StretchListBody}
+      </View>
   )
 });
 
@@ -175,5 +186,10 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center'
+  },
+  noPhotosBody: {
+    flex: 1,
+    backgroundColor: Colors.White.rgb,
+    padding: 10,
   }
 })

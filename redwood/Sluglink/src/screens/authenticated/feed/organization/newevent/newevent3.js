@@ -1,6 +1,7 @@
 import React, {
   useEffect,
-  useState
+  useState,
+  useCallback
 } from 'react';
 
 import {
@@ -29,27 +30,31 @@ export const NewEventScreen3 = ({ navigation, route }) => {
   const [selectedOption, setSelectedOption] = useState(0);
   const [newEvent, setNewEvent] = useNewEvent(state => [state.newEvent, state.setNewEvent])
 
-  const navigateNext = () => {
+  const navigateNext = useCallback(() => {
     navigation.navigate('NewEventScreen4');
     setNewEvent({
       isVirtual: options[selectedOption] === 'Yes'
     });
-  };
+  }, [navigation, setNewEvent, options, selectedOption]);
 
   useEffect(() => {
     if(options[selectedOption] === 'Yes') {
       if(newEvent.link != null && newEvent.link.length > 0) {
-        navigation.setOptions({
-          headerRight: () => (
-            <NextButton
-              onPress={navigateNext}
-            />
-          )
-        })
+        setTimeout(() => {
+          navigation.setOptions({
+            headerRight: () => (
+              <NextButton
+                onPress={navigateNext}
+              />
+            )
+          });
+        }, 0);
       } else {
-        navigation.setOptions({
-          headerRight: null
-        })
+        setTimeout(() => {
+          navigation.setOptions({
+            headerRight: null
+          })
+        }, 0);
       }
     } else {
       setTimeout(() => {
@@ -62,8 +67,7 @@ export const NewEventScreen3 = ({ navigation, route }) => {
         })
       }, 500);
     }
-  }, [newEvent, selectedOption]);
-
+  }, [newEvent, selectedOption, setNewEvent, navigateNext]);
   return (
     <SafeAreaView
         style={styles.container}

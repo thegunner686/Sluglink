@@ -16,11 +16,7 @@ export const NewEventScreen7 = ({ navigation, route }) => {
     const [newEvent, clearEvent] = useNewEvent(state => [state.newEvent, state.clearEvent]);
     const [profile] = useProfile();
     const [uploadPhotos] = useStorage(state => [state.uploadPhotos]);
-
-    useEffect(() => {
-        console.log({profile})
-    }, [profile]);
-
+    
     /**
      * Uploads all photos related to the event to the firebase storage bucket and
      * appends URLS to the .photos attribute, then uploads event
@@ -54,7 +50,7 @@ export const NewEventScreen7 = ({ navigation, route }) => {
         // Clear event data and navigate to feed
         clearEvent();
         setTimeout(() => {
-            navigation.navigate('FeedScreen')
+          navigation.navigate('Home');
         }, 100);
     }, [newEvent, profile, createPost, clearEvent, uploadPhotos]);
 

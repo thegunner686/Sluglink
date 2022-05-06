@@ -49,9 +49,11 @@ import React, {
     };
   
     useEffect(() => {
-      navigation.setOptions({
-        headerRight: () => <NextButton onPress={navigateNext} />
-      });
+      setTimeout(() => {
+        navigation.setOptions({
+            headerRight: () => <NextButton onPress={navigateNext} />
+        });
+      }, 500);
     }, []);
   
     useEffect(() => {

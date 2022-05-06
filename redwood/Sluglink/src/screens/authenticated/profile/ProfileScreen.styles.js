@@ -59,6 +59,7 @@ export default styles = StyleSheet.create({
         ...Shadow.bottom,
 
         borderRadius: width / 2,
+        borderStyle: "solid",
         borderColor: Colors.White.rgb,
         borderWidth: 2,
 

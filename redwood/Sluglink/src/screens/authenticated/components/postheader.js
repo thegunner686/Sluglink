@@ -64,7 +64,6 @@ export const PostHeader = ({
                                     organization?.category
                                 }
                             </Text>
-                            <Text style={[Fonts.Label4, typeColorStyle]}>{post?.type}</Text>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -112,8 +111,8 @@ const styles = StyleSheet.create({
         paddingRight: 10
     },
     picture: {
-        width: sizes.Icon2,
-        height: sizes.Icon2,
+        width: sizes.Icon3,
+        height: sizes.Icon3,
         borderRadius: 100,
     },
     placeholderPicture: {

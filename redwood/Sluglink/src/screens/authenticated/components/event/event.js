@@ -13,27 +13,19 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import {
-    Divider,
     Icon
 } from 'react-native-elements';
 import Animated, {
-    AnimatedLayout,
-    SlideInUp,
-    SlideInLeft,
-    SlideOutDown,
-    Layout,
-    SlideOutLeft,
     FadeInDown,
     FadeOutUp,
 } from "react-native-reanimated";
 
-import { PostHeader } from '../postheader';
 import { usePosts, useOrganization } from '../../../../hooks';
-import { Fonts, Colors, width, height, sizes } from '../../../../styles';
-import { EventFooter } from './eventfooter';
+import { Fonts, Colors, width, sizes } from '../../../../styles';
 import { ThumbnailGallery } from './components/thumbnailgallery';
 import { EventChips } from './eventchips';
 import { getDayWithEnding, getMonthName, getNumeralTime, getNumeralDateAndTime } from '../../../../utils';
+import { PostHeader } from '../postheader';
 
 export const Event = ({
     index,
@@ -52,8 +44,6 @@ export const Event = ({
         if (post?.id != null) fetch();
         console.log(event);
     }, []);
-
-
 
     /**
      * TODO: Truncate at last word (or space) to avoid 'we wi...'
@@ -84,6 +74,10 @@ export const Event = ({
             exiting={FadeOutUp}
             style={styles.container}
         >
+            <PostHeader
+                post={post}
+                organization={organization}
+            />
             <ThumbnailGallery photos={event?.photos || []} />
             <TouchableOpacity style={styles.button} onPress={navigateToEvent}>
                 <View style={styles.titleAndTime}>

@@ -24,17 +24,9 @@ export const useStorage = create((set, get) => ({
      * @returns Array of { filename, url }
      */
     uploadPhotos: async (path, photos) => {
-        return Promise.all(
-            photos.map(async ({
-                fileName,
-                uri
-            }) => {
-                await get().uploadPhoto(path, fileName, uri)
-                    .then((url) => {
-                        return {
-                            url
-                        };
-                    });
-            }));
+        return Promise.all(photos.map(async ({fileName, uri}) => {
+            const url = await get().uploadPhoto(path, fileName, uri);
+            return { filename: fileName, url };
+        }));
     }
 }));
