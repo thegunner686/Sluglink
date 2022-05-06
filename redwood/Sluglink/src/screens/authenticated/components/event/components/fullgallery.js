@@ -5,9 +5,7 @@ import {
   StyleSheet,
   Text
 } from 'react-native';
-import {
-  Image
-} from 'react-native-elements';
+import FastImage from 'react-native-fast-image';
 import { width } from '../../../../../styles';
 
 export const FullGallery = React.memo(({
@@ -23,11 +21,14 @@ export const FullGallery = React.memo(({
 
   const renderPhoto = useCallback(({ item: photo, index}) => {
     return (
-      <Image
-        source={{ uri: photo?.url || photo?.uri }}
+      <FastImage
+        source={{
+          uri: photo.url,
+          priority: FastImage.priority.high,
+        }}
         containerStyle={styles.photoContainer}
         style={styles.photo}
-        resizeMode='cover'
+        resizeMode={FastImage.resizeMode.cover}
       />
     )
   }, []);
@@ -62,7 +63,8 @@ const styles = StyleSheet.create({
     height: width,
   },
   photo: {
-    // borderRadius: 10,
+    width: width,
+    height: width,
   },
   flatlist: {
     display: 'flex',

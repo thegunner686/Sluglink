@@ -12,10 +12,10 @@ import {
 } from 'react-native';
 import {
     Button,
-    Image,
     Input,
     Icon
 } from 'react-native-elements';
+import FastImage from 'react-native-fast-image';
 import { Picker } from '@react-native-picker/picker';
 import { launchImageLibrary } from 'react-native-image-picker';
 
@@ -99,8 +99,11 @@ export const EditProfileScreen = ({ navigation }) => {
                 style={{ backgroundColor: Colors.White.rgb, width, }}
                 contentContainerStyle={styles.container}
             >
-                <Image 
-                    source={{ uri: editedProfile?.picture }}
+                <FastImage 
+                    source={{
+                        uri: editedProfile?.picture,
+                        priority: FastImage.priority.normal,
+                    }}
                     style={styles.picture}
                 />
 

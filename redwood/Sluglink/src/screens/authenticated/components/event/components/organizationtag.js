@@ -5,9 +5,7 @@ import {
   Text,
   TouchableOpacity
 } from 'react-native';
-import {
-  Image
-} from 'react-native-elements';
+import FastImage from 'react-native-fast-image';
 import { Fonts, Colors, sizes } from '../../../../../styles';
 
 export const OrganizationTag = React.memo(({
@@ -20,8 +18,11 @@ export const OrganizationTag = React.memo(({
       onPress={onPress}
       style={styles.container}
     >
-      <Image
-        source={{ uri: organization?.picture }}
+      <FastImage
+        source={{
+          uri: organization?.picture,
+          priority: FastImage.priority.high,
+        }}
         style={styles.picture}
       />
       <Text style={styles.name}> {organization?.name}</Text>

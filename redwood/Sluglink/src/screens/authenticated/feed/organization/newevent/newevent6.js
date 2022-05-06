@@ -14,9 +14,9 @@ import React, {
   import {
     Icon,
     Button,
-    Image
   } from 'react-native-elements';
-  import { FlatList, TouchableOpacity } from 'react-native-gesture-handler';
+  import FastImage from 'react-native-fast-image';
+  import { FlatList } from 'react-native-gesture-handler';
   import Animated, {
     FadeInLeft,
     FadeOutLeft,
@@ -152,8 +152,11 @@ import React, {
           exiting={FadeOutLeft.delay(100)}
           style={styles.image}
         >
-          <Image
-            source={{ uri: item.uri }}
+          <FastImage
+            source={{
+                uri: item.uri,
+                priority: FastImage.priority.normal,
+            }}
             containerStyle={{
               width: '100%',
               height: '100%',

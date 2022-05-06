@@ -71,7 +71,6 @@ export const EventFooter = ({
 
     // this should probably also go in a components file
     const FormattedDate = (date) => {
-        console.log(getNumeralDate(date));
         return <>
             <Text style={[Fonts.Paragraph3, {
                 color: Colors.Grey3.rgb

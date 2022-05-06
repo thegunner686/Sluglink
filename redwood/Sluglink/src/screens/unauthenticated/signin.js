@@ -7,10 +7,9 @@ import {
     Alert
 } from "react-native";
 import {
-    Image,
     Button,
-    Divider
 } from 'react-native-elements';
+import FastImage from 'react-native-fast-image'
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Colors, Fonts, sizes, width } from "../../styles";
@@ -35,10 +34,10 @@ export const SignInScreen = ({ navigation }) => {
         <SafeAreaView style={styles.container}>
             <View style={styles.box}></View>
             <View style={styles.box}>
-                <Image
+                <FastImage
                     style={styles.logo}
                     placeholderStyle={styles.logoPlaceholder}
-                    source={require("../../../assets/sluglink_logo.png")}
+                    source={require('../../../assets/sluglink_logo.png')}
                     resizeMode='contain'
                 />
                 <Text style={Fonts.Graph4}>
@@ -49,7 +48,7 @@ export const SignInScreen = ({ navigation }) => {
             <View style={styles.box}>
                 <Button
                     icon={() => (
-                        <Image
+                        <FastImage
                             source={require('../../../assets/google_white.png')}
                             style={{ width: sizes.Icon4, height: sizes.Icon4, marginRight: 10, }}
                         />

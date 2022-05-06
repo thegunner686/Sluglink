@@ -42,8 +42,7 @@ export const Event = ({
             setEvent(res);
         };
         if (post?.id != null) fetch();
-        console.log(event);
-    }, []);
+    }, [post]);
 
     /**
      * TODO: Truncate at last word (or space) to avoid 'we wi...'

@@ -3,9 +3,7 @@ import React, { useMemo } from 'react';
 import {
     StyleSheet
 } from 'react-native';
-import {
-    Image
-} from 'react-native-elements';
+import FastImage from 'react-native-fast-image';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { FeedScreen } from '../screens';
@@ -25,7 +23,7 @@ export const FeedStack = () => {
             entering={FadeInUp.delay(500)}
             exiting={FadeOutUp}
         >
-            <Image
+            <FastImage
                 style={styles.logo}
                 placeholderStyle={styles.logoPlaceholder}
                 source={require('../../assets/sluglink_logo.png')}

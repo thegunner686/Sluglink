@@ -5,10 +5,6 @@ import {
     View,
     StyleSheet
 } from 'react-native';
-import {
-    Button,
-    Image
-} from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { SettingsButton } from './components';

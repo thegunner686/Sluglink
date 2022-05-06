@@ -3,8 +3,8 @@ import React, { useCallback, useState } from 'react';
 import {
     Text,
     View,
-    Image
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {
     Button,
 } from 'react-native-elements';
@@ -89,7 +89,13 @@ export default ProfileScreen = ({ navigation, route }) => {
             <View style={styles.background}></View>
             <View style={styles.content}>
                 <Text style={styles.profileHeaderText}>Profile</Text>
-                <Image style={styles.profilePicture} source={{ uri: profile.picture }} />
+                <FastImage
+                    style={styles.profilePicture}
+                    source={{
+                        uri: profile.picture,
+                        priority: FastImage.priority.high,
+                    }}
+                />
                 <Text style={styles.name}>{profile.name}</Text>
                 {profile.organization && <Text style={styles.category}>{category}</Text>}
                 <Text style={styles.email}>{profile.email}</Text>

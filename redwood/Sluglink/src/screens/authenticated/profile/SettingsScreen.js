@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import {
     Text,
     View,
-    Image,
     Alert
 } from 'react-native';
 import {

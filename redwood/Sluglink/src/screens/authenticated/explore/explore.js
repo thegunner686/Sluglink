@@ -33,7 +33,6 @@ const FilterChip = ({ index, title, onPress, selected }) => {
             <Chip
                 titleStyle={Fonts.Paragraph3}
                 onPress={() => {
-                    console.log(title)
                     onPress();
                 }}
                 containerStyle={{ margin: 5 }}

@@ -5,9 +5,7 @@ import {
     Text,
     StyleSheet
 } from 'react-native';
-import {
-    Image
-} from 'react-native-elements';
+import FastImage from 'react-native-fast-image';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Colors, Fonts, width } from '../../../styles';
@@ -16,7 +14,7 @@ export const NewUserWelcomeScreen = () => {
     return (
         <SafeAreaView>
             <Text style={styles.welcome}>Welcome to</Text>
-            <Image
+            <FastImage
                 source={require('../../../../assets/slugline_logo.png')}
                 style={styles.image}
             />

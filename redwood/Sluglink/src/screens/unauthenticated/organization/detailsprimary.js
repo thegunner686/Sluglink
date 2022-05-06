@@ -9,8 +9,8 @@ import {
 import {
     Icon,
     Input,
-    Image,
 } from 'react-native-elements';
+import FastImage from 'react-native-fast-image';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { launchImageLibrary } from 'react-native-image-picker';
 
@@ -72,8 +72,11 @@ export const OrganizationSignUpDetailsPrimaryScreen = ({ navigation, route }) =>
                 onPress={onImagePress}
                 disabled={isUploading}
             >
-                <Image
-                    source={photoURI == "" ? null : { uri: photoURI }}
+                <FastImage
+                    source={photoURI == "" ? null : {
+                        uri: photoURI,
+                        priority: FastImage.priority.normal
+                    }}
                     style={styles.image}
                     placeholderStyle={styles.placeholderImage}
                     PlaceholderContent={

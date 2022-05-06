@@ -11,9 +11,9 @@ import {
     TouchableOpacity
 } from 'react-native';
 import {
-    Image,
     Icon
 } from 'react-native-elements';
+import FastImage from 'react-native-fast-image';
 import {
     Portal,
 } from 'react-native-paper';
@@ -49,8 +49,11 @@ export const PostHeader = ({
             <View style={styles.container}>
                 <TouchableOpacity style={styles.profile} onPress={viewProfile}>
                     <View style={styles.pictureContainer}>
-                        <Image
-                            source={{ uri: organization?.picture }}
+                        <FastImage
+                            source={{
+                                uri: organization?.picture,
+                                priority: FastImage.priority.high,
+                            }}
                             style={styles.picture}
                             placeholderStyle={styles.placeholderPicture}
                         />
