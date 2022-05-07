@@ -95,15 +95,13 @@ export default ProfileScreen = ({ navigation, route }) => {
                     }}
                 />
                 <Text style={styles.name}>{profile.name}</Text>
-                {profile.organization && <Text style={styles.category}>{category}</Text>}
+                <Text style={styles.category}>{category}</Text>
                 <Text style={styles.email}>{profile.email}</Text>
             </View>
 
             {isOwnProfile ? <EditProfileButtons navigation={navigation} /> : <FollowButton isFollowing={isFollowing} follow={follow} unfollow={unfollow} />}
             
-            {profile.organization && 
-                <PostsFlatList posts={posts} refresh={refresh} isFetching={fetching} fetchMore={fetchMore} emptyComponent={<Text>empty</Text>} navigation={navigation} />
-            }
+            <PostsFlatList posts={posts} refresh={refresh} isFetching={fetching} fetchMore={fetchMore} emptyComponent={<Text>empty</Text>} navigation={navigation} />
         </SafeAreaView>
     );
 };
