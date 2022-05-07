@@ -21,7 +21,7 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { usePosts, useOrganization } from '../../../../hooks';
-import { Fonts, Colors, width, sizes } from '../../../../styles';
+import { Fonts, Colors, width, sizes, rgba } from '../../../../styles';
 import { ThumbnailGallery } from './components/thumbnailgallery';
 import { EventChips } from './eventchips';
 import { getDayWithEnding, getMonthName, getNumeralTime, getNumeralDateAndTime } from '../../../../utils';
@@ -78,33 +78,37 @@ export const Event = ({
                 organization={organization}
             />
             <ThumbnailGallery photos={event?.photos || []} />
-            <TouchableOpacity style={styles.button} onPress={navigateToEvent}>
-                <View style={styles.titleAndTime}>
-                    <Text style={styles.title}>{event?.title}</Text>
-                    <Icon
-                        type='material-community'
-                        name='calendar'
-                        size={sizes.Icon5}
-                        color={Colors.Black}
-                    />
-                    <Text style={styles.time}>{` ${getMonthName(startDate)} ${getDayWithEnding(startDate)} at ${getNumeralTime(startDate)}`}</Text>
-                </View>
-                <View style={styles.descriptionAndChevron}>
-                    <View style={styles.descriptionContainer}>
-                        <Text style={styles.description}>{truncatedDescription}</Text>
+            <View style={styles.contentContainer}>
+                <TouchableOpacity style={styles.button} onPress={navigateToEvent}>
+                    <View style={styles.titleAndTime}>
+                        <Text style={styles.title}>{event?.title}</Text>
                     </View>
-                    <View style={styles.chevronContainer}>
+                    <View style={styles.row}>
                         <Icon
-                            name='chevron-right'
+                            type='material-community'
+                            name='calendar'
                             size={sizes.Icon5}
+                            color={Colors.Black}
                         />
+                        <Text style={styles.time}>{` ${getMonthName(startDate)} ${getDayWithEnding(startDate)} at ${getNumeralTime(startDate)}`}</Text>
                     </View>
-                </View>
-                <EventChips isVirtual={event?.isVirtual} isPhysical={event?.isPhysical}/>
-                <View style={styles.footer}>
-                    <Text style={styles.createdAt}>Posted {getNumeralDateAndTime(createdAt)}</Text>
-                </View>
-            </TouchableOpacity>
+                    <View style={styles.descriptionAndChevron}>
+                        <View style={styles.descriptionContainer}>
+                            <Text style={styles.description}>{truncatedDescription}</Text>
+                        </View>
+                        <View style={styles.chevronContainer}>
+                            <Icon
+                                name='chevron-right'
+                                size={sizes.Icon5}
+                            />
+                        </View>
+                    </View>
+                    <EventChips isVirtual={event?.isVirtual} isPhysical={event?.isPhysical}/>
+                    <View style={styles.footer}>
+                        <Text style={styles.createdAt}>Posted {getNumeralDateAndTime(createdAt)}</Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
         </Animated.View>
     );
 };
@@ -118,10 +122,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         width: width / 10 * 9,
-        paddingVertical: 20,
+        paddingTop: 10,
+        marginVertical: 10,
+        paddingHorizontal: 5,
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: Colors.Grey6.rgb,
+    },
+    contentContainer: {
+        // backgroundColor: rgba(Colors.Yellow2)(0.1),
+        width: '100%',
+        borderRadius: 10,
+        padding: 10,
     },
     button: {
-        paddingTop: 10,
+        // paddingTop: 10,
         width: '100%'
     },
     titleAndTime: {
@@ -132,19 +147,17 @@ const styles = StyleSheet.create({
     },
     title: {
         flex: 1,
-        ...Fonts.Paragraph1,
+        ...Fonts.Graph1,
     },
     time: {
-        ...Fonts.Paragraph4
-    },
-    descriptionContainer: {
-        width: '100%',
+        ...Fonts.Paragraph2
     },
     description: {
         ...Fonts.Paragraph4
     },
     footer: {
         width: '100%',
+        marginTop: 5,
     },
     createdAt: {
         color: Colors.Grey3.rgb,
@@ -153,11 +166,16 @@ const styles = StyleSheet.create({
     descriptionAndChevron: {
         display: 'flex',
         flexDirection: 'row',
+        marginBottom: 5
     },
     descriptionContainer: {
         flex: 1,
     },
     chevronContainer: {
         justifyContent: 'center'
+    },
+    row: {
+        flexDirection: 'row',
+        alignItems: 'center'
     }
 });

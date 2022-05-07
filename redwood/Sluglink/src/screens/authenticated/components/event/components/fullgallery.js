@@ -23,7 +23,7 @@ export const FullGallery = React.memo(({
     return (
       <FastImage
         source={{
-          uri: photo.url,
+          uri: photo.url != null ? photo.url : photo.uri,
           priority: FastImage.priority.high,
         }}
         containerStyle={styles.photoContainer}

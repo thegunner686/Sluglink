@@ -162,7 +162,7 @@ export const DetailedEvent = React.memo(({
 
 const styles = StyleSheet.create({
   title: {
-    ...Fonts.Graph1,
+    ...Fonts.Graph3,
     flex: 1,
     textAlign: 'center'
   },
