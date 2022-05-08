@@ -24,12 +24,15 @@ import { useProfile } from '../../../hooks';
 import { useAuth } from '../../../hooks';
 import { Colors, Fonts, sizes, width, height } from '../../../styles';
 import { propertiesAreEqual } from '../../../utils';
+import { useStorage, useUser } from '../../../hooks';
 
 export const EditProfileScreen = ({ navigation }) => {
     const [customClaims] = useAuth(state => [state.customClaims]);
+    const [user] = useUser(state => [state.user]);
     const [profile, updateProfile] = useProfile();
     const [editedProfile, setEditedProfile] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [uploadPhoto, deletePhoto] = useStorage(state => [state.uploadPhoto, state.deletePhoto]);
 
     useEffect(() => {
         setEditedProfile(profile);
@@ -37,31 +40,32 @@ export const EditProfileScreen = ({ navigation }) => {
 
     const addPhoto = () => {
         launchImageLibrary({
-          mediaType: 'photo',
-          quality: 1,
-          selectionLimit: 1,
+            mediaType: 'photo',
+            quality: 1,
+            selectionLimit: 1,
         }, async (res) => {
-          if (!res.didCancel && !res.errorCode) {
-            let { uri, fileName } = res.assets[0];
-            const photo = {
-              uri,
-              fileName
-            };
-            // TODO: Upload photo to storage bucket and get url
-            setEditedProfile(oldEditedProfile => ({ ...oldEditedProfile, picture: uri }))
-          } else if (res.errorCode) {
-            Alert.alert('Couldn\'t upload that image');
-          }
+            if (!res.didCancel && !res.errorCode) {
+                let { uri, fileName } = res.assets[0];
+                const photo = {
+                    uri,
+                    fileName
+                };
+                // TODO: Upload photo to storage bucket and get url
+                const url = await uploadPhoto('OrganizationSignUp', profile.emailHash, uri);
+                setEditedProfile(oldEditedProfile => ({ ...oldEditedProfile, picture: url }));
+            } else if (res.errorCode) {
+                Alert.alert('Couldn\'t upload that image');
+            }
         });
-      };
-      
+    };
+
     const validateAndUpdateProfile = useCallback(async () => {
-        if(isLoading) return;
-        if(editedProfile.name == null || editedProfile.name.trim() == '') return;
+        if (isLoading) return;
+        if (editedProfile.name == null || editedProfile.name.trim() == '') return;
         setIsLoading(true);
         try {
             await updateProfile(editedProfile);
-        } catch(e) {
+        } catch (e) {
             Alert.alert(
                 'Oops!',
                 'We encountered an error while updating your profile',
@@ -79,18 +83,18 @@ export const EditProfileScreen = ({ navigation }) => {
     }, [editedProfile, isLoading]);
 
     useEffect(() => {
-        if(profile == null || editedProfile == null) return;
-        if(!propertiesAreEqual(editedProfile, profile, [
+        if (profile == null || editedProfile == null) return;
+        if (!propertiesAreEqual(editedProfile, profile, [
             'name', 'description', 'picture', 'phone_number', 'category', 'otherCategory',
         ])) {
             navigation.setOptions({
-                headerRight: () => <UpdateButton onPress={validateAndUpdateProfile}/>
+                headerRight: () => <UpdateButton onPress={validateAndUpdateProfile} />
             });
         }
     }, [profile, editedProfile]);
 
     return (
-        <KeyboardAvoidingView 
+        <KeyboardAvoidingView
             style={styles.keyboardContainer}
             behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
             enabled
@@ -99,7 +103,7 @@ export const EditProfileScreen = ({ navigation }) => {
                 style={{ backgroundColor: Colors.White.rgb, width, }}
                 contentContainerStyle={styles.container}
             >
-                <FastImage 
+                <FastImage
                     source={{
                         uri: editedProfile?.picture,
                         priority: FastImage.priority.normal,
@@ -119,18 +123,18 @@ export const EditProfileScreen = ({ navigation }) => {
                     }}
                     icon={() => (
                         <Icon
-                        name='add-photo-alternate'
-                        size={sizes.Icon4}
-                        color={Colors.SteelBlue.rgb}
+                            name='add-photo-alternate'
+                            size={sizes.Icon4}
+                            color={Colors.SteelBlue.rgb}
                         />
                     )}
                     onPress={addPhoto}
-                />    
+                />
 
-                <Input 
+                <Input
                     placeholder="Email"
                     inputStyle={styles.inputStyle}
-                    inputContainerStyle={[styles.inputContainerStyle, { borderWidth: 0, borderBottomWidth: 0}]}
+                    inputContainerStyle={[styles.inputContainerStyle, { borderWidth: 0, borderBottomWidth: 0 }]}
                     leftIconContainerStyle={styles.leftIconContainerStyle}
                     value={editedProfile?.email}
                     disabled={true}
@@ -138,7 +142,7 @@ export const EditProfileScreen = ({ navigation }) => {
                     autoCorrect={false}
                 />
 
-                <Input 
+                <Input
                     placeholder="Name"
                     inputStyle={styles.inputStyle}
                     inputContainerStyle={styles.inputContainerStyle}
@@ -150,13 +154,13 @@ export const EditProfileScreen = ({ navigation }) => {
                     autoCorrect={false}
                 />
 
-                <Input 
+                <Input
                     placeholder="Description"
                     inputStyle={styles.inputStyle}
                     inputContainerStyle={styles.inputContainerStyle}
                     leftIconContainerStyle={styles.leftIconContainerStyle}
                     value={editedProfile?.description}
-                    onChangeText={(val) => setEditedProfile(oldEditedProfile => 
+                    onChangeText={(val) => setEditedProfile(oldEditedProfile =>
                         ({ ...oldEditedProfile, description: val })
                     )}
                     returnKeyType='done'
@@ -164,13 +168,13 @@ export const EditProfileScreen = ({ navigation }) => {
                     autoCorrect={false}
                 />
 
-                <Input 
+                <Input
                     placeholder="Phone Number"
                     inputStyle={styles.inputStyle}
                     inputContainerStyle={styles.inputContainerStyle}
                     leftIconContainerStyle={styles.leftIconContainerStyle}
                     value={editedProfile?.phone_number}
-                    onChangeText={(val) => setEditedProfile(oldEditedProfile => 
+                    onChangeText={(val) => setEditedProfile(oldEditedProfile =>
                         ({ ...oldEditedProfile, phone_number: val })
                     )}
                     returnKeyType='done'
@@ -182,14 +186,14 @@ export const EditProfileScreen = ({ navigation }) => {
                 {customClaims?.organization &&
                     <>
                         {editedProfile?.category == "other" &&
-                            <Input 
+                            <Input
                                 autoFocus={true}
                                 placeholder="Other category name"
                                 inputStyle={styles.inputStyle}
                                 inputContainerStyle={styles.inputContainerStyle}
                                 leftIconContainerStyle={styles.leftIconContainerStyle}
                                 value={editedProfile?.otherCategory}
-                                onChangeText={(val) => setEditedProfile(oldEditedProfile => 
+                                onChangeText={(val) => setEditedProfile(oldEditedProfile =>
                                     ({ ...oldEditedProfile, otherCategory: val })
                                 )}
                                 returnKeyType='done'
@@ -199,7 +203,7 @@ export const EditProfileScreen = ({ navigation }) => {
                         }
                         <Picker
                             selectedValue={editedProfile?.category}
-                            onValueChange={(val, i) => setEditedProfile(oldEditedProfile => 
+                            onValueChange={(val, i) => setEditedProfile(oldEditedProfile =>
                                 ({ ...oldEditedProfile, category: val })
                             )}
                             mode='dropdown'

@@ -12,7 +12,7 @@ import Animated, {
   FadeInLeft
 } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Colors, Fonts } from '../../../../../styles';import { NextButton } from '../../../../unauthenticated';
+import { Colors, Fonts } from '../../../../../styles'; import { NextButton } from '../../../../unauthenticated';
 ;
 import { CappedInput, ProgressBar, TimePicker } from '../components';
 import { useNewEvent } from './neweventstore';
@@ -24,9 +24,9 @@ export const NewEventScreen5 = ({ navigation }) => {
     setTimeout(() => {
       navigation.setOptions({
         headerRight: () => (
-          <NextButton onPress={() => 
+          <NextButton onPress={() =>
             navigation.navigate('NewEventScreen6')
-          }/>
+          } />
         )
       });
     }, 500);

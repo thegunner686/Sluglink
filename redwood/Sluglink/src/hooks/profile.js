@@ -14,10 +14,10 @@ export const useProfile = () => {
     const [profile, setProfile] = useState(null);
 
     useEffect(() => {
-        if(user == null) return;
-        
+        if (user == null) return;
+
         return firestore().collection('Users').doc(user.uid).onSnapshot((doc) => {
-            if(doc != null && doc.exists) {
+            if (doc != null && doc.exists) {
                 setProfile(doc.data());
             } else {
                 setProfile(null);
@@ -26,7 +26,7 @@ export const useProfile = () => {
     }, [user]);
 
     const update = useCallback((updates) => {
-        if(user == null) return;
+        if (user == null) return;
         firestore().collection('Users').doc(user.uid).update(updates);
     }, [user]);
 
@@ -47,7 +47,7 @@ export const useProfileWithPosts = () => {
     });
 
     useEffect(() => {
-        if(profile?.uid) refresh();
+        if (profile?.uid) refresh();
     }, [profile]);
 
     return [profile, update, posts, fetching, refresh, fetchMore];

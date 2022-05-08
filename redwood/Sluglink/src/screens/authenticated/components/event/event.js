@@ -50,7 +50,7 @@ export const Event = ({
     const truncatedDescription = useMemo(() => {
         const charLimit = 100;
 
-        if (event?.description && event.description.length > charLimit) {
+        if (event?.description && event?.description.length > charLimit) {
             let i = charLimit
             for (; i > 80; i--) {
                 if (event?.description[i] === ' ') break;
@@ -103,7 +103,7 @@ export const Event = ({
                             />
                         </View>
                     </View>
-                    <EventChips isVirtual={event?.isVirtual} isPhysical={event?.isPhysical}/>
+                    <EventChips isVirtual={event?.isVirtual} isPhysical={event?.isPhysical} />
                     <View style={styles.footer}>
                         <Text style={styles.createdAt}>Posted {getNumeralDateAndTime(createdAt)}</Text>
                     </View>

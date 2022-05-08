@@ -7,13 +7,17 @@ const admin = require('firebase-admin');
 var serviceAccount = require("./keys.json");
 
 if (admin.apps.length === 0) {
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://sluglink-e60af-default-rtdb.firebaseio.com"
-  });
+    admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        databaseURL: "https://sluglink-e60af-default-rtdb.firebaseio.com"
+    });
 }
 
-const { firestore, database, auth } = require('firebase-admin');
+const {
+    firestore,
+    database,
+    auth
+} = require('firebase-admin');
 
 const stringHash = require('string-hash');
 
@@ -34,8 +38,11 @@ const isGmail = (email) => {
  * Setup a document in firestore under the User collection
  */
 exports.userCreation = functions.auth.user().onCreate(async (user) => {
-    const { email, uid } = user;
-    if(!verifyEmail(email)) {
+    const {
+        email,
+        uid
+    } = user;
+    if (!verifyEmail(email)) {
         try {
             await auth().deleteUser(uid);
         } catch (e) {
@@ -53,13 +60,13 @@ exports.userCreation = functions.auth.user().onCreate(async (user) => {
     let org;
     try {
         org = (await database().ref(`Organizations/${hash}`).get()).val();
-    } catch(e) {
+    } catch (e) {
         console.error(e);
     }
 
     let orgdata;
-    if(org == null) {
-        if(!isUCSC) {
+    if (org == null) {
+        if (!isUCSC) {
             try {
                 await auth().deleteUser(uid);
             } catch (e) {
@@ -71,8 +78,12 @@ exports.userCreation = functions.auth.user().onCreate(async (user) => {
     } else {
         const doc = await firestore().collection('OrganizationSignUp').doc(hash.toString()).get();
         orgdata = doc.data();
-        const { verified, organizationVerified, studentVerified } = orgdata;
-        if(doc.exists && verified && organizationVerified && studentVerified) {
+        const {
+            verified,
+            organizationVerified,
+            studentVerified
+        } = orgdata;
+        if (doc.exists && verified && organizationVerified && studentVerified) {
             isOrganization = true;
         } else {
             try {
@@ -91,7 +102,7 @@ exports.userCreation = functions.auth.user().onCreate(async (user) => {
         ucsc: isUCSC, // is it a ucsc affiliated account?
     });
 
-    
+
     return firestore().collection('Users').doc(uid).set({
         uid,
         email,
@@ -104,6 +115,7 @@ exports.userCreation = functions.auth.user().onCreate(async (user) => {
         name: user.displayName,
         picture: user.photoURL,
         description: '',
+        emailHash: hash,
         ...orgdata,
     });
 });
@@ -120,27 +132,31 @@ exports.userSignIn = functions.https.onCall(async (data, context) => {
 
     try {
         const user = await auth().getUser(uid);
-        if(user.disabled) {
+        if (user.disabled) {
             throw '';
         }
-    } catch(e) {
+    } catch (e) {
         console.error(e);
         throw new functions.https.HttpsError('unauthenticated', 'User doesn\'t exist or is disabled.');
     }
 
-    if(!verifyEmail(email)) {
+    if (!verifyEmail(email)) {
         try {
             await auth().deleteUser(uid);
-        } catch(e) {
+        } catch (e) {
             console.error(e);
         }
         throw new functions.https.HttpsError('permission-denied', 'Invalid email');
     } else {
-        if(isGmail(email)) {
+        if (isGmail(email)) {
             const hash = stringHash(email);
             const doc = await firestore().collection('OrganizationSignUp').doc(hash.toString()).get();
-            const { verified, organizationVerified, studentVerified } = doc.data();
-            if(!doc.exists || !verified || !organizationVerified || !studentVerified) {
+            const {
+                verified,
+                organizationVerified,
+                studentVerified
+            } = doc.data();
+            if (!doc.exists || !verified || !organizationVerified || !studentVerified) {
                 try {
                     await auth().deleteUser(uid);
                 } catch (e) {
@@ -153,21 +169,24 @@ exports.userSignIn = functions.https.onCall(async (data, context) => {
     }
 
     // At this point, the user is valid and is performing a legal sign in
-    
+
     const isNewUser = !(await firestore().collection('Users').doc(uid).get()).exists;
 
-    if(!isNewUser) {
+    if (!isNewUser) {
         try {
             await firestore().collection('Users').doc(uid).update({
                 lastLogin: firestore.FieldValue.serverTimestamp(),
                 email_verified: context.auth.token.email_verified,
             });
-        } catch(e) {
+        } catch (e) {
             console.error(e);
             throw new functions.https.HttpsError('internal', 'An error occurred while updating the user on sign in.');
         }
     }
 
-    return { status: 'OK', isNewUser }
+    return {
+        status: 'OK',
+        isNewUser
+    }
 
 });
