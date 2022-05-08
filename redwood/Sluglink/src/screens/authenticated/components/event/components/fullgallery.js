@@ -3,11 +3,12 @@ import {
   FlatList,
   View,
   StyleSheet,
-  Text
+  Text,
+  Animated
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { width } from '../../../../../styles';
-
+import { SlidingBorder } from "react-native-animated-pagination-dots";
 export const FullGallery = React.memo(({
   photos,
 }) => {
@@ -19,7 +20,10 @@ export const FullGallery = React.memo(({
     // setCurrentPhoto(item);
   });
 
-  const renderPhoto = useCallback(({ item: photo, index}) => {
+  const scrollX = React.useRef(new Animated.Value(0)).current;
+  const keyExtractor = React.useCallback((_, index) => index.toString(), []);
+
+  const renderPhoto = useCallback(({ item: photo, index }) => {
     return (
       <FastImage
         source={{
@@ -37,7 +41,7 @@ export const FullGallery = React.memo(({
 
   return (
     <View style={styles.gallery}>
-      <FlatList
+      <Animated.FlatList
         horizontal
         decelerationRate='fast'
         snapToAlignment='center'
@@ -49,6 +53,33 @@ export const FullGallery = React.memo(({
         style={{ flexGrow: 1 }}
         contentContainerStyle={styles.flatlist}
         pagingEnabled={true}
+        keyExtractor={keyExtractor}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+          {
+            useNativeDriver: false,
+          }
+        )}
+      />
+      <SlidingBorder
+        data={photos}
+        expandingDotWidth={30}
+        scrollX={scrollX}
+        inActiveDotOpacity={0.6}
+        dotStyle={{
+          width: 10,
+          height: 10,
+          backgroundColor: 'white',
+          opacity: .8,
+          borderRadius: 5,
+          marginHorizontal: 5,
+        }}
+        slidingIndicatorStyle={{
+          borderColor: 'white',
+        }}
+        containerStyle={{
+          bottom: 40
+        }}
       />
     </View>
   )
@@ -56,7 +87,7 @@ export const FullGallery = React.memo(({
 
 const styles = StyleSheet.create({
   gallery: {
-   flexShrink: 1,
+    flexShrink: 1,
   },
   photoContainer: {
     width: width,

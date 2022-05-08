@@ -51,7 +51,7 @@ export const NewEventScreen7 = ({ navigation, route }) => {
         // Clear event data and navigate to feed
         clearEvent();
         setTimeout(() => {
-          navigation.navigate('Home');
+            navigation.navigate('Home');
         }, 100);
     }, [newEvent, profile, createPost, clearEvent, uploadPhotos]);
 
@@ -66,7 +66,7 @@ export const NewEventScreen7 = ({ navigation, route }) => {
 
     return (
         <View style={styles.container}>
-            <DetailedEvent 
+            <DetailedEvent
                 event={{
                     ...newEvent,
                     organizationId: profile?.uid

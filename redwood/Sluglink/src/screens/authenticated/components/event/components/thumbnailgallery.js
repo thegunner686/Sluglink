@@ -1,12 +1,15 @@
-import React, { useCallback, useRef, useMemo } from 'react';
+import React, { useCallback, useRef, useMemo, useEffect } from 'react';
 import {
   FlatList,
   View,
   StyleSheet,
-  Text
+  Text,
+  Animated
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { width } from '../../../../../styles';
+import { SlidingBorder } from "react-native-animated-pagination-dots";
+
 
 export const ThumbnailGallery = React.memo(({
   photos,
@@ -19,7 +22,7 @@ export const ThumbnailGallery = React.memo(({
     // setCurrentPhoto(item);
   });
 
-  const renderPhoto = useCallback(({ item: photo, index}) => {
+  const renderPhoto = useCallback(({ item: photo, index }) => {
     return (
       <FastImage
         source={{
@@ -34,10 +37,26 @@ export const ThumbnailGallery = React.memo(({
   }, []);
 
   const intervalWidth = useMemo(() => width / 10 * 9, []);
+  const scrollX = React.useRef(new Animated.Value(0)).current;
+  const scrollOffset = React.useRef(new Animated.Value(0)).current;
+
+  const keyExtractor = React.useCallback((_, index) => index.toString(), []);
+
+  useEffect(() => {
+    scrollX.addListener((val) => {
+      const { value } = val;
+      let offset = value + (25 * (value / (width / 10 * 9)));
+      console.log(offset);
+      scrollOffset.setValue(offset);
+      // console.log(scrollOffset);
+    })
+
+    return () => scrollX.removeAllListeners();
+  }, [])
 
   return (
     <View style={styles.gallery}>
-      <FlatList
+      <Animated.FlatList
         horizontal
         decelerationRate='fast'
         snapToAlignment='center'
@@ -49,6 +68,30 @@ export const ThumbnailGallery = React.memo(({
         style={{ flexGrow: 1 }}
         contentContainerStyle={styles.flatlist}
         pagingEnabled={true}
+        showsHorizontalScrollIndicator={false}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+          {
+            useNativeDriver: false,
+          }
+        )}
+        keyExtractor={keyExtractor}
+      />
+      <SlidingBorder
+        data={photos}
+        scrollX={scrollOffset}
+        dotSize={15}
+        dotStyle={{
+          backgroundColor: 'white',
+          opacity: .8,
+        }}
+        slidingIndicatorStyle={{
+          borderColor: 'white',
+        }}
+        containerStyle={{
+          bottom: 5,
+        }}
+        borderPadding={-2}
       />
     </View>
   )
@@ -56,7 +99,7 @@ export const ThumbnailGallery = React.memo(({
 
 const styles = StyleSheet.create({
   gallery: {
-   flexShrink: 1,
+    flexShrink: 1,
   },
   photoContainer: {
     width: width / 10 * 9,
