@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import {
     Text,
@@ -14,7 +14,7 @@ import { useAuth, useFollowing } from '../../../hooks';
 import styles from './ProfileScreen.styles.js';
 import { PostsFlatList } from '../components';
 import { useFocusEffect } from '@react-navigation/native';
-import { useOrganizationWithPosts } from '../../../hooks';
+import { useOrganizationWithPosts, useOrganization } from '../../../hooks';
 import { getProfilePosts, useProfile } from '../../../hooks/useProfile';
 
 // TODO:
@@ -22,25 +22,25 @@ import { getProfilePosts, useProfile } from '../../../hooks/useProfile';
 // add report account button
 
 const EditProfileButtons = ({ navigation }) => (
-    <View style={ styles.buttonContainer }>
-        <Button 
+    <View style={styles.buttonContainer}>
+        <Button
             title='Edit Profile'
             titleStyle={styles.button.title}
             containerStyle={styles.button.container}
-            onPress={() => navigation.navigate('EditProfileScreen')} 
+            onPress={() => navigation.navigate('EditProfileScreen')}
         />
-        <Button 
+        <Button
             title='Settings'
             titleStyle={styles.button.title}
             containerStyle={styles.button.container}
-            onPress={() => navigation.navigate('ProfileSettingsScreen')} 
+            onPress={() => navigation.navigate('ProfileSettingsScreen')}
         />
     </View>
 );
 
 const FollowButton = ({ isFollowing, follow, unfollow }) => {
-    const [ loading, setLoading ] = useState(false);
-    
+    const [loading, setLoading] = useState(false);
+
     const onClick = () => {
         setLoading(true);
         (isFollowing ? unfollow : follow)().then(() => {
@@ -49,9 +49,9 @@ const FollowButton = ({ isFollowing, follow, unfollow }) => {
     };
 
     return (
-        <View style={ styles.buttonContainer }>
+        <View style={styles.buttonContainer}>
             <Button
-                title={ isFollowing ? "Unfollow" : "Follow" }
+                title={isFollowing ? "Unfollow" : "Follow"}
                 titleStyle={styles.button.title}
                 containerStyle={styles.button.container}
                 onPress={onClick}
@@ -66,21 +66,20 @@ export default ProfileScreen = ({ navigation, route }) => {
     const user = useAuth(state => state.user);
     const isOwnProfile = !(route.params && route.params.uid) || route.params.uid == user.uid;
     const uid = isOwnProfile ? user.uid : route.params.uid;
+    const [profile, posts, fetching, refresh, fetchMore] = useOrganizationWithPosts(uid);
 
     // when navigating to this screen, change state so that it refreshes the profile
     // important after editing your profile
 
-    // load profile data
-    const [profile, posts, fetching, refresh, fetchMore] = useOrganizationWithPosts(uid);
     const [isFollowing, follow, unfollow] = useFollowing(route.params?.uid || user.uid);
 
-    if(!profile)
+    if (!profile)
         return (<View />);
 
-    const category = profile.otherCategory ? `(Other) ${profile.otherCategory}` : profile.category;
+    const category = profile.category == "Other" ? `(Other) ${profile.otherCategory}` : profile.category;
 
     return (
-        <SafeAreaView 
+        <SafeAreaView
             style={styles.container}
             edges={['left', 'right']}
         >
@@ -100,7 +99,7 @@ export default ProfileScreen = ({ navigation, route }) => {
             </View>
 
             {isOwnProfile ? <EditProfileButtons navigation={navigation} /> : <FollowButton isFollowing={isFollowing} follow={follow} unfollow={unfollow} />}
-            
+
             <PostsFlatList posts={posts} refresh={refresh} isFetching={fetching} fetchMore={fetchMore} emptyComponent={<Text>empty</Text>} navigation={navigation} />
         </SafeAreaView>
     );

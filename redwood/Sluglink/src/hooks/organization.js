@@ -15,16 +15,13 @@ export const useOrganization = (uid) => {
     const [organization, setOrganization] = useState(null);
 
     useEffect(() => {
-        const fetch = async () => {
-            const snapshot = await firestore().collection('Users').doc(uid).get();
-
-            if (snapshot != null && snapshot.exists) {
-                setOrganization(snapshot.data());
-            } else {
-                setOrganization(null);
+        const unsub = firestore().collection('Users').doc(uid).onSnapshot({
+            next: async (doc) => {
+                let org = doc.data();
+                setOrganization(org);
             }
-        };
-        if (uid != null) fetch();
+        })
+        return () => unsub();
     }, [uid]);
 
     return [organization];

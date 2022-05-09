@@ -13,6 +13,7 @@ import remoteConfig from '@react-native-firebase/remote-config';
 import default_config from './src/remote_config/default';
 import { AuthenticatedStack, UnauthenticatedStack } from './src/navigators';
 import { useAuth } from "./src/hooks";
+import { LogBox } from 'react-native';
 
 enableScreens(true);
 
@@ -21,6 +22,9 @@ const Stack = createNativeStackNavigator()
 function App() {
   let [user] = useAuth(state => [state.user, state.isSignedIn]);
   let [onAuthStateChanged] = useAuth(state => [state.onAuthStateChanged]);
+
+  // LogBox.ignoreAllLogs("[useStore, api] = create() is deprecated and will be removed in v4");
+  LogBox.ignoreLogs(["[useStore, api] = create() is deprecated and will be removed in v4"]);
 
   useEffect(() => {
     const listener = onAuthStateChanged();
@@ -42,7 +46,7 @@ function App() {
     remoteConfig().setDefaults(default_config)
       .then(() => remoteConfig().fetchAndActivate())
       .then((fetched) => {
-        if(fetched) {
+        if (fetched) {
           console.log('Remote config initialized');
         } else {
           console.log('Remote config failed to initialize.');
@@ -65,7 +69,7 @@ function App() {
                 name='Authenticated'
                 component={AuthenticatedStack}
               />
-            ): <></>}
+            ) : <></>}
             <Stack.Screen
               name='Unauthenticated'
               component={UnauthenticatedStack}

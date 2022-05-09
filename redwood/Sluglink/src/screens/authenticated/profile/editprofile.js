@@ -25,6 +25,7 @@ import { useAuth } from '../../../hooks';
 import { Colors, Fonts, sizes, width, height } from '../../../styles';
 import { propertiesAreEqual } from '../../../utils';
 import { useStorage, useUser } from '../../../hooks';
+import remoteConfig from '@react-native-firebase/remote-config';
 
 export const EditProfileScreen = ({ navigation }) => {
     const [customClaims] = useAuth(state => [state.customClaims]);
@@ -32,7 +33,18 @@ export const EditProfileScreen = ({ navigation }) => {
     const [profile, updateProfile] = useProfile();
     const [editedProfile, setEditedProfile] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [categories, setCategories] = useState([]);
     const [uploadPhoto, deletePhoto] = useStorage(state => [state.uploadPhoto, state.deletePhoto]);
+
+    useEffect(() => {
+        const json = remoteConfig().getValue('categories').asString();
+        try {
+            setCategories(JSON.parse(json));
+        } catch (error) {
+            console.log(error);
+            setCategories([]);
+        }
+    }, []);
 
     useEffect(() => {
         setEditedProfile(profile);
@@ -130,8 +142,8 @@ export const EditProfileScreen = ({ navigation }) => {
                     )}
                     onPress={addPhoto}
                 />
-
-                <Input
+                <View style={{ height: "5%" }} />
+                {/* <Input
                     placeholder="Email"
                     inputStyle={styles.inputStyle}
                     inputContainerStyle={[styles.inputContainerStyle, { borderWidth: 0, borderBottomWidth: 0 }]}
@@ -140,7 +152,7 @@ export const EditProfileScreen = ({ navigation }) => {
                     disabled={true}
                     returnKeyType='done'
                     autoCorrect={false}
-                />
+                /> */}
 
                 <Input
                     placeholder="Name"
@@ -185,7 +197,7 @@ export const EditProfileScreen = ({ navigation }) => {
 
                 {customClaims?.organization &&
                     <>
-                        {editedProfile?.category == "other" &&
+                        {editedProfile?.category == "Other" &&
                             <Input
                                 autoFocus={true}
                                 placeholder="Other category name"
@@ -210,11 +222,11 @@ export const EditProfileScreen = ({ navigation }) => {
                             style={styles.picker}
                             itemStyle={styles.pickerItem}
                         >
-                            <Picker.Item label='Sports' value='sports' />
-                            <Picker.Item label='Social' value='social' />
-                            <Picker.Item label='Resource' value='resource' />
-                            <Picker.Item label='Academic' value='academic' />
-                            <Picker.Item label='Other' value='other' />
+                            {
+                                categories.map((cat) => {
+                                    return (<Picker.Item key={cat.name} label={cat.name} value={cat.name} />)
+                                })
+                            }
                         </Picker>
                     </>
                 }
@@ -251,7 +263,7 @@ const styles = StyleSheet.create({
     },
     picker: {
         width: width / 10 * 8,
-        height: 'auto'
+        height: 'auto',
     },
     pickerItem: {
         ...Fonts.Paragraph4

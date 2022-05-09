@@ -25,9 +25,9 @@ export const useProfile = () => {
         });
     }, [user]);
 
-    const update = useCallback((updates) => {
+    const update = useCallback(async (updates) => {
         if (user == null) return;
-        firestore().collection('Users').doc(user.uid).update(updates);
+        await firestore().collection('Users').doc(user.uid).update(updates);
     }, [user]);
 
     return [profile, update];
