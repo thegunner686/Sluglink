@@ -73,10 +73,12 @@ export const Event = ({
             exiting={FadeOutUp}
             style={styles.container}
         >
-            <PostHeader
-                post={post}
-                organization={organization}
-            />
+            <View style={{ marginHorizontal: 15 }}>
+                <PostHeader
+                    post={post}
+                    organization={organization}
+                />
+            </View>
             <ThumbnailGallery photos={event?.photos || []} />
             <View style={styles.contentContainer}>
                 <TouchableOpacity style={styles.button} onPress={navigateToEvent}>
@@ -116,34 +118,21 @@ export const Event = ({
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignSelf: 'center',
         display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: width / 10 * 9,
         paddingTop: 10,
         marginVertical: 10,
-        paddingHorizontal: 5,
-        borderWidth: 1,
-        borderRadius: 10,
         borderColor: Colors.Grey6.rgb,
     },
     contentContainer: {
-        // backgroundColor: rgba(Colors.Yellow2)(0.1),
         width: '100%',
-        borderRadius: 10,
-        padding: 10,
+        padding: 15,
     },
     button: {
-        // paddingTop: 10,
         width: '100%'
     },
     titleAndTime: {
         display: 'flex',
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center'
     },
     title: {
         flex: 1,

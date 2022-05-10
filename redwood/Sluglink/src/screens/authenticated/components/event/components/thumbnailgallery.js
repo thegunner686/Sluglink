@@ -45,10 +45,10 @@ export const ThumbnailGallery = React.memo(({
   useEffect(() => {
     scrollX.addListener((val) => {
       const { value } = val;
-      let offset = value + (25 * (value / (width / 10 * 9)));
-      console.log(offset);
+      let offset = value;
+      console.log(value);
+      console.log(intervalWidth)
       scrollOffset.setValue(offset);
-      // console.log(scrollOffset);
     })
 
     return () => scrollX.removeAllListeners();
@@ -63,7 +63,7 @@ export const ThumbnailGallery = React.memo(({
         viewabilityConfig={viewabilityConfigRef.current}
         onViewableItemsChanged={onViewabbleItemsChangedRef.current}
         data={photos}
-        snapToInterval={intervalWidth}
+        snapToInterval={width}
         renderItem={renderPhoto}
         style={{ flexGrow: 1 }}
         contentContainerStyle={styles.flatlist}
@@ -75,6 +75,7 @@ export const ThumbnailGallery = React.memo(({
             useNativeDriver: false,
           }
         )}
+        contest
         keyExtractor={keyExtractor}
       />
       <SlidingBorder
@@ -102,17 +103,18 @@ const styles = StyleSheet.create({
     flexShrink: 1,
   },
   photoContainer: {
-    width: width / 10 * 9,
+    width: width,
     height: width / 10 * 6,
   },
   photo: {
-    width: width / 10 * 9,
+    width: width,
     height: width / 10 * 6,
-    borderRadius: 10,
+    // borderRadius: 10,
   },
   flatlist: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    // width: "100%"
   }
 });
