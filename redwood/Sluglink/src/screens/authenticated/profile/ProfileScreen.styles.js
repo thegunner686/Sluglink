@@ -69,6 +69,7 @@ export default styles = StyleSheet.create({
         display: 'flex', 
         flexDirection: 'row', 
         justifyContent: 'space-between', 
+        alignItems: 'center',
         
         marginVertical: 10
     },
@@ -80,6 +81,9 @@ export default styles = StyleSheet.create({
             padding: 0,
             marginHorizontal: 5,
             // width: width / 4,
+        },
+        report: {
+            backgroundColor: Colors.Red3.rgb,
         },
     },
 

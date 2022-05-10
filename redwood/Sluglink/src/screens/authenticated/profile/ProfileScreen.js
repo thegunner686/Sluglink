@@ -6,10 +6,11 @@ import {
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {
-    Button,
+    Button, Icon,
 } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth, useFollowing } from '../../../hooks';
+import functions from '@react-native-firebase/functions';
 
 import styles from './ProfileScreen.styles.js';
 import { PostsFlatList } from '../components';
@@ -19,7 +20,6 @@ import { getProfilePosts, useProfile } from '../../../hooks/useProfile';
 
 // TODO:
 // edit profile page for organization category
-// add report account button
 
 const EditProfileButtons = ({ navigation }) => (
     <View style={styles.buttonContainer}>
@@ -38,13 +38,23 @@ const EditProfileButtons = ({ navigation }) => (
     </View>
 );
 
-const FollowButton = ({ isFollowing, follow, unfollow }) => {
-    const [loading, setLoading] = useState(false);
+const FollowButton = ({ uid, isFollowing, follow, unfollow }) => {
+    const [loading, setLoading] = useState({ follow: false, report: false });
 
-    const onClick = () => {
-        setLoading(true);
+    const onFollow = () => {
+        setLoading({ ...loading, follow: true });
         (isFollowing ? unfollow : follow)().then(() => {
-            setLoading(false);
+            setLoading({ ...loading, follow: false });
+        });
+    };
+
+    const onReport = () => {
+
+        setLoading({ ...loading, report: true });
+        functions().httpsCallable('users-report')({ 
+            reportId: uid
+         }).then(() => {
+            setLoading({ ...loading, report: false});
         });
     };
 
@@ -54,8 +64,23 @@ const FollowButton = ({ isFollowing, follow, unfollow }) => {
                 title={isFollowing ? "Unfollow" : "Follow"}
                 titleStyle={styles.button.title}
                 containerStyle={styles.button.container}
-                onPress={onClick}
-                loading={loading}
+                onPress={onFollow}
+                loading={loading.follow}
+            />
+            <Button 
+                title=""
+                icon={
+                    <Icon
+                        name="report"
+                        size={16}
+                        color="white"
+                    />
+                }
+                titleStyle={styles.button.title}
+                buttonStyle={styles.button.report}
+                containerStyle={styles.button.container}
+                onPress={onReport}
+                loading={loading.report}
             />
         </View>
     )
@@ -67,9 +92,6 @@ export default ProfileScreen = ({ navigation, route }) => {
     const isOwnProfile = !(route.params && route.params.uid) || route.params.uid == user.uid;
     const uid = isOwnProfile ? user.uid : route.params.uid;
     const [profile, posts, fetching, refresh, fetchMore] = useOrganizationWithPosts(uid);
-
-    // when navigating to this screen, change state so that it refreshes the profile
-    // important after editing your profile
 
     const [isFollowing, follow, unfollow] = useFollowing(route.params?.uid || user.uid);
 
@@ -98,9 +120,9 @@ export default ProfileScreen = ({ navigation, route }) => {
                 <Text style={styles.email}>{profile.email}</Text>
             </View>
 
-            {isOwnProfile ? <EditProfileButtons navigation={navigation} /> : <FollowButton isFollowing={isFollowing} follow={follow} unfollow={unfollow} />}
+            {isOwnProfile ? <EditProfileButtons navigation={navigation} /> : <FollowButton uid={uid} isFollowing={isFollowing} follow={follow} unfollow={unfollow} />}
 
-            <PostsFlatList posts={posts} refresh={refresh} isFetching={fetching} fetchMore={fetchMore} emptyComponent={<Text>empty</Text>} navigation={navigation} />
+            <PostsFlatList posts={posts} refresh={refresh} isFetching={fetching} fetchMore={fetchMore} emptyComponent={<View></View>} navigation={navigation} />
         </SafeAreaView>
     );
 };

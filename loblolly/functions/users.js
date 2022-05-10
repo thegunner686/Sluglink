@@ -8,6 +8,38 @@ const {
     storage
 } = require('firebase-admin');
 
+exports.report = functions.https.onCall(async (data, context) => {
+
+    const {
+        uid
+    } = context.auth;
+
+    if (!uid)
+        throw new functions.https.HttpsError('permission-denied', "Insufficient permissions");
+
+    let batch = firestore().batch();
+    const reportRef = firestore().collection('Reports').doc();
+
+    const now = firestore.FieldValue.serverTimestamp();
+    batch.set(reportRef, {
+        ...data,
+        id: reportRef.id,
+        reportTime: now,
+        type: 'user',
+    });
+
+    try {
+        await batch.commit();
+    } catch (e) {
+        console.error(e);
+        throw new functions.https.HttpsError('internal', 'Failed to report user');
+    }
+
+    return {
+        id: reportRef.id,
+    };
+});
+
 exports.follow = functions.https.onCall(async (data, context) => {
     const {
         followId
