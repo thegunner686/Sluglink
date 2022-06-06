@@ -15,12 +15,14 @@ import functions from '@react-native-firebase/functions';
 import { Colors, Fonts } from "../../../styles";
 import { NextButton } from './nextbutton';
 import { useSignUp } from './signupstore';
+import { useHeaderHeight } from '@react-navigation/elements';
 
 export const OrganizationSignUpScreen = ({ navigation, route }) => {
     const [organization, setOrganization] = useSignUp(state => [state.organization, state.setOrganization]);
     let [email, setEmail] = useState(organization.email || '');
     const [isLoading, setIsLoading] = useState(false);
     const inputRef = useRef(null);
+    const headerHeight = useHeaderHeight();
 
     const validate = (text) => {
         const regex = /(@ucsc\.edu$)|(@gmail\.com$)/g;

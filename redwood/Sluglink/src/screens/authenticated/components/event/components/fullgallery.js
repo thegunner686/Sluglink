@@ -61,26 +61,28 @@ export const FullGallery = React.memo(({
           }
         )}
       />
-      <SlidingBorder
-        data={photos}
-        expandingDotWidth={30}
-        scrollX={scrollX}
-        inActiveDotOpacity={0.6}
-        dotStyle={{
-          width: 10,
-          height: 10,
-          backgroundColor: 'white',
-          opacity: .8,
-          borderRadius: 5,
-          marginHorizontal: 5,
-        }}
-        slidingIndicatorStyle={{
-          borderColor: 'white',
-        }}
-        containerStyle={{
-          bottom: 40
-        }}
-      />
+      {photos.length > 1 ?
+        <SlidingBorder
+          data={photos}
+          expandingDotWidth={30}
+          scrollX={scrollX}
+          inActiveDotOpacity={0.6}
+          dotStyle={{
+            width: 10,
+            height: 10,
+            backgroundColor: 'white',
+            opacity: .8,
+            borderRadius: 5,
+            marginHorizontal: 5,
+          }}
+          slidingIndicatorStyle={{
+            borderColor: 'white',
+          }}
+          containerStyle={{
+            bottom: 40
+          }}
+        />
+        : null}
     </View>
   )
 });

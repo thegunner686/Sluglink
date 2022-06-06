@@ -3,7 +3,8 @@ import React, { useEffect } from 'react';
 import {
     Text,
     View,
-    Alert
+    Alert,
+    Linking
 } from 'react-native';
 import {
     Button,
@@ -16,9 +17,9 @@ import functions from "@react-native-firebase/functions";
 import styles from './SettingsScreen.styles.js';
 
 export default SettingsScreen = ({ navigation }) => {
-    const [profile, update ] = useProfile();
+    const [profile, update] = useProfile();
 
-    if(!profile)
+    if (!profile)
         return (<View />);
 
     const signout = () => {
@@ -32,26 +33,28 @@ export default SettingsScreen = ({ navigation }) => {
             'Are you sure you want to delete your account? ',
             'We\'ll miss you :(',
             [
-                { text: 'Cancel', onPress: () => {} },
-                { text: 'Yes, delete my account', style: "destructive", onPress: () => {
-                    functions().httpsCallable('users-deleteUser')({}).then(() => navigation.navigate('Unauthenticated'));
-                } }
+                { text: 'Cancel', onPress: () => { } },
+                {
+                    text: 'Yes, delete my account', style: "destructive", onPress: () => {
+                        functions().httpsCallable('users-deleteUser')({}).then(() => signout());
+                    }
+                }
             ]
         );
 
     };
 
     return (
-        <SafeAreaView 
+        <SafeAreaView
             edges={['left', 'bottom', 'right']}
             style={styles.container}
         >
-            <Button 
+            <Button
                 title="Terms and Conditions"
-                onPress={() => {}}
+                onPress={() => { Linking.openURL("https://boisterous-alfajores-551073.netlify.app/") }}
                 containerStyle={styles.button.container}
             />
-            <Button 
+            <Button
                 title="Sign Out"
                 onPress={signout}
                 containerStyle={styles.button.container}

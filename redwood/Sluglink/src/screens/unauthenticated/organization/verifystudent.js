@@ -15,6 +15,7 @@ import functions from '@react-native-firebase/functions';
 import { NextButton } from './nextbutton';
 import { Colors, Fonts, width } from "../../../styles";
 import { useSignUp } from './signupstore';
+import { useHeaderHeight } from "@react-navigation/elements";
 
 export const StudentVerificationScreen = ({ route, navigation }) => {
     const [organization, setOrganization] = useSignUp(state => [state.organization, state.setOrganization]);
@@ -72,8 +73,10 @@ export const StudentVerificationScreen = ({ route, navigation }) => {
 
     }, [studentVerificationCode, isLoading]);
 
+    const headerHeight = useHeaderHeight();
+
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={[styles.container, Platform.OS == "android" ? { marginTop: headerHeight, paddingTop: 20 } : {}]}>
             {/* Candidate for Remote Config */}
             <Text style={{
                 ...Fonts.Graph3,

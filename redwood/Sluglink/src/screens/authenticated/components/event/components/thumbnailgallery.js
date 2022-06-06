@@ -46,8 +46,6 @@ export const ThumbnailGallery = React.memo(({
     scrollX.addListener((val) => {
       const { value } = val;
       let offset = value;
-      console.log(value);
-      console.log(intervalWidth)
       scrollOffset.setValue(offset);
     })
 
@@ -78,22 +76,25 @@ export const ThumbnailGallery = React.memo(({
         contest
         keyExtractor={keyExtractor}
       />
-      <SlidingBorder
-        data={photos}
-        scrollX={scrollOffset}
-        dotSize={15}
-        dotStyle={{
-          backgroundColor: 'white',
-          opacity: .8,
-        }}
-        slidingIndicatorStyle={{
-          borderColor: 'white',
-        }}
-        containerStyle={{
-          bottom: 5,
-        }}
-        borderPadding={-2}
-      />
+      {photos.length > 1 ?
+        <SlidingBorder
+          data={photos}
+          scrollX={scrollOffset}
+          dotSize={15}
+          dotStyle={{
+            backgroundColor: 'white',
+            opacity: .8,
+          }}
+          slidingIndicatorStyle={{
+            borderColor: 'white',
+          }}
+          containerStyle={{
+            bottom: 5,
+          }}
+          borderPadding={-2}
+        />
+        : null
+      }
     </View>
   )
 });

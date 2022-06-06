@@ -14,6 +14,7 @@ import remoteConfig from '@react-native-firebase/remote-config';
 import { Colors, Fonts, width, height, sizes } from "../../../styles";
 import { NextButton } from './nextbutton';
 import { useSignUp } from './signupstore';
+import { useHeaderHeight } from '@react-navigation/elements';
 
 export const OrganizationSignUpDetailsSecondaryScreen = ({ route, navigation }) => {
     const [organization, setOrganization] = useSignUp(state => [state.organization, state.setOrganization]);
@@ -27,8 +28,8 @@ export const OrganizationSignUpDetailsSecondaryScreen = ({ route, navigation }) 
             navigation.navigate('OrganizationSignUpDetailsTertiary');
         };
 
-        if(category == 'Other') {
-            if(otherCategory != '') {
+        if (category == 'Other') {
+            if (otherCategory != '') {
                 navigation.setOptions({
                     headerRight: () => <NextButton onPress={goToNextScreen} />
                 });
@@ -37,7 +38,7 @@ export const OrganizationSignUpDetailsSecondaryScreen = ({ route, navigation }) 
                     headerRight: null
                 });
             }
-        } else if(category !== '') {
+        } else if (category !== '') {
             navigation.setOptions({
                 headerRight: () => <NextButton onPress={goToNextScreen} />
             });
@@ -64,8 +65,10 @@ export const OrganizationSignUpDetailsSecondaryScreen = ({ route, navigation }) 
         }
     }, []);
 
+    const headerHeight = useHeaderHeight();
+
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={[styles.container, Platform.OS == "android" ? { marginTop: headerHeight, paddingTop: 20 } : {}]}>
             {/* Candidate for Remote Config */}
             <Text style={Fonts.Paragraph3}>Pick a category that best represents your organization.</Text>
             <Picker
@@ -81,7 +84,7 @@ export const OrganizationSignUpDetailsSecondaryScreen = ({ route, navigation }) 
                 ))}
             </Picker>
             {category == "Other" &&
-                <Input 
+                <Input
                     autoFocus
                     placeholder="Other category name"
                     inputStyle={styles.inputStyle}
@@ -102,7 +105,7 @@ let styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.White.rgb,
-        display: 'flex', 
+        display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'flex-start',
