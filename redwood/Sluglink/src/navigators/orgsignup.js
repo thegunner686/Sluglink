@@ -4,15 +4,15 @@ import {
     createNativeStackNavigator
 } from "@react-navigation/native-stack";
 import { StyleSheet } from 'react-native';
-import { 
+import {
     Icon
 } from 'react-native-elements';
 
 import { BackButton } from "./components";
 import { FadeInTransition } from "./transitions";
-import { 
-    OrganizationSignUpScreen, 
-    OrganizationSignUpDetailsPrimaryScreen, 
+import {
+    OrganizationSignUpScreen,
+    OrganizationSignUpDetailsPrimaryScreen,
     OrganizationSignUpDetailsSecondaryScreen,
     OrganizationSignUpDetailsTertiaryScreen,
     OrganizationCompleteSignUpScreen,
@@ -26,7 +26,11 @@ const Stack = createNativeStackNavigator();
 
 export const OrganizationSignUpStack = () => {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator
+            options={({ navigation, route }) => ({
+                headerShown: true
+            })}
+        >
             <Stack.Screen
                 name="OrganizationSignUpScreen"
                 component={OrganizationSignUpScreen}
@@ -34,8 +38,10 @@ export const OrganizationSignUpStack = () => {
                     ...FadeInTransition,
                     headerLeft: () => <BackButton name="close" goBack={navigation.goBack} />,
                     headerTitle: 'Sign Up',
+                    title: 'Sign Up',
+                    headerTitleAlign: "center",
                     headerTitleStyle: styles.titleStyle,
-                    headerStyle: styles.header
+                    headerStyle: styles.header,
                 })}
             />
             <Stack.Screen
@@ -44,8 +50,12 @@ export const OrganizationSignUpStack = () => {
                 options={({ navigation, route }) => ({
                     headerLeft: () => <BackButton goBack={navigation.goBack} />,
                     headerTitle: 'Details',
+                    title: 'Details',
+                    headerMode: 'float',
+                    headerTitleAlign: "center",
                     headerTitleStyle: styles.titleStyle,
                     headerStyle: styles.header
+
                 })}
             />
             <Stack.Screen
@@ -54,6 +64,8 @@ export const OrganizationSignUpStack = () => {
                 options={({ navigation, route }) => ({
                     headerLeft: () => <BackButton goBack={navigation.goBack} />,
                     headerTitle: 'Details',
+                    title: 'Details',
+                    headerTitleAlign: "center",
                     headerTitleStyle: styles.titleStyle,
                     headerStyle: styles.header
                 })}

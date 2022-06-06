@@ -27,7 +27,7 @@ import { Colors, Fonts, width, height } from '../../../styles';
 const FilterChip = ({ index, title, onPress, selected }) => {
     return (
         <Animated.View
-            style={{ flexShrink: 1}}
+            style={{ flexShrink: 1 }}
             entering={FadeInLeft.delay(index * 50)}
         >
             <Chip
@@ -37,7 +37,7 @@ const FilterChip = ({ index, title, onPress, selected }) => {
                 }}
                 containerStyle={{ margin: 5 }}
                 title={title}
-                type={selected ? 'solid': 'outline'}
+                type={selected ? 'solid' : 'outline'}
             />
         </Animated.View>
 
@@ -53,20 +53,25 @@ export const ExploreScreen = ({
 
     useEffect(() => {
         const json = remoteConfig().getValue('categories').asString();
-        setCategories(JSON.parse(json));
+        try {
+            setCategories(JSON.parse(json));
+        } catch (err) {
+            alert(json, err);
+        }
+
     }, []);
 
     const renderCategory = ({ item, index }) => (
         <FilterChip
-            index={index+1}
+            index={index + 1}
             title={item.name}
             selected={selectedCategory === item.name}
             onPress={() => setSelectedCategory(item.name)}
         />
     );
-    
+
     const keyExtractor = (item) => item.name;
-    
+
     const Header = (
         <FilterChip
             index={0}

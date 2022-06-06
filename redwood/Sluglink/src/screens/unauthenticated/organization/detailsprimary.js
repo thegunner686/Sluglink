@@ -4,7 +4,10 @@ import {
     StyleSheet,
     TouchableOpacity,
     ActivityIndicator,
-    Alert
+    Alert,
+    Text,
+    View,
+    Platform
 } from 'react-native';
 import {
     Icon,
@@ -13,6 +16,7 @@ import {
 } from 'react-native-elements';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { launchImageLibrary } from 'react-native-image-picker';
+import { useHeaderHeight } from '@react-navigation/elements';
 
 import { Colors, Fonts, width } from "../../../styles";
 import { NextButton } from './nextbutton';
@@ -39,9 +43,9 @@ export const OrganizationSignUpDetailsPrimaryScreen = ({ navigation, route }) =>
             navigation.navigate('OrganizationSignUpDetailsSecondary');
         };
 
-        if(photoURI != "" && name != "" && description != "") {
+        if (photoURI != "" && name != "" && description != "") {
             navigation.setOptions({
-                headerRight: () => <NextButton onPress={goToNextScreen}/>
+                headerRight: () => <NextButton onPress={goToNextScreen} />
             });
         } else {
             navigation.setOptions({
@@ -51,23 +55,26 @@ export const OrganizationSignUpDetailsPrimaryScreen = ({ navigation, route }) =>
     }, [photoURI, name, description]);
 
     const onImagePress = useCallback(() => {
-        if(isUploading) return;
+        if (isUploading) return;
         launchImageLibrary({
             mediaType: "photo",
             quality: 1,
             selectionLimit: 1,
         }, async (res) => {
-            if(!res.didCancel && !res.errorCode) {
+            if (!res.didCancel && !res.errorCode) {
                 let { uri } = res.assets[0];
                 setPhotoURI(uri);
-            } else if(res.errorCode) {
+            } else if (res.errorCode) {
                 Alert.alert("Failed to upload photo.");
             }
         });
     }, [isUploading]);
 
+    const headerHeight = useHeaderHeight();
+
     return (
-        <SafeAreaView style={styles.container}>
+        <View
+            style={[styles.container, Platform.OS == "android" ? { marginTop: headerHeight, paddingTop: 20 } : {}]}>
             <TouchableOpacity
                 onPress={onImagePress}
                 disabled={isUploading}
@@ -79,7 +86,7 @@ export const OrganizationSignUpDetailsPrimaryScreen = ({ navigation, route }) =>
                     style={styles.image}
                     placeholderStyle={styles.placeholderImage}
                     PlaceholderContent={
-                        isUploading ? 
+                        isUploading ?
                             <ActivityIndicator />
                             :
                             <Icon
@@ -115,7 +122,7 @@ export const OrganizationSignUpDetailsPrimaryScreen = ({ navigation, route }) =>
                 clearButtonMode='always'
                 autoCorrect={false}
             />
-        </SafeAreaView>
+        </View>
     );
 };
 
@@ -123,7 +130,7 @@ let styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.White.rgb,
-        display: 'flex', 
+        display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'flex-start',

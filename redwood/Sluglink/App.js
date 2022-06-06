@@ -24,7 +24,7 @@ function App() {
   let [onAuthStateChanged] = useAuth(state => [state.onAuthStateChanged]);
 
   // LogBox.ignoreAllLogs("[useStore, api] = create() is deprecated and will be removed in v4");
-  LogBox.ignoreLogs(["[useStore, api] = create() is deprecated and will be removed in v4"]);
+  LogBox.ignoreAllLogs();
 
   useEffect(() => {
     const listener = onAuthStateChanged();

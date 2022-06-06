@@ -13,6 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { NextButton } from './nextbutton';
 import { Colors, Fonts, width, height, sizes } from "../../../styles";
 import { useSignUp } from './signupstore';
+import { useHeaderHeight } from '@react-navigation/elements';
 
 export const OrganizationSignUpDetailsTertiaryScreen = ({ route, navigation }) => {
     const [organization, setOrganization] = useSignUp(state => [state.organization, state.setOrganization]);
@@ -21,6 +22,8 @@ export const OrganizationSignUpDetailsTertiaryScreen = ({ route, navigation }) =
     const [contactRole, setContactRole] = useState(organization.contactRole || '');
     const emailInputRef = useRef(null);
     const roleInputRef = useRef(null);
+
+    const headerHeight = useHeaderHeight();
 
     useEffect(() => {
 
@@ -34,7 +37,7 @@ export const OrganizationSignUpDetailsTertiaryScreen = ({ route, navigation }) =
             navigation.navigate('OrganizationCompleteSignUp');
         };
 
-        if(contactName != '' && validate(contactEmail) && contactRole != '') {
+        if (contactName != '' && validate(contactEmail) && contactRole != '') {
             navigation.setOptions({
                 headerRight: () => <NextButton onPress={goToNextScreen} />
             });
@@ -46,7 +49,7 @@ export const OrganizationSignUpDetailsTertiaryScreen = ({ route, navigation }) =
     }, [contactName, contactEmail, contactRole]);
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={[styles.container, Platform.OS == "android" ? { marginTop: headerHeight, paddingTop: 20 } : {}]}>
             {/* Candidate for Remote Config */}
             <Text style={Fonts.Paragraph3}>The point of contact must have an @ucsc.edu email.</Text>
             <Input
@@ -117,7 +120,7 @@ let styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.White.rgb,
-        display: 'flex', 
+        display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'flex-start',

@@ -18,6 +18,7 @@ import { Colors, Fonts, width, height, sizes } from "../../../styles";
 import { useStorage } from '../../../hooks';
 import { BackButton } from './../../../navigators';
 import { useSignUp } from './signupstore';
+import { useHeaderHeight } from '@react-navigation/elements';
 
 export const OrganizationCompleteSignUpScreen = ({ route, navigation }) => {
     const [organization, setOrganization] = useSignUp(state => [state.organization, state.setOrganization]);
@@ -25,7 +26,7 @@ export const OrganizationCompleteSignUpScreen = ({ route, navigation }) => {
     const [uploadPhoto] = useStorage(state => [state.uploadPhoto]);
 
     const completeSignUp = useCallback(async () => {
-        if(isLoading) return;
+        if (isLoading) return;
 
         setIsLoading(true);
         navigation.setOptions({
@@ -38,11 +39,11 @@ export const OrganizationCompleteSignUpScreen = ({ route, navigation }) => {
             let url;
             try {
                 url = await uploadPhoto("OrganizationSignUp", hash, organization.photoURI);
-            } catch(error) {
+            } catch (error) {
                 console.log(error);
             }
             const orginfo = {
-                email: organization.email,
+                email: organization.email.toLowerCase(),
                 picture: url,
                 name: organization.name,
                 description: organization.description,
@@ -57,7 +58,7 @@ export const OrganizationCompleteSignUpScreen = ({ route, navigation }) => {
 
             functions().httpsCallable('orgsignup-newRegistration')(orginfo)
                 .then(({ data }) => {
-                    if(data.status == 'OK') {
+                    if (data.status == 'OK') {
                         navigation.navigate("OrganizationVerification");
                     }
                 }).catch(e => {
@@ -69,15 +70,17 @@ export const OrganizationCompleteSignUpScreen = ({ route, navigation }) => {
                         headerLeft: () => <BackButton goBack={navigation.goBack} />,
                     });
                 });
-        } catch(e) {
+        } catch (e) {
             console.error(e);
         }
 
     }, [isLoading, navigation]);
 
+    const headerHeight = useHeaderHeight();
+
     return (
-        <SafeAreaView style={styles.container}>
-            <FastImage 
+        <SafeAreaView style={[styles.container, Platform.OS == "android" ? { marginTop: headerHeight, paddingTop: 20 } : {}]}>
+            <FastImage
                 style={styles.image}
                 source={{ uri: organization.photoURI, priority: FastImage.priority.high }}
                 resizeMode='cover'
@@ -107,7 +110,7 @@ let styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.White.rgb,
-        display: 'flex', 
+        display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'flex-start',

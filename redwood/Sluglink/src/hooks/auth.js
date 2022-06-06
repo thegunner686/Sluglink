@@ -94,7 +94,7 @@ export const useAuth = create((set, get) => ({
             console.log("auth");
             return true;
         } catch (e) {
-            console.log(e);
+            console.error(e);
             return false;
         }
     },
